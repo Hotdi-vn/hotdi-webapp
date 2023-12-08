@@ -1,4 +1,5 @@
-import { Image, Swiper } from '@/components/client/antd_mobile_client_wrapper';
+'use client'
+import { Image, Swiper } from 'antd-mobile';
 
 export default function() {
     const images = [
