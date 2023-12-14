@@ -1,0 +1,12 @@
+.categories {
+    display: flex;
+    width: 100vw;
+    height: 228px;
+    background-color: #C27946;
+    overflow: auto;
+    flex-direction: column;
+    flex-wrap: wrap;
+    column-gap: 48px;
+    padding: 20px 32px;
+    row-gap: 15px;
+}
