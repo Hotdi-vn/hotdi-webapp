@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { NavBar, TabBar, TabBarItem, SearchBar } from '@/components/client/antd_mobile_client_wrapper'
-import Icon from '@/components/client/icon_component'
+import { NavBar, TabBar, TabBarItem, SearchBar } from '@/components/common/antd_mobile_client_wrapper'
+import Icon from '@/components/common/icon_component'
 
 export const metadata: Metadata = {
   title: 'Hotdi',

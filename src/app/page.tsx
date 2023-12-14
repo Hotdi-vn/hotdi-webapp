@@ -1,10 +1,11 @@
 import Banner from '@/app/ui/banner';
+import CategoryList from '@/components/category-list/CategoryList'
 
 export default function Home() {
   return (
     <div>
-      <h1>Home Page</h1>
       <Banner></Banner>
+      <CategoryList />
     </div>
   )
 }
