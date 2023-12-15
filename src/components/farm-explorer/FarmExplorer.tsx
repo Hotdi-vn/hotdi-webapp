@@ -57,7 +57,7 @@ export default function FarmExplorerComponent() {
             </div>
             <div className={styles.farmExplorerContent}>
                 {
-                    farms.map((farm) => <FarmProfileComponent farmProfile={farm} />)
+                    farms.map((farm, index) => <FarmProfileComponent key={index} farmProfile={farm} />)
                 }
             </div>
         </div>
