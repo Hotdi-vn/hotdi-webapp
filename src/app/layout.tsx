@@ -22,7 +22,7 @@ export default function RootLayout({
           </NavBar>
         </div>
         <div className='body'>{children}</div>
-        <div className='bottom'>l
+        <div className='bottom'>
           <TabBar defaultActiveKey='home'>
             <TabBarItem key='home' title='Home' icon={<Icon name='home' />} />
             <TabBarItem key='farmExplore' title='Dạo vườn' icon={<Icon name='farmExplorer' />} />
@@ -30,7 +30,6 @@ export default function RootLayout({
           </TabBar>
         </div>
       </body>
-
     </html>
   )
 }
