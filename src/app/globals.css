@@ -58,7 +58,7 @@ a {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   overflow-y: scroll;
   background-color: lightgrey;
 }
