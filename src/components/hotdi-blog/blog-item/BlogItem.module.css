@@ -1,0 +1,26 @@
+.blog {
+    display: flex;
+    flex: 0 0 318px;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: white;
+    width: 314px;
+    height: 176px;
+}
+
+.blogHeader {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.nameAndDate {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 5px;
+}
+
+.blogContent {
+    display: flex;
+    padding: 5px 12px 12px;
+}

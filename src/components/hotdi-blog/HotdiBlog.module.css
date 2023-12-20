@@ -1,0 +1,37 @@
+.blogComponent {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 261px;
+    background-image: url('/public/background-paper-texture.png'); /* doesn't work */
+    background-color: #C27946;
+    background-blend-mode: multiply;
+}
+
+.heading {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 65px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 12px;
+}
+
+.h1 {
+    color: white;
+}
+
+.a {
+    color: white !important;
+}
+
+.blogs {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: 100vw;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding: 0px 20px 12px;
+}
