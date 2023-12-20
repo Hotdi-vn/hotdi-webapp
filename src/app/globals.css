@@ -52,13 +52,15 @@ a {
 .top {
   flex: 0;
   border-bottom: solid 1px var(--adm-color-border);
+  height: 64px;
+  top: 0; /* this is required for "sticky" to work */
+  position: sticky;
+  background-color: white;
+  z-index: 1;
 }
 
 .body {
   flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   overflow-y: scroll;
   background-color: lightgrey;
 }
@@ -66,4 +68,17 @@ a {
 .bottom {
   flex: 0;
   border-top: solid 1px var(--adm-color-border);
+}
+
+.adm-search-bar {
+  --height: 40px !important;
+}
+
+.adm-nav-bar {
+  padding: 12px !important;
+  --height: 64px !important;
+}
+
+.adm-nav-bar-left, .adm-nav-bar-right {
+  flex: 0 !important;
 }
