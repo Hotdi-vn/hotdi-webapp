@@ -1,3 +1,4 @@
+"use client"
 import Banner from '@/components/banner/Banner';
 import CategoryList from '@/components/category-list/CategoryList';
 import ProductCollection from '@/components/product-collection/ProductCollection';
