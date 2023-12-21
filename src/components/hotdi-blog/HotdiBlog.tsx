@@ -26,7 +26,7 @@ export default function HotdiBlog() {
     return (
         <div className={styles.blogComponent}>
             <div className={styles.heading}>
-                <h1 className={styles.h1}>Hotdi's Blog</h1>
+                <h1 className={styles.h1}>{'Hotdi\'s Blog'}</h1>
                 <Link href='https://www.facebook.com/groups/881860672889799' className={styles.a}>Xem thêm &gt;</Link>
             </div>
             <div className={styles.blogs}>
