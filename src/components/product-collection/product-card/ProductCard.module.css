@@ -1,0 +1,53 @@
+.cardContainer {
+  --imgWidth: 136px;
+  --gap: 0.5em;
+  width: var(--imgWidth);
+  white-space: normal;
+}
+
+.imageContainer {
+  position: relative;
+  --imgWidth: 136px;
+  width: var(--imgWidth);
+}
+
+.imageContainer.square {
+  aspect-ratio: 1;
+}
+
+.imageContainer.fourByThree {
+  aspect-ratio: 4/3;
+}
+
+.image {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.productName {
+  color: #333333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.productPrice {
+  color: #3A6F05;
+  font-weight: 500;
+}
+
+.productLocation {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  color: #999999;
+  font-size: 0.75em;
+}
+
+.productLocationText {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}

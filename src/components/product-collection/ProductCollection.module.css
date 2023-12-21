@@ -1,0 +1,44 @@
+.wrapper {
+  background-color: #FFFFFF;
+  font-size: 16px;
+}
+
+.header {
+  display: flex;
+  width: 100vw;
+  padding: 1em;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.collection {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-rows: min-content;
+  grid-auto-columns: min-content;
+  gap: 1em;
+  width: 100vw;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  overscroll-behavior-x: contain;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.collection.twoRows {
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.title {
+  color: #3A6F05;
+  font-weight: 700;
+  font-size: 1.25em;
+}
+
+.revealButton {
+  display: flex;
+  align-items: center;
+  color: #D46B08;
+  font-size: 0.825em;
+}
