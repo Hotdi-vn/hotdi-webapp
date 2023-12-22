@@ -111,7 +111,7 @@ export default function Product() {
             <div className='top'>{navBar}</div>
             <div className="flex flex-wrap gap-1.5 p-1.5">
                 {demoProduct.map((product, index) =>
-                    <div className="bg-white">
+                    <div key={index} className="bg-white">
                         <ProductCard key={index} productInfo={product} />
                     </div>
                 )}
