@@ -1,5 +1,6 @@
 import Image from 'next/image';
-import styles from './BlogItem.module.css'
+import styles from './BlogItem.module.css';
+import Link from 'next/link';
 
 export class BlogItem {
     avatarUrl: string;
@@ -33,7 +34,10 @@ export default function BlogItemComponent({ blogItem }:
                 </div>
             </div>
             <div className={styles.blogContent}>
-                <div>{blogItem.content}</div>
+                <div>
+                    {blogItem.content.substring(0, 150)}
+                    <Link href='http://hotdi.vn/' className={styles.a}>...Xem thêm</Link>
+                </div>
             </div>
         </div>
     );
