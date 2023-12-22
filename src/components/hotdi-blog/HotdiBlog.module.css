@@ -3,9 +3,9 @@
     flex-direction: column;
     width: 100vw;
     height: 261px;
-    background-image: url('/public/background-paper-texture.png'); /* doesn't work */
-    background-color: #C27946;
-    background-blend-mode: multiply;
+    background-image: url('/background-paper-texture.png');
+    background-color: #995e3e;
+    background-blend-mode: soft-light;
 }
 
 .heading {
@@ -33,5 +33,5 @@
     width: 100vw;
     overflow-x: auto;
     flex-wrap: nowrap;
-    padding: 0px 20px 12px;
+    padding: 0px 12px;
 }

@@ -8,7 +8,7 @@ export default function HotdiBlog() {
             '/hotdi-blog/nali-avatar.svg',
             'Hiếu Sinh',
             new Date(),
-            'Hotdi.vn ra đời với sứ mệnh tạo ra một sàn thương mại điện tử mua bán nông sản sạch, nơi mọi giao dịch đều là sự đóng góp cho cuộc sống toàn diện và môi trường bền vững. Chúng '
+            'Hotdi.vn ra đời với sứ mệnh tạo ra một sàn thương mại điện tử mua bán nông sản sạch, nơi mọi giao dịch đều là sự đóng góp cho cuộc sống toàn diện và môi trường bền'
         ),
         new BlogItem(
             '/hotdi-blog/vuon-rung-cua-la-avatar.svg',
@@ -20,7 +20,7 @@ export default function HotdiBlog() {
             '/hotdi-blog/nali-avatar.svg',
             'Hiếu Sinh',
             new Date(),
-            'Hotdi.vn ra đời với sứ mệnh tạo ra một sàn thương mại điện tử mua bán nông sản sạch, nơi mọi giao dịch đều là sự đóng góp cho cuộc sống toàn diện và môi trường bền vững. Chúng '
+            'Hotdi.vn ra đời với sứ mệnh tạo ra một sàn thương mại điện tử mua bán nông sản sạch, nơi mọi giao dịch đều là sự đóng góp cho cuộc sống toàn diện và môi trường bền'
         )
     ]
     return (

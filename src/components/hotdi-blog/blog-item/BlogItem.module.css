@@ -6,6 +6,7 @@
     background-color: white;
     width: 314px;
     height: 176px;
+    border-radius: 10px;
 }
 
 .blogHeader {
@@ -23,4 +24,8 @@
 .blogContent {
     display: flex;
     padding: 5px 12px 12px;
+}
+
+.a {
+    color: var(--Theme-Weak, #999) !important;
 }
