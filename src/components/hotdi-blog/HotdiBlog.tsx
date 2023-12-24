@@ -1,6 +1,7 @@
 import BlogItemComponent, { BlogItem } from "./blog-item/BlogItemComponent";
 import Link from "next/link";
 import styles from './HotdiBlog.module.css'
+import { RightOutline } from '@/components/common/antd_mobile_client_wrapper';
 
 export default function HotdiBlog() {
     const blogs: BlogItem[] = [
@@ -27,7 +28,9 @@ export default function HotdiBlog() {
         <div className={styles.blogComponent}>
             <div className={styles.heading}>
                 <h1 className={styles.h1}>{'Hotdi\'s Blog'}</h1>
-                <Link href='https://www.facebook.com/groups/881860672889799' className={styles.a}>Xem thêm &gt;</Link>
+                <Link href='https://www.facebook.com/groups/881860672889799' className={styles.a}>
+                    Xem thêm <RightOutline />
+                </Link>
             </div>
             <div className={styles.blogs}>
                 {
