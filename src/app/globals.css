@@ -68,6 +68,11 @@ a {
 .bottom {
   flex: 0;
   border-top: solid 1px var(--adm-color-border);
+  height: 58px;
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  z-index: 1;
 }
 
 .adm-search-bar {

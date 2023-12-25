@@ -2,7 +2,7 @@
 
 import { NavBar } from "@/components/common/antd_mobile_client_wrapper";
 import { useRouter, useSearchParams } from "next/navigation";
-import ProductCard, { ProductInfo } from "@/components/product-collection/product-card/ProductCard";
+import ProductCard, { ProductCardType, ProductInfo } from "@/components/product-collection/product-card/ProductCard";
 
 
 export default function Product() {
@@ -109,10 +109,11 @@ export default function Product() {
     return (
         <div>
             <div className='top'>{navBar}</div>
-            <div className="flex flex-wrap gap-1.5 p-1.5">
+            <div className="flex flex-wrap gap-1.5 p-1.5 justify-stretch">
                 {demoProduct.map((product, index) =>
                     <div key={index} className="bg-white">
-                        <ProductCard key={index} productInfo={product} />
+                        <ProductCard key={index} productInfo={product} fill={false} width={191} height={191}
+                            productInfoPadding={true} imageRadius={false} productCardType={ProductCardType.Large} />
                     </div>
                 )}
             </div>

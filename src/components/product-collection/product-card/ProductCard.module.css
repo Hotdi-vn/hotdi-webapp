@@ -1,14 +1,15 @@
 .cardContainer {
-  --imgWidth: 136px;
-  --gap: 0.5em;
-  width: var(--imgWidth);
+  width: 136px;
+  white-space: normal;
+}
+
+.cardContainerLarge {
+  width: 191px;
   white-space: normal;
 }
 
 .imageContainer {
   position: relative;
-  --imgWidth: 136px;
-  width: var(--imgWidth);
 }
 
 .imageContainer.square {
@@ -20,8 +21,20 @@
 }
 
 .image {
+  object-fit: cover;
+}
+
+.imageRadius {
   border-radius: 8px;
   object-fit: cover;
+}
+
+.productInfoContainer {
+  padding: auto;
+}
+
+.productInfoContainerWithPadding {
+  padding: 8px 12px 8px 12px;
 }
 
 .productName {

@@ -1,6 +1,12 @@
 import Image from 'next/image';
 import { Space, EnvironmentOutline } from '@/components/common/antd_mobile_client_wrapper';
 import styles from './ProductCard.module.css';
+import clsx from 'clsx';
+
+export enum ProductCardType {
+  Normal,
+  Large,
+}
 
 export class ProductInfo {
   imgUrl: string;
@@ -21,15 +27,24 @@ export class ProductInfo {
   }
 }
 
-export default function ProductCard({ productInfo, shortImage }:
-  { productInfo: ProductInfo, shortImage?: boolean}) {
+export default function ProductCard({ productInfo, shortImage, fill = true, width = 0, height = 0,
+  productInfoPadding = false, imageRadius = true, productCardType = ProductCardType.Normal }:
+  {
+    productInfo: ProductInfo, shortImage?: boolean, fill?: boolean, width?: number, height?: number,
+    productInfoPadding?: boolean, imageRadius?: boolean, productCardType?: ProductCardType
+  }) {
 
   const image = (
     <Image
       src={productInfo.imgUrl}
       alt={productInfo.title}
-      fill={true}
-      className={styles.image}
+      fill={fill}
+      width={fill ? 0 : width}
+      height={fill ? 0 : height}
+      className={clsx({
+        [styles.imageRadius]: imageRadius,
+        [styles.image]: !imageRadius
+      })}
     />
   )
 
@@ -44,19 +59,26 @@ export default function ProductCard({ productInfo, shortImage }:
   )
 
   return (
-    <Space direction="vertical" className={styles.cardContainer}>
+    <Space direction="vertical" className={clsx({
+      [styles.cardContainer]: productCardType == ProductCardType.Normal,
+      [styles.cardContainerLarge]: productCardType == ProductCardType.Large
+    })}>
       {imageContainer}
-      <div className={styles.productName}>
-        {productInfo.title}
+      <div className={clsx({
+        [styles.productInfoContainer]: !productInfoPadding,
+        [styles.productInfoContainerWithPadding]: productInfoPadding
+      })}>
+        <div className={styles.productName}>
+          {productInfo.title}
+        </div>
+        <div className={styles.productPrice}>
+          {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(productInfo.price)}
+        </div>
+        <div className={styles.productLocation}>
+          <EnvironmentOutline />
+          <div className={styles.productLocationText}>{productInfo.location}</div>
+        </div>
       </div>
-      <div className={styles.productPrice}>
-        {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND"}).format(productInfo.price)}
-      </div>
-      <div className={styles.productLocation}>
-        <EnvironmentOutline/>
-        <div className={styles.productLocationText}>{productInfo.location}</div>
-      </div>
-      <div/>
     </Space>
   )
 }
