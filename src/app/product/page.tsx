@@ -109,10 +109,10 @@ export default function Product() {
     return (
         <div>
             <div className='top'>{navBar}</div>
-            <div className="flex flex-wrap gap-1.5 p-1.5 justify-stretch">
+            <div className="flex flex-wrap justify-items-end justify-normal gap-1 p-1">
                 {demoProduct.map((product, index) =>
                     <div key={index} className="bg-white">
-                        <ProductCard key={index} productInfo={product} fill={false} width={191} height={191}
+                        <ProductCard key={index} productInfo={product} fill={true} imageSizes="50vw"
                             productInfoPadding={true} imageRadius={false} productCardType={ProductCardType.Large} />
                     </div>
                 )}
