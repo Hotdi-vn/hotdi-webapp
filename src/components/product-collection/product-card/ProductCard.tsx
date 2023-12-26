@@ -28,10 +28,10 @@ export class ProductInfo {
 }
 
 export default function ProductCard({ productInfo, shortImage, fill = true, width = 0, height = 0,
-  productInfoPadding = false, imageRadius = true, productCardType = ProductCardType.Normal }:
+  productInfoPadding = false, imageRadius = true, productCardType = ProductCardType.Normal, imageSizes = "" }:
   {
     productInfo: ProductInfo, shortImage?: boolean, fill?: boolean, width?: number, height?: number,
-    productInfoPadding?: boolean, imageRadius?: boolean, productCardType?: ProductCardType
+    productInfoPadding?: boolean, imageRadius?: boolean, productCardType?: ProductCardType, imageSizes?: string
   }) {
 
   const image = (
@@ -41,6 +41,7 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
       fill={fill}
       width={fill ? 0 : width}
       height={fill ? 0 : height}
+      sizes={imageSizes}
       className={clsx({
         [styles.imageRadius]: imageRadius,
         [styles.image]: !imageRadius
