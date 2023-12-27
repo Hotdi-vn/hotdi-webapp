@@ -53,7 +53,7 @@ export default function FarmExplorerComponent() {
         <div className={styles.farmExplorer}>
             <div className={styles.farmExplorerHeading}>
                 <h1>Dạo vườn</h1>
-                <Link href='https://hotdi.vn'>Xem thêm &gt;</Link>
+                <Link href='/farm-explorer'>Xem thêm &gt;</Link>
             </div>
             <div className={styles.farmExplorerContent}>
                 {

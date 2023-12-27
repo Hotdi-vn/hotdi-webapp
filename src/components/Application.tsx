@@ -1,7 +1,6 @@
 'use client'
 
-import { TabBar, TabBarItem } from "./common/antd_mobile_client_wrapper";
-import Icon from '@/components/common/icon_component'
+import BottomNavBar from "./bottom-nav-bar/BottomNavBar";
 
 export default function Application({
     children,
@@ -14,11 +13,7 @@ export default function Application({
                 {children}
             </div>
             <div className='bottom'>
-                <TabBar defaultActiveKey='home'>
-                    <TabBarItem key='home' title='Home' icon={<Icon name='home' />} />
-                    <TabBarItem key='farmExplore' title='Dạo vườn' icon={<Icon name='farmExplorer' />} />
-                    <TabBarItem key='personalCenter' title='Tôi' icon={<Icon name='user' />} />
-                </TabBar>
+                <BottomNavBar />
             </div>
         </div>
     );
