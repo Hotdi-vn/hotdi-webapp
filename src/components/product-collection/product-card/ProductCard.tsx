@@ -60,12 +60,12 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
   )
 
   return (
-    <Space direction="vertical" className={clsx({
+    <div className={clsx({
       [styles.cardContainer]: productCardType == ProductCardType.Normal,
       [styles.cardContainerLarge]: productCardType == ProductCardType.Large
     })}>
       {imageContainer}
-      <div className={clsx({
+      <Space direction="vertical" className={clsx({
         [styles.productInfoContainer]: !productInfoPadding,
         [styles.productInfoContainerWithPadding]: productInfoPadding
       })}>
@@ -79,7 +79,7 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
           <EnvironmentOutline />
           <div className={styles.productLocationText}>{productInfo.location}</div>
         </div>
-      </div>
-    </Space>
+      </Space>
+    </div>
   )
 }
