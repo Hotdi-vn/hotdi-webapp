@@ -22,6 +22,15 @@ export class BlogItem {
 
 }
 
+function dateToString(date: Date) {
+    const dateTimeFormat = new Intl.DateTimeFormat('vi', {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    return dateTimeFormat.format(date);
+}
+
 export default function BlogItemComponent({ blogItem }:
     { blogItem: BlogItem}) {
     return (
@@ -29,8 +38,8 @@ export default function BlogItemComponent({ blogItem }:
             <div className={styles.blogHeader}>
                 <Image src={blogItem.avatarUrl} width={40} height={40} alt='Blog author avatar image' />
                 <div className={styles.nameAndDate}>
-                    <div><b>{blogItem.name}</b></div>
-                    <div>{blogItem.lastUpdatedDate.toLocaleDateString()}</div>
+                    <div className="text-base"><b>{blogItem.name}</b></div>
+                    <div className="text-gray-500/75 text-xs">{dateToString(blogItem.lastUpdatedDate)}</div>
                 </div>
             </div>
             <div className={styles.blogContent}>
