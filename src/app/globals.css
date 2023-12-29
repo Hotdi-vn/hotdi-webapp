@@ -21,7 +21,6 @@
 }
 
 h1 {
-  font-family: Google Sans;
   color: #3A6F05;
   font-weight: bold;
   font-size: 20px;
@@ -30,7 +29,6 @@ h1 {
 }
 
 h2 {
-  font-family: Google Sans;
   color: #3A6F05;
   font-weight: medium;
   font-size: 20px;
@@ -39,7 +37,6 @@ h2 {
 }
 
 a {
-  font-family: Google Sans;
   color: #D46B08 !important;
   font-weight: normal;
   font-size: 14px;
