@@ -6,11 +6,10 @@ import useSession from '@/hooks/use-session'
 import Application from '@/components/Application'
 import { Be_Vietnam_Pro } from 'next/font/google'
  
-// If loading a variable font, you don't need to specify the font weight
 const bevietnam = Be_Vietnam_Pro({
   weight: ['400', '700'],
   style: ['normal', 'italic'],
-  subsets: ['latin'],
+  subsets: ['vietnamese'],
   display: 'swap',
 })
 
@@ -25,9 +24,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-  return (
+  return (  
     <html lang="en" className={bevietnam.className}>
       <body>
+        <div>Hello</div>
         <Application>
           {children}
         </Application>
