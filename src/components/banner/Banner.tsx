@@ -10,7 +10,7 @@ export default function Banner() {
 
     const bannerItems = images.map(({ imageSrc, imageAlt }, index) => (
         <Swiper.Item key={index} className={styles.bannerItem}>
-            <Image src={imageSrc} alt={imageAlt} height={130} width={440}></Image>
+            <Image src={imageSrc} alt={imageAlt} height={130} width={440} priority={true}></Image>
         </Swiper.Item>
     ));
     return (
