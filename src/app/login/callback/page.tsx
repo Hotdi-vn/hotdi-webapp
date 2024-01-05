@@ -3,21 +3,23 @@ import useSession from '@/hooks/use-session'
 import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function HandleCallback() {
+  const redirect = window.localStorage.getItem('redirect') || '/me'
   const fbToken = useSearchParams().get('code')
   const { login } = useSession()
   const route = useRouter()
-  fetch('/api/facebook/callback?code=' + fbToken).then((response) => {
+  fetch('/facebook/callback?code=' + fbToken).then((response) => {
     response.json().then((res) => {
-      const { data } = res as any
-      if (data) {
-        login(data.name, {
+      const { data: { name, token } } = res as any
+      localStorage.setItem("token", token)
+      if (token) {
+        login(name, {
           optimisticData: {
             isLoggedIn: true,
-            username: data.name,
+            username: name,
           },
         })
       }
-      route.push('/')
+      route.push(redirect)
     })
   })
 }
