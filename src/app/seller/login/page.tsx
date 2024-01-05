@@ -5,7 +5,7 @@ import { Button } from '@/components/button/button'
 export default function Login() {
   function handleLoginEvent(){
     const redirectUri = process.env.NEXT_PUBLIC_END_POINT + 'auth/facebook/login?redirect_uri=' + process.env.NEXT_PUBLIC_DOMAIN + 'login/callback'
-    localStorage.setItem("redirect", "/me")
+    localStorage.setItem("redirect", "/seller/me")
     location.href = redirectUri
   }
   return (

@@ -12,7 +12,7 @@ async function fetchJson<JSON = unknown>(
   return fetch(input, {
     headers: {
       accept: "application/json",
-      "content-type": "application/json",
+      "content-type": "application/json"
     },
     ...init,
   }).then((res) => res.json());

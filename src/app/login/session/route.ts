@@ -7,8 +7,8 @@ import { sleep, SessionData } from '@/libs/session-options'
 // login
 export async function POST(request: NextRequest) {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions)
-
-  const { username = 'No username' } = (await request.json()) as {
+  const { username = 'No username', token } = (await request.json()) as {
+    token: string,
     username: string
   }
 

@@ -2,11 +2,13 @@
 import { redirect } from "next/navigation";
 import useSession from "@/hooks/use-session";
 import { Button } from '@/components/button/button'
+import { fetcher } from "@/libs/fetcher";
+import useSWR from "swr";
 
 export default function PersonalCenter() {
     const { session: { isLoggedIn, username }, logout } = useSession();
     if( !isLoggedIn )
-        redirect('/login');
+        redirect('/seller/login');
 
     function handleLogoutEvent(){
         logout()
