@@ -2,24 +2,36 @@ import Image from 'next/image';
 import styles from './FarmProfile.module.css';
 
 export class FarmProfile {
+    id: string;
     avatarUrl: string;
     name: string;
-    lastUpdatedDate: Date;
     coverImageUrl: string;
     description: string;
+    createdBy: string;
+    createdAt: number;
+    updatedBy: string;
+    updatedAt: number;
 
     constructor(
+        id: string,
         avatarUrl: string,
         name: string,
-        lastUpdatedDate: Date,
         coverImageUrl: string,
-        description: string
+        description: string,
+        createdBy: string,
+        createdAt: number,
+        updatedBy: string,
+        updatedAt: number
     ) {
-        this.avatarUrl = avatarUrl
-        this.name = name
-        this.lastUpdatedDate = lastUpdatedDate
-        this.coverImageUrl = coverImageUrl
-        this.description = description
+        this.id = id;
+        this.avatarUrl = avatarUrl;
+        this.name = name;
+        this.coverImageUrl = coverImageUrl;
+        this.description = description;
+        this.createdBy = createdBy;
+        this.createdAt = createdAt;
+        this.updatedBy = updatedBy;
+        this.updatedAt = updatedAt;
     }
 }
 
@@ -31,7 +43,7 @@ export default function FarmProfileComponent({ farmProfile }:
                 <Image src={farmProfile.avatarUrl} width={40} height={40} alt='Farm profile avatar image' />
                 <div className={styles.farmName}>
                     <div><b>{farmProfile.name}</b></div>
-                    <div>{farmProfile.lastUpdatedDate.toLocaleDateString()}</div>
+                    <div>{new Date(farmProfile.updatedAt).toLocaleDateString()}</div>
                 </div>
             </div>
             <div className={styles.farmCoverImage}>
