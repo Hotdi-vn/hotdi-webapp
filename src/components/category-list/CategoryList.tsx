@@ -1,17 +1,38 @@
+import { get } from '@/utils/server-side-fetching';
 import styles from './CategoryList.module.css';
 import ProductCategory from './product-category/ProductCategory';
 
-export default function CategoryList() {
+export class CategoryProps {
+    id: number;
+    name: string;
+    imageUrl: string;
+
+    constructor(
+        id: number,
+        name: string,
+        imageUrl: string,
+    ) {
+        this.id = id
+        this.name = name
+        this.imageUrl = imageUrl
+    }
+}
+
+export default async function CategoryList() {
+    const response = await get<CategoryProps[]>('/market-place/categories');
+
+    if (response.error) {
+        return <div>{`Server error! Code: ${response.error.code}`}</div>
+    }
+
     return (
         <div className={styles.categories}>
-                <ProductCategory imageSource='/product-category/product-category-gao-dau.png' categoryName='Gạo đậu' />
-                <ProductCategory imageSource='/product-category/product-category-thit-heo-bo.png' categoryName='Thị heo, bò' />
-                <ProductCategory imageSource='/product-category/product-category-rau-cu.png' categoryName='Rau củ' />
-                <ProductCategory imageSource='/product-category/product-category-gia-cam-trung.png' categoryName='Gia cầm, trứng' />
-                <ProductCategory imageSource='/product-category/product-category-trai-cay.png' categoryName='Trái cây' />
-                <ProductCategory imageSource='/product-category/product-category-bun-mien.png' categoryName='Bún miến' />
-                <ProductCategory imageSource='/product-category/product-category-hai-san.png' categoryName='Hải sản' />
-                <ProductCategory imageSource='/product-category/product-category-gia-vi.png' categoryName='Gia vị' />
+            {
+                response.data.map(
+                    category =>
+                        <ProductCategory key={category.id} imageSource={category.imageUrl} categoryName={category.name} />
+                )
+            };
         </div>
     );
 }
