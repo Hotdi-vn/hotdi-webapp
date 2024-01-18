@@ -4,8 +4,8 @@ import { Skeleton } from "antd-mobile";
 import useSWR from "swr";
 import { ResponseData, fetcher } from "./data-fetching-utils";
 
-export function useCustomSWR<T>(url: string) {
-    const { data, error, isLoading } = useSWR<ResponseData<T>>(`${process.env.NEXT_PUBLIC_API_ENDPOINT}${url}`, fetcher);
+export function useCustomSWR<T>(path: string) {
+    const { data, error, isLoading } = useSWR<ResponseData<T>>(`${process.env.NEXT_PUBLIC_API_ENDPOINT}${path}`, fetcher);
     return { data, error, isLoading };
 }
 

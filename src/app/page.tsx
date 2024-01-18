@@ -6,6 +6,7 @@ import FarmExplorerComponent from '@/components/farm-explorer/FarmExplorer';
 import Icon from '@/components/common/icon_component';
 import HotdiBlog from '@/components/hotdi-blog/HotdiBlog';
 import { Suspense } from 'react';
+import { CollectionType } from '@/components/product-collection/product-card/ProductCard';
 
 export default function Home() {
   const navBar =
@@ -21,14 +22,25 @@ export default function Home() {
         <CategoryList />
       </Suspense>
       <div className='gap-12'>
-        <ProductCollection title='Nổi Bật Phần Phật' />
-        <ProductCollection title='Sản Phẩm Mới Toanh' />
-        <ProductCollection title='Đồ Tươi Roi Rói' twoRows />
-        <ProductCollection title='Đồ Khô Chân Ái' twoRows />
-        <HotdiBlog />
-        <FarmExplorerComponent />
+        <Suspense>
+          <ProductCollection collectionType={CollectionType.NoiBatPhanPhat} title='Nổi Bật Phần Phật' />
+        </Suspense>
+        <Suspense>
+          <ProductCollection collectionType={CollectionType.SanPhamMoiToanh} title='Sản Phẩm Mới Toanh' />
+        </Suspense>
+        <Suspense>
+          <ProductCollection collectionType={CollectionType.DoTuoiRoiRoi} title='Đồ Tươi Roi Rói' twoRows />
+        </Suspense>
+        <Suspense>
+          <ProductCollection collectionType={CollectionType.DoKhoChanAi} title='Đồ Khô Chân Ái' twoRows />
+        </Suspense>
+        <Suspense>
+          <HotdiBlog />
+        </Suspense>
+        <Suspense>
+          <FarmExplorerComponent />
+        </Suspense>
       </div>
-      
     </div>
   )
 }

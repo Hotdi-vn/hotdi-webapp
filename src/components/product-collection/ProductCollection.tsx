@@ -1,55 +1,24 @@
 import React from 'react';
-import ProductCard, { ProductInfo } from "./product-card/ProductCard";
+import ProductCard, { CollectionType, ProductInfo } from "./product-card/ProductCard";
 import styles from "./ProductCollection.module.css"
 import { RightOutline } from '@/components/common/antd_mobile_client_wrapper';
 import Link from 'next/link';
+import { get } from '@/utils/server-side-fetching';
 
-const demoProduct: ProductInfo[] = [
-  new ProductInfo(
-    '/product-collection/demoProduct1.jpg',
-    'Combo 5 Bắp nếp mỡ gà canh tác sadding filler words to demonstrate ellipsis a few more words',
-    100000,
-    23,
-    'TP. Hồ Chí Minh'
-  ),
-  new ProductInfo(
-    '/product-collection/demoProduct2.jpg',
-    'Tôm thẻ hàng loại 1 nuôi không cám filler words to demonstrate ellipsis a few more words',
-    350000,
-    56,
-    'Tiền Giang'
-  ),
-  new ProductInfo(
-    '/product-collection/demoProduct3.jpg',
-    'Táo xanh Ninh Thuận hữu cơ',
-    70000,
-    1200,
-    'Ninh Thuận'
-  ),
-  new ProductInfo(
-    '/product-collection/demoProduct4.jpg',
-    'Thịt heo đen nuôi 2 năm',
-    250000,
-    23,
-    'Daklak'
-  ),
-  new ProductInfo(
-    '/product-collection/demoProduct5.jpg',
-    'Khô cá đù 1 nắng',
-    180000,
-    56,
-    'Vũng Tàu'
-  )
-]
+export default async function ProductCollection({ collectionType, title, twoRows }:
+  { collectionType: CollectionType, title: string, twoRows?: boolean }) {
 
-export default function ProductCollection({ title, twoRows }:
-  { title: string, twoRows?: boolean }) {
+  const response = await get<ProductInfo[]>(`/market/v1/products?collectionType=${collectionType}`, { cache: 'no-store' });
 
-  const productList: ProductInfo[] = Array(19).fill(demoProduct).flat();
+  if (response.error) {
+    return <div>{`Server error! Code: ${response.error.code}`}</div>
+  }
+
+  const productList: ProductInfo[] = response.data;
 
   const collectionItems = productList.map((productInfo, index) => (
     <ProductCard
-      key={index}
+      key={productInfo._id}
       productInfo={productInfo}
       shortImage={twoRows}
     />
