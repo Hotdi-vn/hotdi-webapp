@@ -35,6 +35,15 @@ export class FarmProfile {
     }
 }
 
+function dateToString(date: Date) {
+    const dateTimeFormat = new Intl.DateTimeFormat('vi', {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    return dateTimeFormat.format(date);
+}
+
 export default function FarmProfileComponent({ farmProfile }:
     { farmProfile: FarmProfile }) {
     return (
@@ -42,8 +51,8 @@ export default function FarmProfileComponent({ farmProfile }:
             <div className={styles.farmInfo}>
                 <Image src={farmProfile.avatarUrl} width={40} height={40} alt='Farm profile avatar image' />
                 <div className={styles.farmName}>
-                    <div><b>{farmProfile.name}</b></div>
-                    <div>{new Date(farmProfile.updatedAt).toLocaleDateString()}</div>
+                    <div className="text-base"><b>{farmProfile.name}</b></div>
+                    <div className="text-gray-500/75 text-xs">{dateToString(new Date(farmProfile.updatedAt))}</div>
                 </div>
             </div>
             <div className={styles.farmCoverImage}>

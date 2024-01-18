@@ -11,90 +11,105 @@ export default function Product() {
             '/product-collection/demoProduct1.jpg',
             'Combo 5 Bắp nếp mỡ gà canh tác sadding filler words to demonstrate ellipsis a few more words',
             100000,
+            23,
             'TP. Hồ Chí Minh'
         ),
         new ProductInfo(
             '/product-collection/demoProduct2.jpg',
             'Tôm thẻ hàng loại 1 nuôi không cám filler words to demonstrate ellipsis a few more words',
             350000,
+            56,
             'Tiền Giang'
         ),
         new ProductInfo(
             '/product-collection/demoProduct3.jpg',
             'Táo xanh Ninh Thuận hữu cơ',
             70000,
+            70,
             'Ninh Thuận'
         ),
         new ProductInfo(
             '/product-collection/demoProduct4.jpg',
             'Thịt heo đen nuôi 2 năm',
             250000,
+            100,
             'Daklak'
         ),
         new ProductInfo(
             '/product-collection/demoProduct5.jpg',
             'Khô cá đù 1 nắng',
             180000,
+            120,
             'Vũng Tàu'
         ),
         new ProductInfo(
             '/product-collection/demoProduct1.jpg',
             'Combo 5 Bắp nếp mỡ gà canh tác sadding filler words to demonstrate ellipsis a few more words',
             100000,
+            150,
             'TP. Hồ Chí Minh'
         ),
         new ProductInfo(
             '/product-collection/demoProduct2.jpg',
             'Tôm thẻ hàng loại 1 nuôi không cám filler words to demonstrate ellipsis a few more words',
             350000,
+            155,
             'Tiền Giang'
         ),
         new ProductInfo(
             '/product-collection/demoProduct3.jpg',
             'Táo xanh Ninh Thuận hữu cơ',
             70000,
+            160,
             'Ninh Thuận'
         ),
         new ProductInfo(
             '/product-collection/demoProduct4.jpg',
             'Thịt heo đen nuôi 2 năm',
             250000,
+            165,
             'Daklak'
         ),
         new ProductInfo(
             '/product-collection/demoProduct5.jpg',
             'Khô cá đù 1 nắng',
             180000,
+            170,
             'Vũng Tàu'
         ),
         new ProductInfo(
             '/product-collection/demoProduct1.jpg',
             'Combo 5 Bắp nếp mỡ gà canh tác sadding filler words to demonstrate ellipsis a few more words',
             100000,
+            175,
             'TP. Hồ Chí Minh'
         ),
         new ProductInfo(
             '/product-collection/demoProduct2.jpg',
             'Tôm thẻ hàng loại 1 nuôi không cám filler words to demonstrate ellipsis a few more words',
             350000,
+            180,
             'Tiền Giang'
         ),
         new ProductInfo(
             '/product-collection/demoProduct3.jpg',
             'Táo xanh Ninh Thuận hữu cơ',
             70000,
+            185,
             'Ninh Thuận'
         ),
         new ProductInfo(
             '/product-collection/demoProduct4.jpg',
             'Thịt heo đen nuôi 2 năm',
             250000,
+            190,
             'Daklak'
         ),
         new ProductInfo(
             '/product-collection/demoProduct5.jpg',
             'Khô cá đù 1 nắng',
             180000,
+            195,
             'Vũng Tàu'
         )
     ];
