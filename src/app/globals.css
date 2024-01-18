@@ -69,6 +69,12 @@ a {
   background-color: #F5F5F5;
 }
 
+.gap-12 {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .bottom {
   flex: 0;
   border-top: solid 1px var(--adm-color-border);

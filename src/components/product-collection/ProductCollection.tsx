@@ -9,30 +9,35 @@ const demoProduct: ProductInfo[] = [
     '/product-collection/demoProduct1.jpg',
     'Combo 5 Bắp nếp mỡ gà canh tác sadding filler words to demonstrate ellipsis a few more words',
     100000,
+    23,
     'TP. Hồ Chí Minh'
   ),
   new ProductInfo(
     '/product-collection/demoProduct2.jpg',
     'Tôm thẻ hàng loại 1 nuôi không cám filler words to demonstrate ellipsis a few more words',
     350000,
+    56,
     'Tiền Giang'
   ),
   new ProductInfo(
     '/product-collection/demoProduct3.jpg',
     'Táo xanh Ninh Thuận hữu cơ',
     70000,
+    1200,
     'Ninh Thuận'
   ),
   new ProductInfo(
     '/product-collection/demoProduct4.jpg',
     'Thịt heo đen nuôi 2 năm',
     250000,
+    23,
     'Daklak'
   ),
   new ProductInfo(
     '/product-collection/demoProduct5.jpg',
     'Khô cá đù 1 nắng',
     180000,
+    56,
     'Vũng Tàu'
   )
 ]
@@ -63,9 +68,9 @@ export default function ProductCollection({ title, twoRows }:
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <div className={styles.title}>
+        <h1 className={styles.title}>
           {title}
-        </div>
+        </h1>
         <Link href={`/product?collection=${title}`}>
           <div className={styles.revealButton}>
             Xem thêm <RightOutline />

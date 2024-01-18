@@ -39,15 +39,19 @@
 
 .productName {
   color: #333333;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  display: flex;
   overflow: hidden;
+  min-height: 48px;
+  margin-top: 8px;
 }
 
 .productPrice {
   color: #3A6F05;
   font-weight: 500;
+}
+
+.numberSold {
+  font-size: 12px;
 }
 
 .productLocation {

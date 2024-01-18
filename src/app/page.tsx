@@ -20,12 +20,15 @@ export default function Home() {
       <Suspense>
         <CategoryList />
       </Suspense>
-      <ProductCollection title='Nổi Bật Phần Phật' />
-      <ProductCollection title='Sản Phẩm Mới Toanh' />
-      <ProductCollection title='Đồ Tươi Roi Rói' twoRows />
-      <ProductCollection title='Đồ Khô Chân Ái' twoRows />
-      <HotdiBlog />
-      <FarmExplorerComponent />
+      <div className='gap-12'>
+        <ProductCollection title='Nổi Bật Phần Phật' />
+        <ProductCollection title='Sản Phẩm Mới Toanh' />
+        <ProductCollection title='Đồ Tươi Roi Rói' twoRows />
+        <ProductCollection title='Đồ Khô Chân Ái' twoRows />
+        <HotdiBlog />
+        <FarmExplorerComponent />
+      </div>
+      
     </div>
   )
 }
