@@ -8,25 +8,39 @@ export enum ProductCardType {
   Large,
 }
 
+export enum CollectionType {
+	NoiBatPhanPhat = "NoiBatPhanPhat",
+	SanPhamMoiToanh = "SanPhamMoiToanh",
+	ChoNeHotDi = "ChoNeHotDi",
+	DoTuoiRoiRoi = "DoTuoiRoiRoi",
+	DoKhoChanAi = "DoKhoChanAi"
+}
+
 export class ProductInfo {
-  imgUrl: string;
-  title: string;
+  _id: string;
+  imageUrls: string[];
+  name: string;
   price: number;
-  sold: number;
+  soldCount: number;
   location: string;
+  collectionType: CollectionType;
 
   constructor(
-    imgUrl: string,
-    title: string,
+    _id: string,
+    imageUrls: string[],
+    name: string,
     price: number,
-    sold: number,
+    soldCount: number,
     location: string,
+    collectionType: CollectionType
   ) {
-    this.imgUrl = imgUrl
-    this.title = title
+    this._id = _id
+    this.imageUrls = imageUrls
+    this.name = name
     this.price = price
-    this.sold = sold
+    this.soldCount = soldCount
     this.location = location
+    this.collectionType = collectionType
   }
 }
 
@@ -60,8 +74,8 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
 
   const image = (
     <Image
-      src={productInfo.imgUrl}
-      alt={productInfo.title}
+      src={productInfo.imageUrls.at(0) ?? ''}
+      alt={productInfo.name}
       fill={fill}
       width={fill ? 0 : width}
       height={fill ? 0 : height}
@@ -94,14 +108,14 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
         [styles.productInfoContainerWithPadding]: productInfoPadding
       })}>
         <div className={styles.productName}>
-          {productInfo.title.substring(0,30)}
-          {productInfo.title.length > 30 ? '...' : '' }
+          {productInfo.name.substring(0,30)}
+          {productInfo.name.length > 30 ? '...' : '' }
         </div>
         <div className={styles.productPrice}>
           {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(productInfo.price)}
         </div>
         <div className={styles.numberSold}>
-          Đã bán {formatNumber(productInfo.sold)}
+          Đã bán {formatNumber(productInfo.soldCount)}
         </div>
         <div className={styles.productLocation}>
           <EnvironmentOutline />

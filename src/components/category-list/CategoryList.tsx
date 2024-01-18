@@ -19,7 +19,7 @@ export class CategoryProps {
 }
 
 export default async function CategoryList() {
-    const response = await get<CategoryProps[]>('/market-place/categories');
+    const response = await get<CategoryProps[]>('/market/v1/categories');
 
     if (response.error) {
         return <div>{`Server error! Code: ${response.error.code}`}</div>

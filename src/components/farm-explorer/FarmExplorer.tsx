@@ -19,5 +19,5 @@ export default function FarmExplorerComponent() {
             </div>
         </div>
     );
-    return useSWRandGenerateData<FarmProfile[]>('/market-place/sellers', generateDataFunc);
+    return useSWRandGenerateData<FarmProfile[]>('/market/v1/sellers', generateDataFunc);
 }
