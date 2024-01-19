@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Button } from '@/components/button/button'
 export default function Login() {
   function handleLoginEvent(){
-    const redirectUri = process.env.NEXT_PUBLIC_END_POINT + 'auth/facebook/login?redirect_uri=' + process.env.NEXT_PUBLIC_DOMAIN + 'login/callback'
+    const redirectUri = process.env.NEXT_PUBLIC_API_ENDPOINT + 'auth/facebook/login?redirect_uri=' + process.env.NEXT_PUBLIC_DOMAIN + 'login/callback'
     localStorage.setItem("redirect", "/me")
     location.href = redirectUri
   }
