@@ -3,10 +3,15 @@ import useSession from '@/hooks/use-session'
 import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function HandleCallback() {
-  const redirect = window.localStorage.getItem('redirect') || '/me'
   const fbToken = useSearchParams().get('code')
   const { login } = useSession()
   const route = useRouter()
+
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const redirect = window.localStorage.getItem('redirect') || '/me'
   fetch('/facebook/callback?code=' + fbToken).then((response) => {
     response.json().then((res) => {
       const { data: { name, token } } = res as any
