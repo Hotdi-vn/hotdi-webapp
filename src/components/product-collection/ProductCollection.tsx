@@ -3,12 +3,12 @@ import ProductCard, { CollectionType, ProductInfo } from "./product-card/Product
 import styles from "./ProductCollection.module.css"
 import { RightOutline } from '@/components/common/antd_mobile_client_wrapper';
 import Link from 'next/link';
-import { get } from '@/utils/server-side-fetching';
+import { get, getNoCache } from '@/utils/server-side-fetching';
 
 export default async function ProductCollection({ collectionType, title, twoRows }:
   { collectionType: CollectionType, title: string, twoRows?: boolean }) {
 
-  const response = await get<ProductInfo[]>(`/market/v1/products?collectionType=${collectionType}`, { cache: 'no-store' });
+  const response = await getNoCache<ProductInfo[]>(`/market/v1/products?collectionType=${collectionType}`);
 
   if (response.error) {
     return <div>{`Server error! Code: ${response.error.code}`}</div>

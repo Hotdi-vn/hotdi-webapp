@@ -1,13 +1,18 @@
-'use client'
 import Image from 'next/image'
-import Link from 'next/link'
-import { Button } from '@/components/button/button'
-export default function Login() {
-  function handleLoginEvent(){
-    const redirectUri = process.env.NEXT_PUBLIC_API_ENDPOINT + '/auth/facebook/login?redirect_uri=' + process.env.NEXT_PUBLIC_DOMAIN + '/login/callback'
-    localStorage.setItem("redirect", "/seller/me")
-    location.href = redirectUri
-  }
+import { facebookLogin } from '@/server-actions/authentication-actions'
+import { SubmitButton } from '@/components/button/SubmitButton';
+import { LOGIN_REDIRECT_URL_FIELD_NAME } from '@/constants/common-contants';
+
+export default function SellerLogin({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+
+  const loginRedirectUrl = searchParams?.[`${LOGIN_REDIRECT_URL_FIELD_NAME}`] ?? '/seller/shop';
+
   return (
     <div className="w-full h-full bg-white p-5">
       <div className="relative inset-0 flex m-10">
@@ -20,20 +25,24 @@ export default function Login() {
         />
       </div>
       <div className="text-center m-1">
+        <h1>Trang đang nhập cho shop</h1>
         <h1>Đăng Nhập Với</h1>
       </div>
       <div>
-        <Button onClick={handleLoginEvent} className="w-full rounded-sm border h-11">
-          <Image
-            className="float-left ms-1.5"
-            src="/fb.png"
-            width={16}
-            height={16}
-            alt="icon"
-          />
-          Facebook
-        </Button>
+        <form>
+          <input type='hidden' name={LOGIN_REDIRECT_URL_FIELD_NAME} value={loginRedirectUrl} />
+          <SubmitButton formAction={facebookLogin} className="w-full rounded-sm border h-11">
+            <Image
+              className="float-left ms-1.5"
+              src="/fb.png"
+              width={16}
+              height={16}
+              alt="icon"
+            />
+            Facebook
+          </SubmitButton>
+        </form>
       </div>
-    </div>
+    </div >
   )
 }

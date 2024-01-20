@@ -1,4 +1,4 @@
-import { get } from '@/utils/server-side-fetching';
+import { get, getNoCache } from '@/utils/server-side-fetching';
 import styles from './CategoryList.module.css';
 import ProductCategory from './product-category/ProductCategory';
 
@@ -19,7 +19,7 @@ export class CategoryProps {
 }
 
 export default async function CategoryList() {
-    const response = await get<CategoryProps[]>('/market/v1/categories');
+    const response = await getNoCache<CategoryProps[]>('/market/v1/categories');
 
     if (response.error) {
         return <div>{`Server error! Code: ${response.error.code}`}</div>

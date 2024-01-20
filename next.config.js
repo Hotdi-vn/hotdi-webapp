@@ -29,13 +29,30 @@ const nextConfig = {
     },
     async rewrites() {
         return [
-          {
-            source: '/api/:path*',
-            destination: 'https://api.dev.hotdi.vn/:path*',
-            basePath: false,
-          }
+            {
+                source: '/api/:path*',
+                destination: 'https://api.dev.hotdi.vn/:path*',
+                basePath: false,
+            }
         ]
-      }
+    },
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "file.dev.hotdi.vn",
+            },
+            {
+                protocol: "https",
+                hostname: "file.hotdi.vn",
+            },
+        ],
+    },
+    logging: {
+        fetches: {
+            fullUrl: true,
+        },
+    },
 }
 
 module.exports = nextConfig
