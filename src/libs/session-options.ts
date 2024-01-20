@@ -1,23 +1,43 @@
 import { SessionOptions } from "iron-session";
 
-export interface SessionData {
-  username: string;
+export class UserProfile {
+  token: string;
+  id: string;
+  name: string;
+  picture: string;
+
+  constructor(
+    token: string,
+    id: string,
+    name: string,
+    picture: string
+  ) {
+    this.token = token
+    this.id = id
+    this.name = name
+    this.picture = picture
+  }
+}
+
+export class SessionData {
+  userProfile?: UserProfile;
   isLoggedIn: boolean;
+
+  constructor(userInfo: UserProfile, isLoggedIn: boolean) {
+    this.userProfile = userInfo
+    this.isLoggedIn = isLoggedIn
+  }
 }
 
 export const defaultSession: SessionData = {
-  username: "",
-  isLoggedIn: false,
+  userProfile: undefined,
+  isLoggedIn: false
 };
 
 export const sessionOptions: SessionOptions = {
-  password: "complex_password_at_least_32_characters_long",
-  cookieName: "iron-examples-app-router-client-component-route-handler-swr",
+  password: "_qewklsf131@3kmfdsk#$mkd1!s1231kkkdj$2!@",
+  cookieName: "authentication-cookie",
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
   },
 };
-
-export function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}

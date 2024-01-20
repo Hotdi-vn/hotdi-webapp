@@ -3,16 +3,16 @@ import { getSession, logoutSession } from "@/server-actions/authentication-actio
 import { SubmitButton } from "@/components/button/SubmitButton";
 import { LOGIN_REDIRECT_URL_FIELD_NAME } from "@/constants/common-contants";
 
-export default async function PersonalCenter() {
+export default async function SellerShop() {
     const session = await getSession();
     if (!session.isLoggedIn) {
-        redirect(`/login?${LOGIN_REDIRECT_URL_FIELD_NAME}=/me`);
+        redirect(`/seller/login?${LOGIN_REDIRECT_URL_FIELD_NAME}=/seller/shop`);
     }
-
     return (
         <>
             <div className="w-full h-full bg-white p-5">
                 <div className="text-center m-1">
+                    <h1>Seller Shop</h1>
                     <h1>{session.userProfile?.name}</h1>
                 </div>
                 <div>
@@ -21,7 +21,6 @@ export default async function PersonalCenter() {
                             Logout
                         </SubmitButton>
                     </form>
-
                 </div>
             </div>
         </>
