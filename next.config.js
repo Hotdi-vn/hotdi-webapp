@@ -53,6 +53,12 @@ const nextConfig = {
             fullUrl: true,
         },
     },
+
+    experimental: {
+        serverActions: {
+            allowedForwardedHosts: ['dev.hotdi.vn', 'api.dev.hotdi.vn', 'hotdi.vn', 'api.hotdi.vn'],
+        },
+    },
 }
 
 module.exports = nextConfig
