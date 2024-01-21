@@ -56,7 +56,7 @@ const nextConfig = {
 
     experimental: {
         serverActions: {
-            allowedForwardedHosts: ['dev.hotdi.vn', 'api.dev.hotdi.vn', 'hotdi.vn', 'api.hotdi.vn'],
+            allowedForwardedHosts: ['dev.hotdi.vn', 'api.dev.hotdi.vn', 'hotdi.vn', 'api.hotdi.vn', '127.0.0.1:3000', 'localhost:3000'],
         },
     },
 }
