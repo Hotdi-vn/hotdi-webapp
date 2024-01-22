@@ -17,7 +17,7 @@ export class ResponseData<T> extends ResponseDataBase<T, ServerError> {
 
 
 
-export class ServerError {
+export class ServerError extends Error {
     id: string;
     code: string;
 
@@ -25,10 +25,27 @@ export class ServerError {
         id: string,
         code: string
     ) {
+        super();
         this.id = id;
         this.code = code;
     }
+}
 
+export class InternalServerError extends Error {
+    statusCode: number;
+    error: string;
+    message: string;
+
+    constructor(
+        statusCode: number,
+        error: string,
+        message: string,
+    ) {
+        super();
+        this.statusCode = statusCode
+        this.error = error
+        this.message = message
+    }
 }
 
 export async function fetcher<JSON = any>(

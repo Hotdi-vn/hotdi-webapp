@@ -1,9 +1,20 @@
 import 'server-only'
-import { ResponseData } from './data-fetching-utils';
+import { InternalServerError, ResponseData } from './data-fetching-utils';
+import { log } from 'console';
 
 async function fetchApi<T>(path: string, options?: any): Promise<ResponseData<T>> {
-    const res = await fetch(`${process.env.API_ENDPOINT}${path}`, options);
-    return res.json();
+    let res;
+    try {
+        res = await fetch(`${process.env.API_ENDPOINT}${path}`, options);
+        return res.json();
+    } catch (error) {
+        log('Error when fetching api', error);
+        if (error instanceof Error) {
+            throw new InternalServerError(res?.status ?? 0, error.name, error.message);
+        }
+        throw error;
+    }
+
 }
 
 export async function get<T>(path: string, cacheDuration: number = 10, cacheTags: [] = []): Promise<ResponseData<T>> {
