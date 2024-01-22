@@ -1,34 +1,21 @@
-import { get, getNoCache } from '@/utils/server-side-fetching';
 import styles from './CategoryList.module.css';
 import ProductCategory from './product-category/ProductCategory';
-
-export class CategoryProps {
-    id: number;
-    name: string;
-    imageUrl: string;
-
-    constructor(
-        id: number,
-        name: string,
-        imageUrl: string,
-    ) {
-        this.id = id
-        this.name = name
-        this.imageUrl = imageUrl
-    }
-}
+import { Category, getCategories } from '@/api-services/market-service';
+import { log } from 'console';
 
 export default async function CategoryList() {
-    const response = await getNoCache<CategoryProps[]>('/market/v1/categories');
-
-    if (response.error) {
-        return <div>{`Server error! Code: ${response.error.code}`}</div>
+    let categories: Category[] = [];
+    try {
+        categories = await getCategories();
+    } catch (error) {
+        log(error);
+        return <div>Fail to load categories.</div>
     }
 
     return (
         <div className={styles.categories}>
             {
-                response.data.map(
+                categories.map(
                     category =>
                         <ProductCategory key={category.id} imageSource={category.imageUrl} categoryName={category.name} />
                 )
