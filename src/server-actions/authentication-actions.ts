@@ -1,7 +1,7 @@
 'use server'
 
 import { LOGIN_REDIRECT_URL_COOKIE, LOGIN_REDIRECT_URL_FIELD_NAME } from "@/constants/common-contants";
-import { SessionData, UserProfile, defaultSession, sessionOptions } from "@/libs/session-options";
+import { Role, SessionData, UserProfile, defaultSession, sessionOptions } from "@/libs/session-options";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -30,6 +30,10 @@ export async function loginSession(userProfile: UserProfile) {
     const session = await getIronSessionData();
     session.isLoggedIn = true;
     session.userProfile = userProfile;
+
+    // TODO get user role from the API
+    session.userProfile.role = Role.Seller;
+
     await session.save();
     return session;
 }

@@ -7,6 +7,15 @@ import HomeActive from '#/icons/home_active.svg';
 import ShoppingBag from '#/icons/shopping_bag.svg';
 import User from '#/icons/user.svg';
 import UserActive from '#/icons/user_active.svg';
+import Shop from '#/icons/shop.svg';
+import ShopActive from '#/icons/shop_active.svg';
+import Message from '#/icons/message.svg';
+import Notification from '#/icons/notification.svg';
+import Setting from '#/icons/setting.svg';
+import ArrowRight from '#/icons/arrow_right.svg';
+import ArrowLeft from '#/icons/arrow_left.svg';
+import Location from '#/icons/location.svg';
+import Search from '#/icons/search.svg';
 
 const iconTypes = {
   home: Home,
@@ -16,6 +25,15 @@ const iconTypes = {
   shoppingBag: ShoppingBag,
   user: User,
   userActive: UserActive,
+  shop: Shop,
+  shopActive: ShopActive,
+  message: Message,
+  notification: Notification,
+  setting: Setting,
+  arrowRight: ArrowRight,
+  arrowLeft: ArrowLeft,
+  location: Location,
+  search: Search,
 };
 
 const IconComponent = ({ name, ...props }) => {

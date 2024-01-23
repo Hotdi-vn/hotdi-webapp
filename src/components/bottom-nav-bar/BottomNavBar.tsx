@@ -1,41 +1,54 @@
-'use client'
-
-import { TabBar } from "@/components/common/antd_mobile_client_wrapper";
 import Icon from '@/components/common/icon_component'
-import { usePathname, useRouter } from "next/navigation";
+import { Role } from "@/libs/session-options";
+import { getSession } from "@/server-actions/authentication-actions";
+import CustomTabBar from "./CustomTabBar";
 
-export default function BottomNavBar() {
-
-    const router = useRouter();
-    const pathname = usePathname();
-
-    const setRouteActive = (value: string) => {
-        router.push(value);
-    }
+export default async function BottomNavBar() {
+    const session = await getSession();
 
     const tabs = [
         {
             key: '/',
             title: 'Home',
-            icon: (active: boolean) => active ? <Icon name='homeActive' /> : <Icon name='home' />,
+            icon: {
+                activeIcon: <Icon name='homeActive' />,
+                inactiveIcon: <Icon name='home' />
+            },
         },
         {
             key: '/farm-explorer',
             title: 'Dạo vườn',
-            icon: (active: boolean) => active ? <Icon name='farmExplorerActive' /> : <Icon name='farmExplorer' />,
+            icon: {
+                activeIcon: <Icon name='farmExplorerActive' />,
+                inactiveIcon: <Icon name='farmExplorer' />
+            },
+        },
+        {
+            key: '/seller/shop',
+            title: 'Shop của tôi',
+            icon: {
+                activeIcon: <Icon name='shopActive' />,
+                inactiveIcon: <Icon name='shop' />
+            },
         },
         {
             key: '/me',
             title: 'Tôi',
-            icon: (active: boolean) => active ? <Icon name='userActive' /> : <Icon name='user' />,
+            icon: {
+                activeIcon: <Icon name='userActive' />,
+                inactiveIcon: <Icon name='user' />
+            },
         },
-    ]
+    ];
+
+    const filteredTabs = tabs.filter(tab => {
+        if ('/seller/shop' == tab.key && session.userProfile?.role != Role.Seller) {
+            return false;
+        }
+        return true;
+    });
 
     return (
-        <TabBar defaultActiveKey='/' activeKey={pathname} onChange={value => setRouteActive(value)}>
-            {tabs.map(item => (
-                <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
-            ))}
-        </TabBar>
+        <CustomTabBar tabs={filteredTabs} />
     );
 }
