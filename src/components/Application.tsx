@@ -1,5 +1,3 @@
-'use client'
-
 import BottomNavBar from "./bottom-nav-bar/BottomNavBar";
 
 export default function Application({
