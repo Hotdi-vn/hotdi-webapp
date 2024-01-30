@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import './globals.css'
-import Application from '@/components/Application'
+import '@/app/globals.css'
 
 export const metadata: Metadata = {
   title: 'Hotdi',
@@ -16,9 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Application>
+        <div className='app'>
           {children}
-        </Application>
+        </div>
       </body>
     </html >
   )
