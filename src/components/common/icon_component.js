@@ -16,6 +16,9 @@ import ArrowRight from '#/icons/arrow_right.svg';
 import ArrowLeft from '#/icons/arrow_left.svg';
 import Location from '#/icons/location.svg';
 import Search from '#/icons/search.svg';
+import CardReceive from '#/icons/card_receive.svg';
+import CarSend from '#/icons/card_send.svg';
+import More from '#/icons/more.svg';
 
 const iconTypes = {
   home: Home,
@@ -34,6 +37,9 @@ const iconTypes = {
   arrowLeft: ArrowLeft,
   location: Location,
   search: Search,
+  cardReceive: CardReceive,
+  cardSend: CarSend,
+  more: More,
 };
 
 const IconComponent = ({ name, ...props }) => {

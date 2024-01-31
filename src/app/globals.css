@@ -3,13 +3,30 @@
 @tailwind utilities;
 
 :root {
+  --hotdi-primary-color: #3A6F05;
+
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 
   --adm-color-primary: #D46B08 !important;
   --adm-color-text-secondary: #999999 !important;
+}
+.adm-tabs {
+  --active-line-color: var(--hotdi-primary-color) !important;
+  --active-title-color: var(--hotdi-primary-color) !important;
+}
 
+.adm-tabs-tab-list {
+  background-color: white;
+}
+
+.adm-tabs-tab-wrapper {
+  padding: 0 24px !important;
+}
+
+.adm-tabs-content {
+  --content-padding: 8px 0px 8px 0px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -57,7 +74,8 @@ a {
   flex: 0;
   border-bottom: solid 1px var(--adm-color-border);
   height: 64px;
-  top: 0; /* this is required for "sticky" to work */
+  top: 0;
+  /* this is required for "sticky" to work */
   position: sticky;
   background-color: white;
   z-index: 1;
@@ -94,6 +112,7 @@ a {
   --height: 64px !important;
 }
 
-.adm-nav-bar-left, .adm-nav-bar-right {
+.adm-nav-bar-left,
+.adm-nav-bar-right {
   flex: 0 !important;
 }
