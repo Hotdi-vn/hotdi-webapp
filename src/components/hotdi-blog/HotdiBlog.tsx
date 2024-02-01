@@ -59,5 +59,5 @@ export default function HotdiBlog() {
             </div>
         )
     };
-    return useSWRandGenerateData('/api/blog/v1/posts', dataGeneration);
+    return useSWRandGenerateData('/blog/v1/posts', dataGeneration);
 }
