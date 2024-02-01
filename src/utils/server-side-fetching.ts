@@ -25,11 +25,12 @@ export async function getNoCache<T>(path: string): Promise<ResponseData<T>> {
     return fetchApi(path, { next: { revalidate: 0 } });
 }
 
-export async function post<T>(path: string, requestBody: any = {}): Promise<ResponseData<T>> {
+export async function post<T>(path: string, requestBody: any = {}, jwt: string = ''): Promise<ResponseData<T>> {
     return fetchApi(path, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
         },
         body: JSON.stringify(requestBody)
     });
