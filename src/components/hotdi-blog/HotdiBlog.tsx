@@ -4,11 +4,9 @@ import Link from "next/link";
 import styles from './HotdiBlog.module.css';
 import { RightOutline } from '@/components/common/antd_mobile_client_wrapper';
 import { getNoCache, get } from '@/utils/server-side-fetching';
-import { UserProfile } from "@/libs/session-options";
 
 export default async function HotdiBlog() {
-
-    type blogData = {
+    type BlogData = {
         _id: string;
         title: string;
         content: string;
@@ -16,43 +14,57 @@ export default async function HotdiBlog() {
         createdBy: string;
         createdAt: number;
         updatedAt: number;
-        authorName: string;
-        avatarURL: string;
     };
 
-    type userProfile = {
+    type UserProfile = {
         _id: string,
         name: string,
         picture: string;
         createdAt: number;
     }
 
-    let blogs: BlogItem[] = [];
+    type CompleteBlogData = BlogData & {
+        authorName: string,
+        avatarURL: string
+    };
 
-    await getNoCache<blogData[]>('/blog/v1/posts').then((returnedObject) => {
-        //get the blogs in the data field of the object
-        let blogDataList = returnedObject.data;
-        console.log(blogDataList);
+    let blogDataList: BlogData[] = (await getNoCache<BlogData[]>('/blog/v1/posts')).data;
+    let userProfileList: UserProfile[] = [];
+    let completeBlogDataList: CompleteBlogData[] = [];
 
-        //get avatar and name of author from facebook
-        blogDataList.forEach(async (dataItem) => {
-            await get<userProfile>('/auth/v1/users/' + dataItem.createdBy, 30).then((user) => {
-                (dataItem as any).authorName = user.data.name;
-                (dataItem as any).avatarURL = user.data.picture;
-            })
-        })
+    //get user profile data for author of each blog post
+    for (let i = 0; i < blogDataList.length; i++) {
+        let userData = (await get<UserProfile>('/auth/v1/users/' + blogDataList[i].createdBy, 30)).data;
+        userProfileList[i] = userData;
+    }
 
-        //map data to BlogItem array
-        blogs = blogDataList.map((dataItem: blogData) => {
-            return (
-                new BlogItem(
-                    dataItem.avatarURL,
-                    dataItem.authorName,
-                    new Date(dataItem.updatedAt),
-                    dataItem.title.concat('\n', dataItem.content)
-                )
-            );
-        });
+    //combine blog and author data to form complete blog data
+    completeBlogDataList = blogDataList.map((blog: BlogData, index) => {
+        return (
+            {
+                _id: blog._id,
+                title: blog.title,
+                content: blog.content,
+                imageUrls: blog.imageUrls,
+                createdBy: blog.createdBy,
+                createdAt: blog.createdAt,
+                updatedAt: blog.updatedAt,
+                authorName: userProfileList[index].name,
+                avatarURL: userProfileList[index].picture
+            }
+        )
+    })
+
+    //map blog data to array of BlogItem objects
+    let blogs: BlogItem[] = completeBlogDataList.map((dataItem: CompleteBlogData) => {
+        return (
+            new BlogItem(
+                dataItem.avatarURL,
+                dataItem.authorName,
+                new Date(dataItem.updatedAt),
+                dataItem.title.concat('\n', dataItem.content)
+            )
+        );
     });
 
     return (

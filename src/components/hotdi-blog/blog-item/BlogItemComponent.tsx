@@ -8,7 +8,7 @@ export class BlogItem {
     lastUpdatedDate: Date;
     content: string;
 
-    constructor (
+    constructor(
         avatarUrl: string,
         name: string,
         lastUpdatedDate: Date,
@@ -21,18 +21,18 @@ export class BlogItem {
     }
 
 }
-
+//3) Co the tao component date, hoac tao function o utils -> backend de reuse (giong /common/Price), xai component (React design philosophy) prefered than function
 function dateToString(date: Date) {
     const dateTimeFormat = new Intl.DateTimeFormat('vi', {
         year: "numeric",
         month: "short",
         day: "numeric"
-      });
+    });
     return dateTimeFormat.format(date);
 }
 
 export default function BlogItemComponent({ blogItem }:
-    { blogItem: BlogItem}) {
+    { blogItem: BlogItem }) {
     return (
         <div className={styles.blog}>
             <div className={styles.blogHeader}>
