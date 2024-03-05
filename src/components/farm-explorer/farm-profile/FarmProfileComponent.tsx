@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import styles from './FarmProfile.module.css';
+import Date from '@/components/common/Date';
 
 export class FarmProfile {
     id: string;
@@ -35,15 +36,6 @@ export class FarmProfile {
     }
 }
 
-function dateToString(date: Date) {
-    const dateTimeFormat = new Intl.DateTimeFormat('vi', {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
-      });
-    return dateTimeFormat.format(date);
-}
-
 export default function FarmProfileComponent({ farmProfile }:
     { farmProfile: FarmProfile }) {
     return (
@@ -52,7 +44,7 @@ export default function FarmProfileComponent({ farmProfile }:
                 <Image src={farmProfile.avatarUrl} width={40} height={40} alt='Farm profile avatar image' />
                 <div className={styles.farmName}>
                     <div className="text-base"><b>{farmProfile.name}</b></div>
-                    <div className="text-gray-500/75 text-xs">{dateToString(new Date(farmProfile.updatedAt))}</div>
+                    <Date date={new (Date as any)(farmProfile.updatedAt)}></Date>
                 </div>
             </div>
             <div className={styles.farmCoverImage}>
