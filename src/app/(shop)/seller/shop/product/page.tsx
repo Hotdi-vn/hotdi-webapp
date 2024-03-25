@@ -26,15 +26,15 @@ export default async function SellerShopProduct() {
     return (
         <>
             <div className='body'>
-                <div className='top'>{navBar}</div>
+                <div className='top'>
+                    {navBar}
+                    
+                </div>
                 <div>
                     <ProductManagement />
                 </div>
             </div>
             <div className='bottom p-2'>
-                {/* <div className="flex w-screen h-14 p-2">
-                    <button className="w-screen bg-orange-600 rounded text-white">Thêm sản phẩm mới</button>
-                </div> */}
                 <NavigationButton path="/seller/shop/product/create" block={true} color='primary'>Thêm sản phẩm mới</NavigationButton>
             </div>
         </>

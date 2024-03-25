@@ -44,7 +44,7 @@ export default function Product({ productInfo }: { productInfo?: ProductInfo }) 
                 </div>
             </div>
             <Divider />
-            <ProductActions inventoryStatus={productInfo.inventoryStatus} />
+            <ProductActions inventoryStatus={productInfo.inventoryStatus} publishStatus={productInfo.publishStatus} />
         </div>
     );
 }

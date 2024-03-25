@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "@/components/common/antd_mobile_client_wrapper";
-import { InventoryStatus } from "@/model/market-data-model";
+import { InventoryStatus, PublishStatus } from "@/model/market-data-model";
 import ActionSheet, { Action } from "antd-mobile/es/components/action-sheet";
 import Icon from "@/components/common/icon_component";
 import { useState } from "react";
@@ -49,29 +49,30 @@ const actionConfig: { [key: string]: Action } = {
     },
 }
 
-function getActions(inventoryStatus: InventoryStatus) {
+function getActions(inventoryStatus: InventoryStatus, publishStatus: PublishStatus) {
     let actionList = [];
-    switch (inventoryStatus) {
-        case InventoryStatus.InStock:
-            actionList.push(Actions.UpdateInventory, Actions.Copy, Actions.Edit, Actions.OutOfStock, Actions.Hide, Actions.Delete);
-            break;
-        case InventoryStatus.OutOfStock:
-            actionList.push(Actions.UpdateInventory, Actions.Copy, Actions.Edit, Actions.Hide, Actions.Delete);
-            break;
-        case InventoryStatus.Hidden:
-            actionList.push(Actions.UpdateInventory, Actions.Show, Actions.Edit, Actions.Copy, Actions.Delete);
-            break;
-        default:
-            break;
+    if (publishStatus == PublishStatus.Draft || publishStatus == PublishStatus.Hidden) {
+        actionList.push(Actions.UpdateInventory, Actions.Show, Actions.Edit, Actions.Copy, Actions.Delete);
+    } else {
+        switch (inventoryStatus) {
+            case InventoryStatus.InStock:
+                actionList.push(Actions.UpdateInventory, Actions.Copy, Actions.Edit, Actions.OutOfStock, Actions.Hide, Actions.Delete);
+                break;
+            case InventoryStatus.OutOfStock:
+                actionList.push(Actions.UpdateInventory, Actions.Copy, Actions.Edit, Actions.Hide, Actions.Delete);
+                break;
+            default:
+                break;
+        }
     }
 
     return actionList.map(action => actionConfig[action.toString()]);
 }
 
-export default function ProductActions({ inventoryStatus }: { inventoryStatus: InventoryStatus }) {
+export default function ProductActions({ inventoryStatus, publishStatus }: { inventoryStatus: InventoryStatus, publishStatus: PublishStatus }) {
     const [moreActionsVisible, setMoreActionsVisible] = useState(false);
 
-    const actions = getActions(inventoryStatus);
+    const actions = getActions(inventoryStatus, publishStatus);
     const [displayActions, moreActions] =
         actions.length <= DISPLAY_ACTIONS_NUM ?
             [actions, []] :

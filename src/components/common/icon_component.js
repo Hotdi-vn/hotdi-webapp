@@ -19,6 +19,7 @@ import Search from '#/icons/search.svg';
 import CardReceive from '#/icons/card_receive.svg';
 import CarSend from '#/icons/card_send.svg';
 import More from '#/icons/more.svg';
+import GalleryAdd from '#/icons/gallery_add.svg';
 
 const iconTypes = {
   home: Home,
@@ -40,6 +41,7 @@ const iconTypes = {
   cardReceive: CardReceive,
   cardSend: CarSend,
   more: More,
+  galleryAdd: GalleryAdd,
 };
 
 const IconComponent = ({ name, ...props }) => {
