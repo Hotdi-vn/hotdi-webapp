@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styles from './BlogItem.module.css';
 import Link from 'next/link';
+import Date from '@/components/common/Date';
 
 export class BlogItem {
     avatarUrl: string;
@@ -8,7 +9,7 @@ export class BlogItem {
     lastUpdatedDate: Date;
     content: string;
 
-    constructor (
+    constructor(
         avatarUrl: string,
         name: string,
         lastUpdatedDate: Date,
@@ -22,24 +23,15 @@ export class BlogItem {
 
 }
 
-function dateToString(date: Date) {
-    const dateTimeFormat = new Intl.DateTimeFormat('vi', {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
-      });
-    return dateTimeFormat.format(date);
-}
-
 export default function BlogItemComponent({ blogItem }:
-    { blogItem: BlogItem}) {
+    { blogItem: BlogItem }) {
     return (
         <div className={styles.blog}>
             <div className={styles.blogHeader}>
                 <Image src={blogItem.avatarUrl} width={40} height={40} alt='Blog author avatar image' />
                 <div className={styles.nameAndDate}>
                     <div className="text-base"><b>{blogItem.name}</b></div>
-                    <div className="text-gray-500/75 text-xs">{dateToString(blogItem.lastUpdatedDate)}</div>
+                    <Date date={blogItem.lastUpdatedDate}></Date>
                 </div>
             </div>
             <div className={styles.blogContent}>
