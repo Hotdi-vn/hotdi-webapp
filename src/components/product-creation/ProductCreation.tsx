@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import { ActionSheet, Button, Cascader, Form, ImageUploadItem, ImageUploader, Input, Popup, Switch, TextArea } from "antd-mobile";
+import { ActionSheet, Button, Cascader, Dialog, Form, ImageUploadItem, ImageUploader, Input, Popup, Switch, TextArea } from "antd-mobile";
 import Icon from "../common/icon_component";
 import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo, PublishStatus } from "@/model/market-data-model";
 import { Action } from "antd-mobile/es/components/action-sheet";
@@ -29,10 +29,12 @@ async function submitForm(form: FormInstance, isDraft: boolean = false) {
         form.setFieldValue('publishStatus', PublishStatus.Published);
     }
 
-    const uploadItem = form.getFieldValue('imageUrls') as ImageUploadItem[];
-    form.setFieldValue('imageUrls', uploadItem.map(item => item.url));
-    form.setFieldValue('images', uploadItem.map(item => item.key));
-    sellerCreateProduct(form.getFieldsValue());
+    const uploadedImages = form.getFieldValue('uploadedImages') as ImageUploadItem[];
+    if (uploadedImages?.length > 0) {
+        form.setFieldValue('imageUrls', uploadedImages.map(item => item.url));
+        form.setFieldValue('images', uploadedImages.map(item => item.key));
+    }
+    form.submit();
 }
 
 export default function ProductCreation() {
@@ -75,11 +77,15 @@ export default function ProductCreation() {
         return Promise.reject(new Error(rule.message))
     }
 
+    const onFinish = (values: any) => {
+        sellerCreateProduct(values);
+    }
+
     return (
         <>
-            <Form name="createProductForm" form={form} className="body" initialValues={{ inventoryStatus: InventoryStatus.InStock }}>
+            <Form onFinish={onFinish} name="createProductForm" form={form} className="body" initialValues={{ inventoryStatus: InventoryStatus.InStock }}>
                 <div className=" bg-white h-32 flex justify-center content-center flex-wrap">
-                    <Form.Item name='imageUrls' rules={[{ required: true, message: 'Vui lòng tải lên hình ảnh sản phẩm' }]}>
+                    <Form.Item name='uploadedImages' rules={[{ required: true, message: 'Vui lòng tải lên hình ảnh sản phẩm' }]}>
                         <ImageUploader
                             value={fileList}
                             onChange={setFileList}
@@ -93,6 +99,7 @@ export default function ProductCreation() {
                     </Form.Item>
                 </div>
 
+                <Form.Item name='imageUrls' hidden />
                 <Form.Item name='images' hidden />
 
                 <Form.Item name='publishStatus' hidden />
@@ -166,13 +173,10 @@ export default function ProductCreation() {
                     onAction={(action) => form.setFieldValue('inventoryStatus', action.key)}
                 />
 
-                <Form.Item name='stockQuantity' label='Số lượng' layout='horizontal' childElementPosition='right' hidden={!stockQuantityVisible}
+                <Form.Item initialValue={0} name='stockQuantity' label='Số lượng' layout='horizontal' childElementPosition='right' hidden={!stockQuantityVisible}
                     rules={[{ type: 'number', min: 0, max: 999999, message: 'Số lượng nằm trong khoảng từ 0 đến 999999', validator: checkNumber }]}>
                     <Input placeholder='0' type="number" />
                 </Form.Item>
-
-
-                <Form.Item name='categoryId' hidden />
 
                 <Cascader
                     options={categoryOptions}
@@ -194,6 +198,8 @@ export default function ProductCreation() {
                             {items[items.length - 1]?.label ?? 'Chọn ngành hàng'}
                         </Form.Item>}
                 </Cascader>
+
+                <Form.Item name='categoryId' rules={[{ required: true, message: 'Vui lòng chọn ngành hàng' }]} />
 
 
 
