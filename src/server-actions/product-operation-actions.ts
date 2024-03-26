@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 export async function sellerCreateProduct(productInfo: ProductInfo) {
     console.log('Enter publishProduct action');
     console.log(productInfo);
-    const publishedProduct = createProduct(productInfo);
+    const publishedProduct = await createProduct(productInfo);
     console.log(publishedProduct);
     redirect('/seller/shop/product');
 }
