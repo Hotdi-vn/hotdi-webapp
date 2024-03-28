@@ -19,7 +19,7 @@ export default async function SellerShopProduct() {
     </div>;
 
     const navBar =
-        <NavBar backArrow={<BackButton />} right={icons} >
+        <NavBar backArrow={<BackButton redirectPath="/seller/shop" />} right={icons} >
             <div className="text-xl text-left font-normal">Quản Lý Sản Phẩm</div>
         </NavBar>;
 
