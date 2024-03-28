@@ -12,7 +12,7 @@ export default async function SellerShopProductCreate() {
     }
 
     const navBar =
-        <NavBar backArrow={<BackButton redirectPath="/seller/shop/product" />} >
+        <NavBar backArrow={<BackButton redirectPath="/seller/shop/product" isConfirmedPrompt />} >
             <div className="text-xl text-left font-normal">Thêm sản phẩm</div>
         </NavBar>;
 

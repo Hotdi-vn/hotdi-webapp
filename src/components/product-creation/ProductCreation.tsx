@@ -72,18 +72,31 @@ export default function ProductCreation() {
 
     const checkNumber = (rule: any, value: number) => {
         if (value >= rule.min && value <= rule.max) {
-            return Promise.resolve()
+            return Promise.resolve();
         }
-        return Promise.reject(new Error(rule.message))
+        return Promise.reject(new Error(rule.message));
     }
 
-    const onFinish = (values: any) => {
-        sellerCreateProduct(values);
+    const checkCategory = (rule: any, value: string) => {
+        if (form.getFieldValue('categoryId')) {
+            return Promise.resolve();
+        }
+        return Promise.reject(new Error(rule.message));
+    }
+
+    const checkSize = (rule: any, value: number) => {
+        if (form.getFieldValue('weight') && form.getFieldValue('height')
+            && form.getFieldValue('width') && form.getFieldValue('length')) {
+            return Promise.resolve();
+        }
+        return Promise.reject(new Error(rule.message));
     }
 
     return (
         <>
-            <Form onFinish={onFinish} name="createProductForm" form={form} className="body" initialValues={{ inventoryStatus: InventoryStatus.InStock }}>
+            <Form onFinish={sellerCreateProduct}
+                onFinishFailed={(error) => console.log(error)}
+                name="createProductForm" form={form} className="body" initialValues={{ inventoryStatus: InventoryStatus.InStock }}>
                 <div className=" bg-white h-32 flex justify-center content-center flex-wrap">
                     <Form.Item name='uploadedImages' rules={[{ required: true, message: 'Vui lòng tải lên hình ảnh sản phẩm' }]}>
                         <ImageUploader
@@ -112,7 +125,7 @@ export default function ProductCreation() {
                     <TextArea placeholder='Nhập mô tả sản phẩm' maxLength={5000} showCount rows={5} />
                 </Form.Item>
 
-                <Form.Item label='Kích thước'
+                <Form.Item label='Kích thước' name='size' rules={[{ message: 'Vui lòng nhập kích thước', validator: checkSize }]}
                     layout='horizontal' childElementPosition='right' arrow
                     onClick={() => setSizeSelection(true)}
                 >
@@ -122,6 +135,7 @@ export default function ProductCreation() {
                     position='right'
                     visible={sizeSelection}
                     showCloseButton
+                    forceRender
                     onClose={() => {
                         setSizeSelection(false)
                     }}
@@ -191,7 +205,8 @@ export default function ProductCreation() {
                     onConfirm={(values) => form.setFieldValue('categoryId', values[values.length - 1])}
                 >
                     {(items) =>
-                        <Form.Item label='Ngành hàng' layout='horizontal' childElementPosition='right' arrow
+                        <Form.Item label='Ngành hàng' name='category' rules={[{ message: 'Vui lòng chọn ngành hàng', validator: checkCategory }]}
+                            layout='horizontal' childElementPosition='right' arrow
                             shouldUpdate={(prevValues, curValues) => prevValues.inventoryStatus !== curValues.inventoryStatus}
                             onClick={() => setCategorySelection(true)}
                         >
@@ -199,10 +214,7 @@ export default function ProductCreation() {
                         </Form.Item>}
                 </Cascader>
 
-                <Form.Item name='categoryId' rules={[{ required: true, message: 'Vui lòng chọn ngành hàng' }]} />
-
-
-
+                <Form.Item name='categoryId' hidden rules={[{ required: true }]} />
             </Form >
             <div className='flex flex-row bottom p-2 gap-x-2'>
                 <Button className="basis-1/2" color='primary' fill="outline" onClick={() => submitForm(form, true)}>Lưu</Button>
