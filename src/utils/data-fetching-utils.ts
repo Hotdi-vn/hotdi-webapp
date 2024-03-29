@@ -12,10 +12,10 @@ export class ResponseDataBase<T, E> {
 }
 
 export class ResponseData<T> extends ResponseDataBase<T, ServerError> {
-
+    skip: number = 0;
+    limit: number = 0;
+    total: number = 0;
 };
-
-
 
 export class ServerError extends Error {
     id: string;

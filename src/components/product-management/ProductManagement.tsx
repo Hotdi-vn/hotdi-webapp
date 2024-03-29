@@ -1,6 +1,6 @@
 import { Tab, Tabs } from "@/components/common/antd_mobile_client_wrapper";
 import ProductInventory from "./product-inventory/ProductInventory";
-import { CollectionType, InventoryStatus, ProductInfo, PublishStatus } from "@/model/market-data-model";
+import { CollectionType, InventoryStatus, InventoryStatusDisplayValue, ProductInfo, PublishStatus, PublishStatusDisplayValue } from "@/model/market-data-model";
 
 function TabTitle({ title, total }: { title: string, total: number }) {
     return (
@@ -60,15 +60,15 @@ export default async function ProductManagement() {
 
     const tabs = [
         {
-            title: TabTitle({ title: InventoryStatus.InStock.toString(), total: inStockProductList.length }),
+            title: TabTitle({ title: InventoryStatusDisplayValue[InventoryStatus.InStock], total: inStockProductList.length }),
             content: <ProductInventory inventoryStatus={InventoryStatus.InStock} initialProductList={inStockProductList} />
         },
         {
-            title: TabTitle({ title: InventoryStatus.OutOfStock.toString(), total: outOfStockProductList.length }),
+            title: TabTitle({ title: InventoryStatusDisplayValue[InventoryStatus.OutOfStock], total: outOfStockProductList.length }),
             content: <ProductInventory inventoryStatus={InventoryStatus.OutOfStock} initialProductList={outOfStockProductList} />
         },
         {
-            title: TabTitle({ title: PublishStatus.Hidden.toString(), total: hiddenProductList.length }),
+            title: TabTitle({ title: PublishStatusDisplayValue[PublishStatus.Hidden], total: hiddenProductList.length }),
             content: <ProductInventory inventoryStatus={InventoryStatus.InStock} initialProductList={hiddenProductList} />
         },
     ];

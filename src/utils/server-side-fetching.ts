@@ -14,11 +14,18 @@ async function fetchApi<T>(path: string, options?: any): Promise<ResponseData<T>
         }
         throw error;
     }
-
 }
 
-export async function get<T>(path: string, cacheDuration: number = 10, cacheTags: [] = []): Promise<ResponseData<T>> {
-    return fetchApi(path, { next: { revalidate: cacheDuration, tags: cacheTags } });
+export async function get<T>(
+    path: string, cacheDuration: number = 0, cacheTags: [] = [], jwt: string = ''
+): Promise<ResponseData<T>> {
+    return fetchApi(path, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
+        },
+        next: { revalidate: cacheDuration, tags: cacheTags }
+    });
 }
 
 export async function getNoCache<T>(path: string): Promise<ResponseData<T>> {
