@@ -2,7 +2,7 @@ import 'server-only'
 import { InternalServerError, ResponseData } from './data-fetching-utils';
 import { log } from 'console';
 
-async function fetchApi<T>(path: string, options?: any): Promise<ResponseData<T>> {
+async function fetchApi(path: string, options?: any): Promise<any> {
     let res;
     try {
         res = await fetch(`${process.env.API_ENDPOINT}${path}`, options);
@@ -17,7 +17,7 @@ async function fetchApi<T>(path: string, options?: any): Promise<ResponseData<T>
 }
 
 export async function get<T>(
-    path: string, cacheDuration: number = 0, cacheTags: [] = [], jwt: string = ''
+    path: string, cacheDuration: number = 0, jwt: string = '', cacheTags: [] = []
 ): Promise<ResponseData<T>> {
     return fetchApi(path, {
         headers: {
