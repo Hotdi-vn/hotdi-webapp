@@ -4,6 +4,7 @@ import { LOGIN_REDIRECT_URL_FIELD_NAME } from "@/constants/common-contants";
 import { NavBar } from "@/components/common/antd_mobile_client_wrapper";
 import { BackButton } from "@/components/button/BackButton";
 import ProductCreation from "@/components/product-creation/ProductCreation";
+import { Suspense } from "react";
 
 export default async function SellerShopProductCreate() {
     const session = await getSession();
@@ -19,7 +20,10 @@ export default async function SellerShopProductCreate() {
     return (
         <>
             <div className='top'>{navBar}</div>
-            <ProductCreation />
+            <Suspense>
+                <ProductCreation />
+            </Suspense>
+
         </>
     )
 }

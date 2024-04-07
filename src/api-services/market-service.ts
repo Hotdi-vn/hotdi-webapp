@@ -9,30 +9,54 @@ import { getSession } from '@/server-actions/authentication-actions';
 const BASE_URL = '/market';
 
 export class Category {
-    id: number;
+    _id: string;
     name: string;
     imageUrl: string;
+    parent: string = '';
+    ancestors: string[] = [];
+    isLeaf: boolean = false;
 
     constructor(
-        id: number,
+        id: string,
         name: string,
         imageUrl: string,
     ) {
-        this.id = id
+        this._id = id
         this.name = name
         this.imageUrl = imageUrl
     }
 }
 
-export async function getCategories(skip: number = 0, limit: number = 20): Promise<Category[]> {
+export type CategoryQuery = {
+    parent?: string;
+    skip?: number;
+    limit?: number;
+}
+
+function buildCategoryQueryString(query: CategoryQuery) {
+    let queryList = [];
+    if (query.parent) {
+        queryList.push(`parent=${query.parent}`);
+    }
+    if (query.skip) {
+        queryList.push(`skip=${query.skip}`);
+    }
+    if (query.limit) {
+        queryList.push(`limit=${query.limit}`);
+    }
+
+    return queryList.length > 0 ? `?${queryList.join('&')}` : '';
+}
+
+export async function getCategories(query: CategoryQuery = { skip: 0, limit: 20 }): Promise<ResponseData<Category[]>> {
     let response;
     try {
-        response = await getNoCache<Category[]>(`${BASE_URL}/v1/categories`);
+        response = await getNoCache<Category[]>(`${BASE_URL}/v1/categories${buildCategoryQueryString(query)}`);
         if (response.error) {
             log('Error from getCategories:', response.error.id, response.error.code);
             throw new ServerError(response.error.id, response.error.code);
         }
-        return response.data;
+        return response;
     } catch (error) {
         log('Error from getCategories', error);
         throw error;
