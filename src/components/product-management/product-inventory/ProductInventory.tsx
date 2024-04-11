@@ -32,7 +32,7 @@ export default function ProductInventory(
                 )
             }
             <InfiniteScroll loadMore={loadMoreProducts} hasMore={hasMore} threshold={20}>
-                <InfiniteScrollContent hasMore={hasMore} />
+                <InfiniteScrollContent hasMore={hasMore} loadingMessage="Đang tải sản phẩm" noMoreDataMessage="Đã hết sản phẩm" />
             </InfiniteScroll>
         </div>
     );
