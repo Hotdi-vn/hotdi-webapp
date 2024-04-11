@@ -1,15 +1,16 @@
 import { DotLoading } from "antd-mobile"
 
-export default function InfiniteScrollContent({ hasMore }: { hasMore?: boolean }) {
+export default function InfiniteScrollContent({ hasMore, loadingMessage = 'Đang tải dữ liệu', noMoreDataMessage = 'Đã hết dữ liệu' }:
+    { hasMore?: boolean, loadingMessage?: string, noMoreDataMessage?: string }) {
     return (
         <>
             {hasMore ? (
                 <>
-                    <span>Đang tải dữ liệu</span>
+                    <span>{loadingMessage}</span>
                     <DotLoading />
                 </>
             ) : (
-                <span>Đã hết dữ liệu</span>
+                <span>{noMoreDataMessage}</span>
             )}
         </>
     )

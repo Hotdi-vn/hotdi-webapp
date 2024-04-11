@@ -1,7 +1,10 @@
+'use client'
+
 import { Tab, Tabs } from "@/components/common/antd_mobile_client_wrapper";
 import ProductInventory from "./product-inventory/ProductInventory";
-import { InventoryStatus, InventoryStatusDisplayValue, PublishStatus, PublishStatusDisplayValue } from "@/model/market-data-model";
+import { InventoryStatus, PublishStatus } from "@/model/market-data-model";
 import { getMyProducts } from "@/server-actions/product-operation-actions";
+import { useEffect, useState } from "react";
 
 function TabTitle({ title, total }: { title: string, total: number }) {
     return (
@@ -12,44 +15,80 @@ function TabTitle({ title, total }: { title: string, total: number }) {
     );
 }
 
-export default async function ProductManagement() {
+enum TabName {
+    InStock = 'Còn hàng',
+    OutOfStock = 'Hết hàng',
+    Hidden = 'Đang ẩn',
+}
+
+type TabContent = {
+    title: JSX.Element;
+    content: JSX.Element;
+
+}
+
+export default function ProductManagement() {
+    const [activeTab, setActiveTab] = useState<string>(TabName.InStock);
+    const [tabData, setTabData] = useState<Record<string, TabContent>>({});
     const itemsPerLoading = 20;
 
-    const inStockProductQuery = { inventoryStatus: InventoryStatus.InStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading };
-    const inStockProductResponse = await getMyProducts(inStockProductQuery);
-    const inStockProductList = inStockProductResponse.data;
+    async function fetchTabData() {
+        const inStockProductQuery = { inventoryStatus: InventoryStatus.InStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading };
+        const inStockProductResponse = await getMyProducts(inStockProductQuery);
+        const inStockProductList = inStockProductResponse.data;
 
-    const outOfStockProductQuery = { inventoryStatus: InventoryStatus.OutOfStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading };
-    const outOfStockProductResponse = await getMyProducts(outOfStockProductQuery);
-    const outOfStockProductList = outOfStockProductResponse.data;
+        const outOfStockProductQuery = { inventoryStatus: InventoryStatus.OutOfStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading };
+        const outOfStockProductResponse = await getMyProducts(outOfStockProductQuery);
+        const outOfStockProductList = outOfStockProductResponse.data;
 
-    const hiddenProductQuery = { publishStatus: PublishStatus.Draft, skip: 0, limit: itemsPerLoading };
-    const hiddenProductResponse = await getMyProducts(hiddenProductQuery);
-    const hiddenProductList = hiddenProductResponse.data;
+        const hiddenProductQuery = { publishStatus: PublishStatus.Draft, skip: 0, limit: itemsPerLoading };
+        const hiddenProductResponse = await getMyProducts(hiddenProductQuery);
+        const hiddenProductList = hiddenProductResponse.data;
 
-    const tabs = [
-        {
-            title: TabTitle({ title: InventoryStatusDisplayValue[InventoryStatus.InStock], total: inStockProductResponse.total }),
-            content: <ProductInventory initialProductList={inStockProductList} query={inStockProductQuery} />
-        },
-        {
-            title: TabTitle({ title: InventoryStatusDisplayValue[InventoryStatus.OutOfStock], total: outOfStockProductResponse.total }),
-            content: <ProductInventory initialProductList={outOfStockProductList} query={outOfStockProductQuery} />
-        },
-        {
-            title: TabTitle({ title: PublishStatusDisplayValue[PublishStatus.Hidden], total: hiddenProductResponse.total }),
-            content: <ProductInventory initialProductList={hiddenProductList} query={hiddenProductQuery} />
-        },
-    ];
+        setTabData({
+            [TabName.InStock]: {
+                title: TabTitle({ title: TabName.InStock, total: inStockProductResponse.total }),
+                content: <ProductInventory key={TabName.InStock} initialProductList={inStockProductList} query={inStockProductQuery} />
+            },
+            [TabName.OutOfStock]: {
+                title: TabTitle({ title: TabName.OutOfStock, total: outOfStockProductResponse.total }),
+                content: <ProductInventory key={TabName.OutOfStock} initialProductList={outOfStockProductList} query={outOfStockProductQuery} />
+            },
+            [TabName.Hidden]: {
+                title: TabTitle({ title: TabName.Hidden, total: hiddenProductResponse.total }),
+                content: <ProductInventory key={TabName.Hidden} initialProductList={hiddenProductList} query={hiddenProductQuery} />
+            },
+        });
+    }
+
+    useEffect(() => {
+        fetchTabData();
+    }, []);
+
     return (
-        <Tabs activeLineMode='full' stretch={false}>
-            {
-                tabs.map((tab, index) =>
-                    <Tab key={index} title={tab.title} className="bg-white">
-                        {tab.content}
-                    </Tab>
-                )
-            }
-        </Tabs>
+        <div>
+            <div className="sticky top-16 z-10">
+                <Tabs activeLineMode='full' stretch={false}
+                    defaultActiveKey={TabName.InStock}
+                    activeKey={activeTab}
+                    onChange={(key) => {
+                        setActiveTab(key);
+                    }}
+                >
+                    {
+                        Object.entries(tabData ?? {}).map((tab) =>
+                            <Tab key={tab[0]} title={tab[1].title} className="bg-white" />
+                        )
+                    }
+                </Tabs>
+            </div>
+            <div>
+                {
+                    tabData?.[activeTab]?.content
+                }
+            </div>
+
+        </div>
+
     );
 }
