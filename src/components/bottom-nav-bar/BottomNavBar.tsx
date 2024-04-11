@@ -1,7 +1,7 @@
 import Icon from '@/components/common/icon_component'
-import { Role } from "@/libs/session-options";
 import { getSession } from "@/server-actions/authentication-actions";
 import CustomTabBar from "./CustomTabBar";
+import { Role } from '@/model/market-data-model';
 
 export default async function BottomNavBar() {
     const session = await getSession();
@@ -42,7 +42,7 @@ export default async function BottomNavBar() {
     ];
 
     const filteredTabs = tabs.filter(tab => {
-        if ('/seller/shop' == tab.key && session.userProfile?.role != Role.Seller) {
+        if ('/seller/shop' == tab.key && !session.userProfile?.roles?.some(role => role === Role.Seller)) {
             return false;
         }
         return true;

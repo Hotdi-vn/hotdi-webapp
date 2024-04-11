@@ -88,3 +88,8 @@ export class ProductInfo {
         this.inventoryManagementOption = inventoryManagementOption
     }
 }
+
+export enum Role {
+    Buyer = 'buyer',
+    Seller = 'seller',
+}

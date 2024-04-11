@@ -3,7 +3,7 @@ import 'server-only'
 import { ResponseData, ServerError } from '@/utils/data-fetching-utils';
 import { log } from 'console';
 import { get, getNoCache, post } from '@/utils/server-side-fetching';
-import { InventoryStatus, ProductInfo, PublishStatus } from '@/model/market-data-model';
+import { InventoryStatus, ProductInfo, PublishStatus, Role } from '@/model/market-data-model';
 import { getSession } from '@/server-actions/authentication-actions';
 
 const BASE_URL = '/market';
@@ -95,4 +95,57 @@ export async function getMyProducts(query: ProductQuery = { skip: 0, limit: 20 }
         log('Error from createProduct', error);
         throw error;
     }
+}
+
+type Permission = {
+    _id: string,
+    roles: Role[],
+}
+
+export async function addMyRole(role: Role, jwt?: string): Promise<ResponseData<Permission>> {
+    let response;
+    let token;
+
+    if (jwt) {
+        token = jwt
+    } else {
+        const session = await getSession();
+        token = session.userProfile?.token;
+    }
+
+    try {
+        response = await post<Permission>(`${BASE_URL}/v1/permissions/me/${role}`, {}, token);
+        if (response.error) {
+            log('Error from addMyRole:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response;
+    } catch (error) {
+        log('Error from addMyRole', error);
+        throw error;
+    }
+}
+
+export async function getUserRoles(userId: string): Promise<ResponseData<Permission>> {
+    let response;
+
+    try {
+        response = await get<Permission>(`${BASE_URL}/v1/permissions/${userId}`);
+        if (response.error) {
+            log('Error from getUserRoles:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response;
+    } catch (error) {
+        log('Error from getUserRoles', error);
+        throw error;
+    }
+}
+
+export async function getMyRoles(): Promise<ResponseData<Permission>> {
+    const session = await getSession();
+    if (session.userProfile?.id === undefined) {
+        throw new ServerError('Error in getMyRoles', 'User not found');
+    }
+    return getUserRoles(session.userProfile.id)
 }

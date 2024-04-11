@@ -1,30 +1,25 @@
+import { Role } from "@/model/market-data-model";
 import { SessionOptions } from "iron-session";
-
-export enum Role {
-  Buyer = "Buyer",
-  Seller = "Seller",
-  Admin = "Admin"
-}
 
 export class UserProfile {
   token: string;
   id: string;
   name: string;
   picture: string;
-  role: Role
+  roles: Role[] = []
 
   constructor(
     token: string,
     id: string,
     name: string,
     picture: string,
-    role: Role
+    roles: Role[]
   ) {
     this.token = token
     this.id = id
     this.name = name
     this.picture = picture
-    this.role = role
+    this.roles = roles
   }
 }
 
