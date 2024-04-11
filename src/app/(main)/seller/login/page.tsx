@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { facebookLogin } from '@/server-actions/authentication-actions'
 import { SubmitButton } from '@/components/button/SubmitButton';
-import { LOGIN_REDIRECT_URL_FIELD_NAME } from '@/constants/common-contants';
+import { LOGIN_REDIRECT_URL_FIELD_NAME, SELLER_LOGIN_FIELD_NAME } from '@/constants/common-contants';
 
 export default function SellerLogin({
   params,
@@ -31,6 +31,7 @@ export default function SellerLogin({
       <div>
         <form>
           <input type='hidden' name={LOGIN_REDIRECT_URL_FIELD_NAME} value={loginRedirectUrl} />
+          <input type='hidden' name={SELLER_LOGIN_FIELD_NAME} value='true' />
           <SubmitButton formAction={facebookLogin} className="w-full rounded-sm border h-11">
             <Image
               className="float-left ms-1.5"
