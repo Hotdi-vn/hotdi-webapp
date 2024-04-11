@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from "react";
-import { ActionSheet, Button, Cascader, Dialog, Form, ImageUploadItem, ImageUploader, Input, Popup, Switch, TextArea } from "antd-mobile";
+import { useEffect, useMemo, useState } from "react";
+import { ActionSheet, Button, Cascader, CascaderOption, Dialog, Form, ImageUploadItem, ImageUploader, Input, Popup, Switch, TextArea } from "antd-mobile";
 import Icon from "../common/icon_component";
 import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo, PublishStatus } from "@/model/market-data-model";
 import { Action } from "antd-mobile/es/components/action-sheet";
 import { FormInstance } from "antd-mobile/es/components/form";
-import { sellerCreateProduct, uploadProductImage } from "@/server-actions/product-operation-actions";
+import { getAllCategoriesByParent, sellerCreateProduct, uploadProductImage } from "@/server-actions/product-operation-actions";
+import { Category } from "@/api-services/market-service";
+import { requestToBodyStream } from "next/dist/server/body-streams";
 
 
 async function uploadImage(file: File): Promise<ImageUploadItem> {
@@ -37,6 +39,8 @@ async function submitForm(form: FormInstance, isDraft: boolean = false) {
     form.submit();
 }
 
+type CascaderOptionExtend = CascaderOption & { isLeaf?: boolean };
+
 export default function ProductCreation() {
     const [form] = Form.useForm<ProductInfo>();
     const [fileList, setFileList] = useState<ImageUploadItem[]>([]);
@@ -44,6 +48,7 @@ export default function ProductCreation() {
     const [stockQuantityVisible, setStockQuantityVisible] = useState<boolean>(false);
     const [categorySelection, setCategorySelection] = useState<boolean>(false);
     const [sizeSelection, setSizeSelection] = useState(false);
+    const [categoriesToOptions, setCategoriesToOptions] = useState<Record<string, CascaderOptionExtend[] | null>>({});
 
     const actions: Action[] = [
         {
@@ -55,20 +60,43 @@ export default function ProductCreation() {
         },
     ]
 
-    const categoryOptions = [
-        {
-            label: 'Gạo đậu',
-            value: 'fbf9d88d-37b6-4ee7-a688-2dde890b33a7'
-        },
-        {
-            label: 'Gạo đậu 2',
-            value: '1'
-        },
-        {
-            label: 'Gạo đậu 3',
-            value: '65d807fc8c1538860f74a9b4'
-        },
-    ]
+    const categoryOptions = useMemo<CascaderOption[]>(() => {
+        function generate(v: string): CascaderOption[] | undefined {
+            const options = categoriesToOptions[v]
+            if (options === null) {
+                return undefined
+            }
+            if (options === undefined) {
+                return Cascader.optionSkeleton
+            }
+            return options.map(option => ({
+                ...option,
+                children: option.isLeaf ? undefined : generate(option.value ?? '0')
+            }))
+        }
+        return generate('0') ?? []
+    }, [categoriesToOptions]);
+
+    async function fetchCategories(parent: string = '0') {
+        if (parent in categoriesToOptions) return;
+        const categories = await getAllCategoriesByParent(parent);
+        const options: CascaderOptionExtend[] | null =
+            categories.length === 0
+                ? null
+                : categories.map<CascaderOptionExtend>(category => ({
+                    value: category._id,
+                    label: category.name,
+                    isLeaf: category.isLeaf
+                }));
+        setCategoriesToOptions(prev => ({
+            ...prev,
+            [parent]: options
+        }))
+    }
+
+    useEffect(() => {
+        fetchCategories('0')
+    }, [])
 
     const checkNumber = (rule: any, value: number) => {
         if (value >= rule.min && value <= rule.max) {
@@ -198,6 +226,12 @@ export default function ProductCreation() {
                     onClose={() => {
                         setCategorySelection(false)
                     }}
+                    onSelect={
+                        (values, valueExtend) => {
+                            const selectedValue = values[values.length - 1]?.toString();
+                            fetchCategories(selectedValue);
+                        }
+                    }
                     cancelText='Hủy'
                     confirmText='Lưu'
                     placeholder='Chưa chọn'

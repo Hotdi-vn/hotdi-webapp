@@ -6,6 +6,7 @@ import Icon from '@/components/common/icon_component';
 import ProductManagement from "@/components/product-management/ProductManagement";
 import { BackButton } from "@/components/button/BackButton";
 import { NavigationButton } from "@/components/button/NavigationButton";
+import { Suspense } from "react";
 
 export default async function SellerShopProduct() {
     const session = await getSession();
@@ -28,10 +29,12 @@ export default async function SellerShopProduct() {
             <div className='body'>
                 <div className='top'>
                     {navBar}
-                    
+
                 </div>
                 <div>
-                    <ProductManagement />
+                    <Suspense>
+                        <ProductManagement />
+                    </Suspense>
                 </div>
             </div>
             <div className='bottom p-2'>
