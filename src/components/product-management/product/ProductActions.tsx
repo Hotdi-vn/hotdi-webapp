@@ -80,7 +80,7 @@ export default function ProductActions({ inventoryStatus, publishStatus }: { inv
 
     return (
         <div className="flex flex-row justify-between">
-            {displayActions.map(action => <Button key={action.key}>{action.text}</Button>)};
+            {displayActions.map(action => <Button key={action.key}>{action.text}</Button>)}
             <div>
                 <Button onClick={() => setMoreActionsVisible(true)}><Icon name='more' /></Button>
                 <ActionSheet
