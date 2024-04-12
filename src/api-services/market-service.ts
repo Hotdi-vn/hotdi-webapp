@@ -5,6 +5,7 @@ import { log } from 'console';
 import { get, getNoCache, post } from '@/utils/server-side-fetching';
 import { InventoryStatus, ProductInfo, PublishStatus, Role } from '@/model/market-data-model';
 import { getSession } from '@/server-actions/authentication-actions';
+import { ERROR_CODE_ITEM_NOT_FOUND } from '@/constants/common-contants';
 
 const BASE_URL = '/market';
 
@@ -155,7 +156,7 @@ export async function getUserRoles(userId: string): Promise<ResponseData<Permiss
 
     try {
         response = await get<Permission>(`${BASE_URL}/v1/permissions/${userId}`);
-        if (response.error) {
+        if (response.error && response.error.code !== ERROR_CODE_ITEM_NOT_FOUND) {
             log('Error from getUserRoles:', response.error.id, response.error.code);
             throw new ServerError(response.error.id, response.error.code);
         }

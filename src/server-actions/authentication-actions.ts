@@ -1,7 +1,7 @@
 'use server'
 
 import { addMyRole, getUserRoles } from "@/api-services/market-service";
-import { LOGIN_REDIRECT_URL_COOKIE, LOGIN_REDIRECT_URL_FIELD_NAME, SELLER_LOGIN_COOKIE, SELLER_LOGIN_FIELD_NAME } from "@/constants/common-contants";
+import { ERROR_CODE_ITEM_NOT_FOUND, LOGIN_REDIRECT_URL_COOKIE, LOGIN_REDIRECT_URL_FIELD_NAME, SELLER_LOGIN_COOKIE, SELLER_LOGIN_FIELD_NAME } from "@/constants/common-contants";
 import { SessionData, UserProfile, defaultSession, sessionOptions } from "@/libs/session-options";
 import { Role } from "@/model/market-data-model";
 import { getIronSession } from "iron-session";
@@ -32,18 +32,10 @@ export async function getSession() {
 export async function loginSession(userProfile: UserProfile, isSellerLogin: boolean = false) {
     const session = await getIronSessionData();
     session.isLoggedIn = true;
-
     let userRoleResponse = await getUserRoles(userProfile.id);
-    if (isSellerLogin) {
-        // Seller login
-        if (!userRoleResponse.data.roles.some(role => role === Role.Seller)) {
-            userRoleResponse = await addMyRole(Role.Seller, userProfile.token);
-        }
-    } else {
-        // Buyer login
-        if (!userRoleResponse.data.roles.some(role => role === Role.Buyer)) {
-            userRoleResponse = await addMyRole(Role.Buyer, userProfile.token);
-        }
+    let userLoginRole = isSellerLogin ? Role.Seller : Role.Buyer;
+    if (userRoleResponse.error?.code === ERROR_CODE_ITEM_NOT_FOUND || !userRoleResponse.data?.roles.some(role => role === userLoginRole)) {
+        userRoleResponse = await addMyRole(userLoginRole, userProfile.token);
     }
     userProfile.roles = userRoleResponse.data.roles;
     session.userProfile = userProfile;
