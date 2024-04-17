@@ -1,14 +1,12 @@
 'use client'
 
 import { useEffect, useMemo, useState } from "react";
-import { ActionSheet, Button, Cascader, CascaderOption, Dialog, Form, ImageUploadItem, ImageUploader, Input, Popup, Switch, TextArea } from "antd-mobile";
+import { ActionSheet, Button, Cascader, CascaderOption, Form, ImageUploadItem, ImageUploader, Input, Popup, Switch, TextArea } from "antd-mobile";
 import Icon from "../common/icon_component";
 import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo, PublishStatus } from "@/model/market-data-model";
 import { Action } from "antd-mobile/es/components/action-sheet";
 import { FormInstance } from "antd-mobile/es/components/form";
 import { getAllCategoriesByParent, sellerCreateProduct, uploadProductImage } from "@/server-actions/product-operation-actions";
-import { Category } from "@/api-services/market-service";
-import { requestToBodyStream } from "next/dist/server/body-streams";
 
 
 async function uploadImage(file: File): Promise<ImageUploadItem> {
