@@ -7,6 +7,7 @@ import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo, PublishStatu
 import { Action } from "antd-mobile/es/components/action-sheet";
 import { FormInstance } from "antd-mobile/es/components/form";
 import { getAllCategoriesByParent, sellerCreateProduct, uploadProductImage } from "@/server-actions/product-operation-actions";
+import FormattedNumberInput from "../common/FormattedNumberInput";
 
 
 async function uploadImage(file: File): Promise<ImageUploadItem> {
@@ -168,27 +169,28 @@ export default function ProductCreation() {
                 >
                     <div style={{ padding: '40px 20px 20px', width: '100vw' }}>
                         <Form.Item name='weight' label='Cân nặng' rules={[{ required: true, message: 'Vui lòng nhập cân nặng' },
-                        { type: 'number', min: 0, max: 99999, message: 'Cân nặng nằm trong khoảng từ 0 đến 99999', validator: checkNumber }]}>
+                        { type: 'number', min: 0, max: 99999, message: 'Cân nặng nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}>
                             <Input placeholder='100' type="number" />
                         </Form.Item>
                         <Form.Item name='height' label='Chiều cao' rules={[{ required: true, message: 'Vui lòng nhập chiều cao' },
-                        { type: 'number', min: 0, max: 99999, message: 'Chiều cao nằm trong khoảng từ 0 đến 99999', validator: checkNumber }]}>
+                        { type: 'number', min: 0, max: 99999, message: 'Chiều cao nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}>
                             <Input placeholder='100' type="number" />
                         </Form.Item>
                         <Form.Item name='length' label='Chiều dài' rules={[{ required: true, message: 'Vui lòng nhập chiều dài' },
-                        { type: 'number', min: 0, max: 99999, message: 'Chiều dài nằm trong khoảng từ 0 đến 99999', validator: checkNumber }]}>
+                        { type: 'number', min: 0, max: 99999, message: 'Chiều dài nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}>
                             <Input placeholder='100' type="number" />
                         </Form.Item>
                         <Form.Item name='width' label='Chiều rộng' rules={[{ required: true, message: 'Vui lòng nhập chiều rộng' },
-                        { type: 'number', min: 0, max: 99999, message: 'Chiều rộng nằm trong khoảng từ 0 đến 99999', validator: checkNumber }]}>
+                        { type: 'number', min: 0, max: 99999, message: 'Chiều rộng nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}>
                             <Input placeholder='100' type="number" />
                         </Form.Item>
                     </div>
                 </Popup>
 
                 <Form.Item name='price' label='Giá' rules={[{ required: true, message: 'Vui lòng nhập giá' },
-                { type: 'number', min: 1, max: 999999999, message: 'Giá nằm trong khoảng từ 1 đến 999999999', validator: checkNumber }]}>
-                    <Input placeholder='Ví dụ 100.000' type="number" />
+                { type: 'number', min: 1, max: 999999999, message: 'Giá nằm trong khoảng từ 1 đến 999.999.999', validator: checkNumber }]}>
+                    {/* <Input placeholder='Ví dụ 100.000' type="number" /> */}
+                    <FormattedNumberInput />
                 </Form.Item>
 
                 <Form.Item initialValue={false} name='inventoryManagementOption' label='Quản lý tồn kho' layout='horizontal' childElementPosition='right'>
@@ -214,7 +216,7 @@ export default function ProductCreation() {
                 />
 
                 <Form.Item initialValue={0} name='stockQuantity' label='Số lượng' layout='horizontal' childElementPosition='right' hidden={!stockQuantityVisible}
-                    rules={[{ type: 'number', min: 0, max: 999999, message: 'Số lượng nằm trong khoảng từ 0 đến 999999', validator: checkNumber }]}>
+                    rules={[{ type: 'number', min: 0, max: 999999, message: 'Số lượng nằm trong khoảng từ 0 đến 999.999', validator: checkNumber }]}>
                     <Input placeholder='0' type="number" />
                 </Form.Item>
 
