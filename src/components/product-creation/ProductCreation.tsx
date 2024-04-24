@@ -122,6 +122,7 @@ export default function ProductCreation() {
     return (
         <>
             <Form onFinish={sellerCreateProduct}
+                requiredMarkStyle='none'
                 onFinishFailed={(error) => console.log(error)}
                 name="createProductForm" form={form} className="body" initialValues={{ inventoryStatus: InventoryStatus.InStock }}>
                 <div className=" bg-white h-32 flex justify-center content-center flex-wrap">
@@ -168,29 +169,36 @@ export default function ProductCreation() {
                     }}
                 >
                     <div style={{ padding: '40px 20px 20px', width: '100vw' }}>
-                        <Form.Item name='weight' label='Cân nặng' rules={[{ required: true, message: 'Vui lòng nhập cân nặng' },
-                        { type: 'number', min: 0, max: 99999, message: 'Cân nặng nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}>
-                            <Input placeholder='100' type="number" />
+                        <Form.Item name='weight' label='Cân nặng' layout='horizontal' childElementPosition='right'
+                            rules={[{ required: true, message: 'Vui lòng nhập cân nặng' },
+                            { type: 'number', min: 0, max: 99999, message: 'Cân nặng nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}
+                        >
+                            <FormattedNumberInput placeholder="0" suffix='kg' />
                         </Form.Item>
-                        <Form.Item name='height' label='Chiều cao' rules={[{ required: true, message: 'Vui lòng nhập chiều cao' },
-                        { type: 'number', min: 0, max: 99999, message: 'Chiều cao nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}>
-                            <Input placeholder='100' type="number" />
+                        <Form.Item name='height' label='Chiều cao' layout='horizontal' childElementPosition='right'
+                            rules={[{ required: true, message: 'Vui lòng nhập chiều cao' },
+                            { type: 'number', min: 0, max: 99999, message: 'Chiều cao nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}
+                        >
+                            <FormattedNumberInput placeholder="0" suffix='cm' />
                         </Form.Item>
-                        <Form.Item name='length' label='Chiều dài' rules={[{ required: true, message: 'Vui lòng nhập chiều dài' },
-                        { type: 'number', min: 0, max: 99999, message: 'Chiều dài nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}>
-                            <Input placeholder='100' type="number" />
+                        <Form.Item name='length' label='Chiều dài' layout='horizontal' childElementPosition='right'
+                            rules={[{ required: true, message: 'Vui lòng nhập chiều dài' },
+                            { type: 'number', min: 0, max: 99999, message: 'Chiều dài nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}
+                        >
+                            <FormattedNumberInput placeholder="0" suffix='cm' />
                         </Form.Item>
-                        <Form.Item name='width' label='Chiều rộng' rules={[{ required: true, message: 'Vui lòng nhập chiều rộng' },
-                        { type: 'number', min: 0, max: 99999, message: 'Chiều rộng nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}>
-                            <Input placeholder='100' type="number" />
+                        <Form.Item name='width' label='Chiều rộng' layout='horizontal' childElementPosition='right'
+                            rules={[{ required: true, message: 'Vui lòng nhập chiều rộng' },
+                            { type: 'number', min: 0, max: 99999, message: 'Chiều rộng nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}
+                        >
+                            <FormattedNumberInput placeholder="0" suffix='cm' />
                         </Form.Item>
                     </div>
                 </Popup>
 
                 <Form.Item name='price' label='Giá' rules={[{ required: true, message: 'Vui lòng nhập giá' },
                 { type: 'number', min: 1, max: 999999999, message: 'Giá nằm trong khoảng từ 1 đến 999.999.999', validator: checkNumber }]}>
-                    {/* <Input placeholder='Ví dụ 100.000' type="number" /> */}
-                    <FormattedNumberInput />
+                    <FormattedNumberInput placeholder="Ví dụ 100.000" prefix={'đ'} textAlign="left" />
                 </Form.Item>
 
                 <Form.Item initialValue={false} name='inventoryManagementOption' label='Quản lý tồn kho' layout='horizontal' childElementPosition='right'>
@@ -236,7 +244,10 @@ export default function ProductCreation() {
                     confirmText='Lưu'
                     placeholder='Chưa chọn'
                     title='Chọn danh mục'
-                    onConfirm={(values) => form.setFieldValue('categoryId', values[values.length - 1])}
+                    onConfirm={(values) => {
+                        form.setFieldValue('categoryId', values[values.length - 1]);
+                        form.validateFields(['category']);
+                    }}
                 >
                     {(items) =>
                         <Form.Item label='Ngành hàng' name='category' rules={[{ message: 'Vui lòng chọn ngành hàng', validator: checkCategory }]}
