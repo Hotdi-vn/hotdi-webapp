@@ -34,7 +34,7 @@ export default async function HotdiBlog() {
 
     //get user profile data for author of each blog post
     for (let i = 0; i < blogDataList.length; i++) {
-        let userData = (await get<UserProfile>('/auth/v1/users/' + blogDataList[i].createdBy, 30)).data;
+        let userData = (await get<UserProfile>('/auth/v1/users/' + blogDataList[i].createdBy, 1800)).data;
         userProfileList[i] = userData;
     }
 
