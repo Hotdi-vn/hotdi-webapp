@@ -1,14 +1,24 @@
 import { Button, Divider } from "@/components/common/antd_mobile_client_wrapper";
-import { ProductInfo } from "@/model/market-data-model";
+import { InventoryStatus, ProductInfo } from "@/model/market-data-model";
 import Image from "next/image";
 import Icon from "@/components/common/icon_component";
 import ProductActions from "./ProductActions";
 import Price from "@/components/common/Price";
+import { ReactNode } from "react";
 
 export default function Product({ productInfo }: { productInfo?: ProductInfo }) {
     if (!productInfo) {
         return <div>No product Info</div>
     }
+
+    function displayInventory(productInfo: ProductInfo): ReactNode {
+        if (productInfo.inventoryManagementOption) {
+            return productInfo.stockQuantity > 0 ? `Còn hàng ${productInfo.stockQuantity}` : `Hết hàng ${productInfo.stockQuantity}`;
+        } else {
+            return productInfo.inventoryStatus === InventoryStatus.InStock ? `Còn hàng` : `Hết hàng`;
+        }
+    }
+
     return (
         <div className="flex flex-col bg-white p-3">
             <div className="flex flex-row gap-x-2.5">
@@ -31,7 +41,9 @@ export default function Product({ productInfo }: { productInfo?: ProductInfo }) 
                         <Icon name='cardReceive' />
                     </div>
                     <div className="text-sm	font-normal text-[#8C8C8C]">
-                        Kho hàng {productInfo.soldCount}
+                        {
+                            displayInventory(productInfo)
+                        }
                     </div>
                 </div>
                 <div className="flex flex-row gap-2">
