@@ -49,6 +49,7 @@ export class ProductInfo {
     inventoryStatus: InventoryStatus
     publishStatus: PublishStatus
     inventoryManagementOption: string
+    stockQuantity: number = 0
     weight: number = 0;
     height: number = 0;
     width: number = 0;
