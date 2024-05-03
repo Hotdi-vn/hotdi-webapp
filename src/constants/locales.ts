@@ -1,0 +1,1 @@
+export const LOCALE_VN = 'vi-VN';
