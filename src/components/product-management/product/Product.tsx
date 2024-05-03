@@ -5,6 +5,7 @@ import Icon from "@/components/common/icon_component";
 import ProductActions from "./ProductActions";
 import Price from "@/components/common/Price";
 import { ReactNode } from "react";
+import { LOCALE_VN } from "@/constants/locales";
 
 export default function Product({ productInfo }: { productInfo?: ProductInfo }) {
     if (!productInfo) {
@@ -13,7 +14,7 @@ export default function Product({ productInfo }: { productInfo?: ProductInfo }) 
 
     function displayInventory(productInfo: ProductInfo): ReactNode {
         if (productInfo.inventoryManagementOption) {
-            return productInfo.stockQuantity > 0 ? `Còn hàng ${productInfo.stockQuantity}` : `Hết hàng ${productInfo.stockQuantity}`;
+            return productInfo.stockQuantity > 0 ? `Còn hàng ${productInfo.stockQuantity.toLocaleString(LOCALE_VN)}` : `Hết hàng ${productInfo.stockQuantity}`;
         } else {
             return productInfo.inventoryStatus === InventoryStatus.InStock ? `Còn hàng` : `Hết hàng`;
         }
