@@ -128,6 +128,7 @@ export default function ProductCreation() {
                 <div className=" bg-white h-32 flex justify-center content-center flex-wrap">
                     <Form.Item name='uploadedImages' rules={[{ required: true, message: 'Vui lòng tải lên hình ảnh sản phẩm' }]}>
                         <ImageUploader
+                            style={{ '--cell-size': '108px' }}
                             value={fileList}
                             onChange={setFileList}
                             upload={uploadImage}
