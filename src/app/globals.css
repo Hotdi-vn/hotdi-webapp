@@ -12,6 +12,7 @@
   --adm-color-primary: #D46B08 !important;
   --adm-color-text-secondary: #999999 !important;
 }
+
 .adm-tabs {
   --active-line-color: var(--hotdi-primary-color) !important;
   --active-title-color: var(--hotdi-primary-color) !important;
@@ -115,4 +116,15 @@ a {
 .adm-nav-bar-left,
 .adm-nav-bar-right {
   flex: 0 !important;
+}
+
+.adm-image-uploader-space {
+  flex-direction: column !important;
+  overflow: auto;
+  width: 100vw;
+  height: var(--cell-size);
+}
+
+.adm-image-uploader-cell-mask-message {
+  display: none !important;
 }
