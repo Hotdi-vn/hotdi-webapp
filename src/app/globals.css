@@ -119,10 +119,9 @@ a {
 }
 
 .adm-image-uploader-space {
-  flex-direction: column !important;
   overflow: auto;
+  flex-wrap: nowrap !important;
   width: 100vw;
-  height: var(--cell-size);
 }
 
 .adm-image-uploader-cell-mask-message {
