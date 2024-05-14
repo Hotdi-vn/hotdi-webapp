@@ -8,6 +8,7 @@ import { Action } from "antd-mobile/es/components/action-sheet";
 import { FormInstance } from "antd-mobile/es/components/form";
 import { getAllCategoriesByParent, sellerCreateProduct, uploadProductImage } from "@/server-actions/product-operation-actions";
 import FormattedNumberInput from "../common/FormattedNumberInput";
+import clsx from "clsx";
 
 
 async function uploadImage(file: File): Promise<ImageUploadItem> {
@@ -135,7 +136,22 @@ export default function ProductCreation() {
                             maxCount={10}
                             multiple={true}
                         >
-                            <div className="flex w-28 h-28 content-center justify-center flex-wrap border"><Icon name='galleryAdd' /></div>
+                            <div className={clsx("flex flex-col h-28 content-center justify-center align-middle flex-wrap",
+                                {
+                                    ["w-screen"]: fileList.length === 0,
+                                    ["w-28 border"]: fileList.length > 0
+                                }
+                            )}>
+                                <div className="self-center">
+                                    <Icon name='galleryAdd' />
+                                </div>
+                                <div className={clsx(
+                                    { ["hidden"]: fileList.length > 0 }
+                                )
+                                }>
+                                    <label className="adm-form-item-label">Thêm hình ảnh sản phẩm</label>
+                                </div>
+                            </div>
 
                         </ImageUploader>
                     </Form.Item>
