@@ -30,7 +30,7 @@ export default function FormattedNumberInput(
     }
 
     return (
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 items-center">
             <div>
                 {prefix}
             </div>

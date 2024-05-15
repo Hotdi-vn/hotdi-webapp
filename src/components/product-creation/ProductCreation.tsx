@@ -1,43 +1,13 @@
 'use client'
 
 import { useEffect, useMemo, useState } from "react";
-import { ActionSheet, Button, Cascader, CascaderOption, Form, ImageUploadItem, ImageUploader, Input, Popup, Switch, TextArea } from "antd-mobile";
+import { ActionSheet, Button, Cascader, CascaderOption, Divider, Form, ImageUploadItem, ImageUploader, Input, Popup, Switch, TextArea } from "antd-mobile";
 import Icon from "../common/icon_component";
 import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo, PublishStatus } from "@/model/market-data-model";
 import { Action } from "antd-mobile/es/components/action-sheet";
-import { FormInstance } from "antd-mobile/es/components/form";
 import { getAllCategoriesByParent, sellerCreateProduct, uploadProductImage } from "@/server-actions/product-operation-actions";
 import FormattedNumberInput from "../common/FormattedNumberInput";
 import clsx from "clsx";
-
-
-async function uploadImage(file: File): Promise<ImageUploadItem> {
-    const data = new FormData();
-    data.append('file', file);
-    const uploadedFile = await uploadProductImage(data);
-    if (uploadedFile == null) {
-        return { url: '' };
-    }
-    return {
-        key: uploadedFile.fileId,
-        url: uploadedFile.fileUrl,
-    }
-}
-
-async function submitForm(form: FormInstance, isDraft: boolean = false) {
-    if (isDraft) {
-        form.setFieldValue('publishStatus', PublishStatus.Draft);
-    } else {
-        form.setFieldValue('publishStatus', PublishStatus.Published);
-    }
-
-    const uploadedImages = form.getFieldValue('uploadedImages') as ImageUploadItem[];
-    if (uploadedImages?.length > 0) {
-        form.setFieldValue('imageUrls', uploadedImages.map(item => item.url));
-        form.setFieldValue('images', uploadedImages.map(item => item.key));
-    }
-    form.submit();
-}
 
 type CascaderOptionExtend = CascaderOption & { isLeaf?: boolean };
 
@@ -49,6 +19,7 @@ export default function ProductCreation() {
     const [categorySelection, setCategorySelection] = useState<boolean>(false);
     const [sizeSelection, setSizeSelection] = useState(false);
     const [categoriesToOptions, setCategoriesToOptions] = useState<Record<string, CascaderOptionExtend[] | null>>({});
+    const [formSubmitting, setFormSubmitting] = useState<boolean>(false);
 
     const actions: Action[] = [
         {
@@ -59,6 +30,35 @@ export default function ProductCreation() {
             text: InventoryStatusDisplayValue[InventoryStatus.OutOfStock], key: InventoryStatus.OutOfStock
         },
     ]
+
+    async function uploadImage(file: File): Promise<ImageUploadItem> {
+        const data = new FormData();
+        data.append('file', file);
+        const uploadedFile = await uploadProductImage(data);
+        if (uploadedFile == null) {
+            return { url: '' };
+        }
+        return {
+            key: uploadedFile.fileId,
+            url: uploadedFile.fileUrl,
+        }
+    }
+
+    async function submitForm(isDraft: boolean = false): Promise<void> {
+        if (isDraft) {
+            form.setFieldValue('publishStatus', PublishStatus.Draft);
+        } else {
+            form.setFieldValue('publishStatus', PublishStatus.Published);
+        }
+
+        const uploadedImages = form.getFieldValue('uploadedImages') as ImageUploadItem[];
+        if (uploadedImages?.length > 0) {
+            form.setFieldValue('imageUrls', uploadedImages.map(item => item.url));
+            form.setFieldValue('images', uploadedImages.map(item => item.key));
+        }
+
+        form.submit();
+    }
 
     const categoryOptions = useMemo<CascaderOption[]>(() => {
         function generate(v: string): CascaderOption[] | undefined {
@@ -122,7 +122,11 @@ export default function ProductCreation() {
 
     return (
         <>
-            <Form onFinish={sellerCreateProduct}
+            <Form
+                onFinish={(productInfo) => {
+                    setFormSubmitting(true);
+                    sellerCreateProduct(productInfo);
+                }}
                 requiredMarkStyle='none'
                 onFinishFailed={(error) => console.log(error)}
                 name="createProductForm" form={form} className="body" initialValues={{ inventoryStatus: InventoryStatus.InStock }}>
@@ -189,27 +193,34 @@ export default function ProductCreation() {
                         <Form.Item name='weight' label='Cân nặng' layout='horizontal' childElementPosition='right'
                             rules={[{ required: true, message: 'Vui lòng nhập cân nặng' },
                             { type: 'number', min: 0, max: 99999, message: 'Cân nặng nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}
+                            style={{ '--align-items': 'baseline' }}
                         >
                             <FormattedNumberInput placeholder="0" suffix='kg' />
                         </Form.Item>
+
                         <Form.Item name='height' label='Chiều cao' layout='horizontal' childElementPosition='right'
                             rules={[{ required: true, message: 'Vui lòng nhập chiều cao' },
                             { type: 'number', min: 0, max: 99999, message: 'Chiều cao nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}
+                            style={{ '--align-items': 'baseline' }}
                         >
                             <FormattedNumberInput placeholder="0" suffix='cm' />
                         </Form.Item>
                         <Form.Item name='length' label='Chiều dài' layout='horizontal' childElementPosition='right'
                             rules={[{ required: true, message: 'Vui lòng nhập chiều dài' },
                             { type: 'number', min: 0, max: 99999, message: 'Chiều dài nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}
+                            style={{ '--align-items': 'baseline' }}
                         >
                             <FormattedNumberInput placeholder="0" suffix='cm' />
                         </Form.Item>
                         <Form.Item name='width' label='Chiều rộng' layout='horizontal' childElementPosition='right'
                             rules={[{ required: true, message: 'Vui lòng nhập chiều rộng' },
                             { type: 'number', min: 0, max: 99999, message: 'Chiều rộng nằm trong khoảng từ 0 đến 99.999', validator: checkNumber }]}
+                            style={{ '--align-items': 'baseline' }}
                         >
                             <FormattedNumberInput placeholder="0" suffix='cm' />
                         </Form.Item>
+                        <Divider />
+                        <Button block color="primary" onClick={() => setSizeSelection(false)}>Lưu</Button>
                     </div>
                 </Popup>
 
@@ -279,8 +290,8 @@ export default function ProductCreation() {
                 <Form.Item name='categoryId' hidden rules={[{ required: true }]} />
             </Form >
             <div className='flex flex-row bottom p-2 gap-x-2'>
-                <Button className="basis-1/2" color='primary' fill="outline" onClick={() => submitForm(form, true)}>Lưu</Button>
-                <Button className="basis-1/2" color='primary' onClick={() => submitForm(form)}>Đăng bán</Button>
+                <Button type="submit" loading={formSubmitting} className="basis-1/2" color='primary' fill="outline" onClick={() => submitForm(true)}>Lưu</Button>
+                <Button type="submit" loading={formSubmitting} className="basis-1/2" color='primary' onClick={() => submitForm()}>Đăng bán</Button>
             </div>
         </>
     );
