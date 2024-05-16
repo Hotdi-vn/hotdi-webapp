@@ -2,8 +2,8 @@ import { Input } from "antd-mobile";
 import { ReactNode, useState } from "react";
 
 export default function FormattedNumberInput(
-    { value, onChange, locales = 'vi-VN', prefix, suffix, placeholder = '', textAlign = 'right' }
-        : { value?: number, onChange?: (value?: number) => void, locales?: string, prefix?: ReactNode, suffix?: ReactNode, placeholder?: string, textAlign?: string }
+    { value, onChange, locales = 'vi-VN', prefix, suffix, placeholder = '', textAlign = 'right', formatImmediately = false, isFloat = false }
+        : { value?: number, onChange?: (value?: number) => void, locales?: string, prefix?: ReactNode, suffix?: ReactNode, placeholder?: string, textAlign?: string, formatImmediately?: boolean, isFloat?: boolean }
 ) {
     const [formattedValue, setFormattedValue] = useState<string>(value?.toLocaleString(locales) ?? '');
 
@@ -11,9 +11,21 @@ export default function FormattedNumberInput(
         onChange?.(changedValue);
     }
 
-    function formatNumberOnKeyUp() {
+    function parseValue(value: string) {
+        return isFloat ? parseFloat(value) : parseInt(value, 10);
+    }
+
+    function preProcessFormattedValue(value: string) {
+        const regex = isFloat ? /[^0-9-.]/g : /[^0-9-]/g;
+        if (isFloat) {
+            value = value.replace(',', '.');
+        }
+        return value.replace(regex, '');
+    }
+
+    function formatNumber() {
         if (formattedValue) {
-            value = parseInt(formattedValue.replace(/[^0-9-]/g, ''), 10);
+            value = parseValue(preProcessFormattedValue(formattedValue));
         } else {
             value = undefined;
         }
@@ -26,7 +38,7 @@ export default function FormattedNumberInput(
     }
 
     const onNumberValueChange = (value?: string) => {
-        triggerValue(value ? parseInt(value) : undefined)
+        triggerValue(value ? parseValue(value) : undefined)
     }
 
     return (
@@ -35,7 +47,9 @@ export default function FormattedNumberInput(
                 {prefix}
             </div>
             <div className="grow">
-                <Input style={{ '--text-align': textAlign }} value={formattedValue} placeholder={placeholder} type="string" onKeyUp={formatNumberOnKeyUp} onChange={onFormattedValueChange} />
+                <Input style={{ '--text-align': textAlign }} value={formattedValue} placeholder={placeholder} type="string"
+                    onKeyUp={formatImmediately ? formatNumber : undefined} onBlur={formatImmediately ? undefined : formatNumber}
+                    onChange={onFormattedValueChange} />
             </div>
             <div>
                 <Input value={value?.toString()} type="hidden" onChange={onNumberValueChange} />
