@@ -253,7 +253,7 @@ export default function ProductCreation() {
 
                 <Form.Item initialValue={0} name='stockQuantity' label='Số lượng' layout='horizontal' childElementPosition='right' hidden={!stockQuantityVisible}
                     rules={[{ type: 'number', min: 0, max: 999999, message: 'Số lượng nằm trong khoảng từ 0 đến 999.999', validator: checkNumber }]}>
-                    <Input placeholder='0' type="number" />
+                    <FormattedNumberInput placeholder="0" formatImmediately />
                 </Form.Item>
 
                 <Cascader
