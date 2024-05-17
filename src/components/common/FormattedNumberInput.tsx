@@ -43,7 +43,7 @@ export default function FormattedNumberInput(
 
     return (
         <div className="flex flex-row gap-2 items-center">
-            <div>
+            <div className="basis-1/12">
                 {prefix}
             </div>
             <div className="grow">
@@ -54,7 +54,7 @@ export default function FormattedNumberInput(
             <div>
                 <Input value={value?.toString()} type="hidden" onChange={onNumberValueChange} />
             </div>
-            <div>
+            <div className="basis-1/12">
                 {suffix}
             </div>
         </div>

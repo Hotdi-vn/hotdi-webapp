@@ -52,7 +52,7 @@ export default function Product({ productInfo }: { productInfo?: ProductInfo }) 
                         <Icon name='cardSend' />
                     </div>
                     <div className="text-sm	font-normal text-[#8C8C8C]">
-                        Đã bán {productInfo.soldCount}
+                        Đã bán {productInfo.soldCount.toLocaleString(LOCALE_VN)}
                     </div>
                 </div>
             </div>

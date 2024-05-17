@@ -11,6 +11,7 @@
 
   --adm-color-primary: #D46B08 !important;
   --adm-color-text-secondary: #999999 !important;
+  --adm-font-family: var(--font-be-vietnam-pro) !important;
 }
 
 .adm-tabs {
@@ -39,7 +40,7 @@
 }
 
 h1 {
-  font-family: Google Sans;
+  font-family: var(--font-be-vietnam-pro);
   color: #3A6F05;
   font-weight: bold;
   font-size: 20px;
@@ -48,7 +49,7 @@ h1 {
 }
 
 h2 {
-  font-family: Google Sans;
+  font-family: var(--font-be-vietnam-pro);
   color: #3A6F05;
   font-weight: medium;
   font-size: 20px;
@@ -57,7 +58,7 @@ h2 {
 }
 
 a {
-  font-family: Google Sans;
+  font-family: var(--font-be-vietnam-pro);
   color: #D46B08 !important;
   font-weight: normal;
   font-size: 14px;
@@ -66,12 +67,14 @@ a {
 }
 
 .app {
+  font-family: var(--font-be-vietnam-pro);
   height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 .top {
+  font-family: var(--font-be-vietnam-pro);
   flex: 0;
   border-bottom: solid 1px var(--adm-color-border);
   height: 64px;
@@ -83,6 +86,7 @@ a {
 }
 
 .body {
+  font-family: var(--font-be-vietnam-pro);
   flex: 1;
   overflow-y: scroll;
   background-color: #F5F5F5;
@@ -95,6 +99,7 @@ a {
 }
 
 .bottom {
+  font-family: var(--font-be-vietnam-pro);
   flex: 0;
   border-top: solid 1px var(--adm-color-border);
   height: 58px;
