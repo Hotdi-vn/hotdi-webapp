@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import '@/app/globals.css'
+import { beVietnamPro } from '@/fonts/fonts'
 
 export const metadata: Metadata = {
   title: 'Hotdi',
@@ -13,7 +14,7 @@ export default function RootLayout({
 }) {
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${beVietnamPro.variable}`}>
       <body>
         <div className='app'>
           {children}
