@@ -31,6 +31,9 @@ export default function Home() {
           <ProductCollection collectionType={CollectionType.SanPhamMoiToanh} title='Sản Phẩm Mới Toanh' />
         </Suspense>
         <Suspense>
+          <ProductCollection collectionType={CollectionType.ChoNeHotDi} title='Cho Nè - Hốt Đi' special />
+        </Suspense>
+        <Suspense>
           <ProductCollection collectionType={CollectionType.DoTuoiRoiRoi} title='Đồ Tươi Roi Rói' twoRows />
         </Suspense>
         <Suspense>

@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { get, getNoCache } from '@/utils/server-side-fetching';
 import { ProductInfo } from '@/model/market-data-model';
 
-export default async function ProductCollection({ collectionType, title, twoRows }:
-  { collectionType: CollectionType, title: string, twoRows?: boolean }) {
+export default async function ProductCollection({ collectionType, title, twoRows, special }:
+  { collectionType: CollectionType, title: string, twoRows?: boolean, special?: boolean }) {
 
   const response = await getNoCache<ProductInfo[]>(`/market/v1/products?collectionType=${collectionType}`);
 
@@ -25,24 +25,35 @@ export default async function ProductCollection({ collectionType, title, twoRows
     />
   ));
 
-  const collection = twoRows ? (
-    <div className={`${styles.collection} ${styles.twoRows}`}>
-      {collectionItems}
-    </div>
+  const collection = special ? (
+      <div className={`${styles.collection} ${styles.special}`}>
+        {collectionItems}
+      </div>
+    ) :
+    twoRows ? (
+      <div className={`${styles.collection} ${styles.twoRows}`}>
+        {collectionItems}
+      </div>
   ) : (
     <div className={styles.collection}>
       {collectionItems}
     </div>
-  )
+  );
+
+  const wrapperStyle = special ? `${styles.wrapper} ${styles.special}` : styles.wrapper;
+
+  const titleStyle = special ? `${styles.title} ${styles.special}` : styles.title;
+
+  const revealButtonStyle = special ? `${styles.revealButton} ${styles.special}` : styles.revealButton;
 
   return (
-    <div className={styles.wrapper}>
+    <div className={wrapperStyle}>
       <div className={styles.header}>
-        <h1 className={styles.title}>
+        <h1 className={titleStyle}>
           {title}
         </h1>
         <Link href={`/product?collection=${title}`}>
-          <div className={styles.revealButton}>
+          <div className={revealButtonStyle}>
             Xem thêm <RightOutline />
           </div>
         </Link>
