@@ -7,10 +7,11 @@ import Icon from '@/components/common/icon_component';
 import HotdiBlog from '@/components/hotdi-blog/HotdiBlog';
 import { Suspense } from 'react';
 import { CollectionType } from '@/components/product-collection/product-card/ProductCard';
+import ShoppingCart from '@/components/shopping-cart/ShoppingCart';
 
 export default function Home() {
   const navBar =
-    <NavBar back={null} right={<Icon name='shoppingBag' />}>
+    <NavBar back={null} right={<ShoppingCart />}>
       <SearchBar placeholder='tìm ở đây nè...' />
     </NavBar>;
 
