@@ -7,12 +7,12 @@ const CarouselProduct = (prop: any) => {
     const [activeImg, setActiveImage] = useState(imageUrls[0])
     return (
         <div className='flex flex-col justify-between lg:flex-row'>
-            <div className='flex flex-col gap-6'>
+            <div className='flex flex-col gap-6 block'>
                 <img src={activeImg} alt="" className='w-full h-full aspect-square object-cover rounded-xl'/>
                 <div className='flex flex-row justify-between h-24'>
                     {images.map((image: string, index: number) => {
                         return (
-                            <img src={image} key={index} alt="" className='w-24 h-24 rounded-md cursor-pointer border-solid border-2 border-black' onClick={() => setActiveImage(image)}/>
+                            <img src={image} key={index} alt="" className='w-24 h-24 rounded-md cursor-pointer border-solid border-2 border-black mx-3 float-left' onClick={() => setActiveImage(image)}/>
                         )
                     })}
                 </div>
