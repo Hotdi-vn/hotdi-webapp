@@ -1,18 +1,40 @@
-import BottomNavBar from "./bottom-nav-bar/BottomNavBar";
+import { ReactNode } from "react";
 
 export default function Application({
     children,
+    top,
+    bottom
 }: {
-    children: React.ReactNode
+    children: React.ReactNode,
+    top?: ReactNode,
+    bottom?: ReactNode
 }) {
     return (
         <div className='app'>
-            <div className='body'>
-                {children}
-            </div>
-            <div className='bottom'>
-                <BottomNavBar />
-            </div>
+            {
+                top ?
+                    <div className="top" >
+                        {top}
+                    </div>
+                    :
+                    undefined
+            }
+            {
+                top || bottom ?
+                    <div className='body'>
+                        {children}
+                    </div> :
+                    children
+            }
+            {
+                bottom ?
+                    <div className='bottom'>
+                        {bottom}
+                    </div>
+                    :
+                    undefined
+            }
+
         </div>
     );
 }

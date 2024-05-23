@@ -8,6 +8,8 @@ import HotdiBlog from '@/components/hotdi-blog/HotdiBlog';
 import { Suspense } from 'react';
 import { CollectionType } from '@/components/product-collection/product-card/ProductCard';
 import ShoppingCart from '@/components/shopping-cart/ShoppingCart';
+import BottomNavBar from '@/components/bottom-nav-bar/BottomNavBar';
+import Application from '@/components/Application';
 
 export default function Home() {
   const navBar =
@@ -16,8 +18,7 @@ export default function Home() {
     </NavBar>;
 
   return (
-    <div>
-      <div className='top'>{navBar}</div>
+    <Application bottom={<BottomNavBar />} top={navBar}>
       <Banner />
       <Suspense>
         <CategoryList />
@@ -42,6 +43,6 @@ export default function Home() {
           <FarmExplorerComponent />
         </Suspense>
       </div>
-    </div>
+    </Application>
   )
 }
