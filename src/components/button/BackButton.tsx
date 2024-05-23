@@ -40,6 +40,6 @@ export function BackButton(
     }
 
     return (
-        <div onClick={onClick}><Icon name='arrowLeft' /></div>
+        <div onClick={onClick}><Icon name='back' /></div>
     )
 }

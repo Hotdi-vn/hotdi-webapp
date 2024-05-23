@@ -1,11 +1,16 @@
+'use client'
+
+import { Divider, Ellipsis } from "antd-mobile"
+import ExpandableContent from "../common/ExpandableContent"
+
 const ProductDescription = (prop: any) => {
     const { description } = prop
     return (
-        <div>
-            <div className='text-lg text-black font-semibold m-3'>Chi tiết sản phẩm</div>
-            <hr/>
-            <div className='text-lg text-black font-semibold m-3'>Mô tả sản phẩm</div>
-            <div className='text-sm m-3'>{description}</div>
+        <div className="bg-white">
+            <div className='text-lg text-black font-semibold'>Mô Tả Sản Phẩm</div>
+            <div className='text-sm'>
+                <ExpandableContent content={description} rows={5} />
+            </div>
         </div>
     )
 }
