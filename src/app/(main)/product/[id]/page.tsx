@@ -4,31 +4,38 @@ import UserCard from "@/components/product-details/user-card"
 import ProductDescription from "@/components/product-details/product-description"
 import { getProductById } from "@/api-services/product-details"
 import { getUserInfoById } from "@/api-services/auth-service"
+import { Button, NavBar } from "@/components/common/antd_mobile_client_wrapper"
+import Icon from "@/components/common/icon_component";
+import { BackButton } from "@/components/button/BackButton"
+import ShoppingCart from "@/components/shopping-cart/ShoppingCart"
 
 export default async function ProductDetails({
-    params,
-  }: {
-    params: { id: string }
-  }) {
-    const productInfo = await getProductById(params.id)
-    const userInfo = await getUserInfoById(productInfo.data.createdBy)
-    return (
-        <div className="bg-white">
-            <button
-              className="h-8 w-8 absolute top-4 left-4"
-              type="button">
-                <img src={"/icons/arrow_left.svg"} alt="Back"/>
-            </button> 
-            <CarouselProduct imageUrls={productInfo.data.imageUrls}/>
-            <div className="m-3">
-              <ProductInfo name={productInfo.data.name} price={productInfo.data.price} soldCount={productInfo.data.soldCount}/>
-            </div>
-            <hr className="bg-slate-200	h-1"/>
-            <div className="m-3">
-            <UserCard userInfo={userInfo}/>
-            </div>
-            <hr className="bg-slate-200	h-1"/>
-            <ProductDescription description={productInfo.data.description}/>
-        </div>
-    )
+  params,
+}: {
+  params: { id: string }
+}) {
+  const productInfo = await getProductById(params.id)
+  const userInfo = await getUserInfoById(productInfo.data.createdBy)
+
+  const icons = <div className="flex flex-row gap-2 items-baseline">
+    <div><Icon name='shareBgGrey' /></div>
+    <div><ShoppingCart icon={<Icon name="shoppingBagBgGrey" />} /></div>
+    <div><Icon name='moreBgGrey' /></div>
+  </div>;
+  return (
+    <>
+      <div className="sticky top-0 bg-transparent z-10">
+        <NavBar backArrow={<BackButton icon={<Icon name="backBgGrey" />} />} right={icons} />
+      </div>
+      <div className="flex flex-col top-0 relative">
+        <CarouselProduct imageUrls={productInfo.data.imageUrls} />
+        <ProductInfo name={productInfo.data.name} price={productInfo.data.price} soldCount={productInfo.data.soldCount} />
+        <hr className="bg-slate-200	h-1" />
+        <UserCard userProfile={userInfo} />
+        <hr className="bg-slate-200	h-1" />
+        <ProductDescription description={productInfo.data.description} />
+      </div >
+    </>
+
+  )
 }

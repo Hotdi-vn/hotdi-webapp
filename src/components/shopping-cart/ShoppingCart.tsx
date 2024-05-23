@@ -3,12 +3,19 @@
 import Icon from '@/components/common/icon_component';
 import { InventoryStatus, ProductInfo, PublishStatus } from '@/model/market-data-model';
 import { Badge, Button, NavBar, Popup } from 'antd-mobile';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import CartItem from './cart-item/CartItem';
 import { getMyProducts } from '@/server-actions/product-operation-actions';
 import Price from '../common/Price';
 
-export default function ShoppingCart() {
+export default function ShoppingCart(
+    {
+        icon = <Icon name='shoppingBag' />
+    }:
+        {
+            icon?: ReactNode
+        }
+) {
     const [visible, setVisible] = useState<boolean>(false);
     const [count, setCount] = useState<number>(0);
     const [cartItems, setCartItems] = useState<ProductInfo[]>([]);
@@ -31,7 +38,7 @@ export default function ShoppingCart() {
         <>
             <Button fill='none' onClick={() => setVisible(true)}>
                 <Badge content={count} color='#D46B08'>
-                    <Icon name='shoppingBag' />
+                    {icon}
                 </Badge>
             </Button>
 
