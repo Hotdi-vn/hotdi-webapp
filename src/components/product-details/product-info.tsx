@@ -1,10 +1,22 @@
+import Price from "@/components/common/Price"
+import IconComponent from "@/components/common/icon_component"
+
 const ProductInfo = (prop: any) => {
     const { price, name, soldCount } = prop
     return (
-        <div >
-            <div className='text-xl text-green-500 font-semibold my-6' style={{color: "#3A6F05"}}> đ {price}</div>
-            <div className='text-sm my-6'>{name}</div>
-            <div className='text-sm my-6'>Đã bán {soldCount}</div>
+        <div className="flex flex-col gap-3 p-3">
+            <div>
+                <Price price={price} />
+            </div>
+            <div className='text-base'>{name}</div>
+            <div className='flex text-sm justify-between'>
+                <div>
+                    Đã bán {soldCount}
+                </div>
+                <div>
+                    <IconComponent name={'favorite'} />
+                </div>
+            </div>
         </div>
     )
 }

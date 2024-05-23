@@ -3,19 +3,22 @@
 import Icon from '@/components/common/icon_component';
 import { Dialog } from 'antd-mobile';
 import { useRouter } from 'next/navigation';
+import { ReactNode } from 'react';
 
 export function BackButton(
     {
         redirectPath, isConfirmedPrompt,
         confirmedPromptMessage = 'Thông tin sản phẩm sẽ không được lưu nếu bạn rời đi. Bạn có muốn rời đi?',
         cancelText = 'Ở lại',
-        confirmText = 'Rời đi'
+        confirmText = 'Rời đi',
+        icon = <Icon name='back' />
     }:
         {
             redirectPath?: string, isConfirmedPrompt?: boolean,
             confirmedPromptMessage?: string,
             cancelText?: string,
             confirmText?: string,
+            icon?: ReactNode
         }) {
     const router = useRouter();
 
@@ -40,6 +43,6 @@ export function BackButton(
     }
 
     return (
-        <div onClick={onClick}><Icon name='back' /></div>
+        <div onClick={onClick}>{icon}</div>
     )
 }
