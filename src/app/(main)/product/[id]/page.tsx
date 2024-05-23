@@ -13,13 +13,22 @@ export default async function ProductDetails({
     const productInfo = await getProductById(params.id)
     const userInfo = await getUserInfoById(productInfo.data.createdBy)
     return (
-        <>
+        <div className="bg-white">
+            <button
+              className="h-8 w-8 absolute top-4 left-4"
+              type="button">
+                <img src={"/icons/arrow_left.svg"} alt="Back"/>
+            </button> 
             <CarouselProduct imageUrls={productInfo.data.imageUrls}/>
-            <div className="m-6">
-              <ProductInfo name={productInfo.data.name} price={productInfo.data.price}/>
-              <UserCard userInfo={userInfo}/>
-              <ProductDescription description={productInfo.data.description}/>
+            <div className="m-3">
+              <ProductInfo name={productInfo.data.name} price={productInfo.data.price} soldCount={productInfo.data.soldCount}/>
             </div>
-        </>
+            <hr className="bg-slate-200	h-1"/>
+            <div className="m-3">
+            <UserCard userInfo={userInfo}/>
+            </div>
+            <hr className="bg-slate-200	h-1"/>
+            <ProductDescription description={productInfo.data.description}/>
+        </div>
     )
 }

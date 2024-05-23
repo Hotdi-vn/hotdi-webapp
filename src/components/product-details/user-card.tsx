@@ -5,9 +5,9 @@ const UserCard = async (prop: any) => {
     const { userInfo } = prop
     const [imageError, setImageError] = useState(false);
     return (
-        <div className="max-w-sm bg-white rounded-xl p-1 shadow-lg sm:py-4 sm:flex sm:space-y-0 sm:space-x-6">
+        <div className="max-w-sm bg-white rounded-xl p-1">
             <img 
-                className="float-left block mx-auto h-16 rounded-full sm:mx-0 sm:shrink-0" 
+                className="float-left block mx-auto h-16 rounded-full" 
                 src={ imageError ? userInfo.picture : '/logo.png'}
                 onErrorCapture={() => setImageError(true)}
                 alt="Seller Info"/>
