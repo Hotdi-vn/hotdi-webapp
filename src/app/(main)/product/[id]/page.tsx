@@ -35,6 +35,23 @@ export default async function ProductDetails({
         <hr className="bg-slate-200	h-1" />
         <ProductDescription description={productInfo.data.description} />
       </div >
+      <div className="bottom flex justify-center items-center">
+        <div className="flex basis-1/6 justify-center">
+          <Button shape="rectangular" size="large">
+            <Icon name={'messageActive'} />
+          </Button>
+        </div>
+        <div className="basis-2/6">
+          <Button color="success" shape="rectangular" size="large" block>
+            Mua ngay
+          </Button>
+        </div>
+        <div className="basis-3/6">
+          <Button color="primary" shape="rectangular" size="large" block>
+            Thêm vào giỏ hàng
+          </Button>
+        </div>
+      </div>
     </>
 
   )

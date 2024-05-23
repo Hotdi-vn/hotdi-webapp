@@ -10,6 +10,7 @@
   --background-end-rgb: 255, 255, 255;
 
   --adm-color-primary: #D46B08 !important;
+  --adm-color-success: #3A6F05 !important;
   --adm-color-text-secondary: #999999 !important;
   --adm-font-family: var(--font-be-vietnam-pro) !important;
 }
