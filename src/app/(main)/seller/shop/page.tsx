@@ -24,7 +24,7 @@ export default async function SellerShop() {
 
     const menuList =
         <List>
-            <ListItem arrow={<Icon name='arrowRight' />}>
+            <ListItem arrow={<Icon name='navigateRight' />}>
                 <Link href='/seller/shop/product'>
                     <div className="text-base font-semibold text-black">Quản Lý Sản Phẩm</div>
                 </Link>
