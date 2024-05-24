@@ -4,7 +4,7 @@ import IconComponent from "@/components/common/icon_component"
 const ProductInfo = (prop: any) => {
     const { price, name, soldCount } = prop
     return (
-        <div className="flex flex-col gap-3 p-3">
+        <div className="flex flex-col gap-3 p-3 bg-white">
             <div>
                 <Price price={price} />
             </div>

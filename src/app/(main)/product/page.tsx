@@ -2,7 +2,8 @@
 
 import { NavBar } from "@/components/common/antd_mobile_client_wrapper";
 import { useRouter, useSearchParams } from "next/navigation";
-import ProductCard, { ProductCardType, ProductInfo } from "@/components/product-collection/product-card/ProductCard";
+import ProductCard, { ProductCardType } from "@/components/product-collection/product-card/ProductCard";
+import { ProductInfo } from "@/model/market-data-model";
 
 
 export default function Product() {
