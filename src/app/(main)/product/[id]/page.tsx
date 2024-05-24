@@ -8,6 +8,7 @@ import { Button, NavBar } from "@/components/common/antd_mobile_client_wrapper"
 import Icon from "@/components/common/icon_component";
 import { BackButton } from "@/components/button/BackButton"
 import ShoppingCart from "@/components/shopping-cart/ShoppingCart"
+import ShopHighlightedProducts from "@/components/product-collection/ShopHighlightedProducts"
 
 export default async function ProductDetails({
   params,
@@ -24,14 +25,15 @@ export default async function ProductDetails({
   </div>;
   return (
     <>
-      <div className="sticky top-0 bg-transparent z-10">
+      <div className="top bg-transparent z-10">
         <NavBar backArrow={<BackButton icon={<Icon name="backBgGrey" />} />} right={icons} />
       </div>
-      <div className="flex flex-col top-0 relative">
+      <div className="bg-white body">
         <CarouselProduct imageUrls={productInfo.data.imageUrls} />
         <ProductInfo name={productInfo.data.name} price={productInfo.data.price} soldCount={productInfo.data.soldCount} />
         <hr className="bg-slate-200	h-1" />
         <UserCard userProfile={userInfo} />
+        <ShopHighlightedProducts shopId={productInfo.data.createdBy} />
         <hr className="bg-slate-200	h-1" />
         <ProductDescription description={productInfo.data.description} />
       </div >

@@ -1,9 +1,10 @@
 import React from 'react';
-import ProductCard, { CollectionType, ProductInfo } from "./product-card/ProductCard";
+import ProductCard, { CollectionType } from "./product-card/ProductCard";
 import styles from "./ProductCollection.module.css"
 import { RightOutline } from '@/components/common/antd_mobile_client_wrapper';
 import Link from 'next/link';
 import { get, getNoCache } from '@/utils/server-side-fetching';
+import { ProductInfo } from '@/model/market-data-model';
 
 export default async function ProductCollection({ collectionType, title, twoRows }:
   { collectionType: CollectionType, title: string, twoRows?: boolean }) {

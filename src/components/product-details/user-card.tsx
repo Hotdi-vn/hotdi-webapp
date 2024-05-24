@@ -5,7 +5,7 @@ import { useState } from "react";
 const UserCard = ({ userProfile }: { userProfile: UserProfile }) => {
     const [imageError, setImageError] = useState(false);
     return (
-        <div className="flex gap-2 p-3 justify-center">
+        <div className="flex gap-2 p-3 justify-center bg-white">
             <div>
                 <img
                     className="float-left block mx-auto h-16 rounded-full"
