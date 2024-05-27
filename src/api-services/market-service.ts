@@ -3,7 +3,7 @@ import 'server-only'
 import { ResponseData, ServerError } from '@/utils/data-fetching-utils';
 import { log } from 'console';
 import { get, getNoCache, post } from '@/utils/server-side-fetching';
-import { InventoryStatus, ProductInfo, PublishStatus, Role } from '@/model/market-data-model';
+import { CartItem, InventoryStatus, ProductInfo, PublishStatus, Role } from '@/model/market-data-model';
 import { getSession } from '@/server-actions/authentication-actions';
 import { ERROR_CODE_ITEM_NOT_FOUND } from '@/constants/common-contants';
 
@@ -120,6 +120,40 @@ export async function getMyProducts(query: ProductQuery = { skip: 0, limit: 20 }
         log('Error from createProduct', error);
         throw error;
     }
+}
+
+export async function getMyCartItems(query: CartItemQuery = { skip: 0, limit: 20 }): Promise<ResponseData<CartItem[]>> {
+    let response;
+    const session = await getSession();
+
+    try {
+        response = await get<CartItem[]>(`${BASE_URL}/v1/cart-items/me${buildQueryString(query)}`, 0, session.userProfile?.token);
+        if (response.error) {
+            log('Error from createProduct:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response;
+    } catch (error) {
+        log('Error from createProduct', error);
+        throw error;
+    }
+}
+
+type PagingQuery = {
+    skip?: number;
+    limit?: number;
+}
+
+export type CartItemQuery = PagingQuery & {
+    populate?: 'productId';
+}
+
+function buildQueryString(query: Object) {
+    let queryList = Object.entries(query)
+        .filter(([key, value]) => value)
+        .map(([key, value]) => `${key}=${value}`);
+
+    return queryList.length > 0 ? `?${queryList.join('&')}` : '';
 }
 
 type Permission = {

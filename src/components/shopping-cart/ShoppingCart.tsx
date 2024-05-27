@@ -1,12 +1,12 @@
 'use client'
 
 import Icon from '@/components/common/icon_component';
-import { InventoryStatus, ProductInfo, PublishStatus } from '@/model/market-data-model';
+import { CartItem as CartItemModel, ProductInfo } from '@/model/market-data-model';
 import { Badge, Button, NavBar, Popup } from 'antd-mobile';
 import { ReactNode, useEffect, useState } from 'react';
 import CartItem from './cart-item/CartItem';
-import { getMyProducts } from '@/server-actions/product-operation-actions';
 import Price from '../common/Price';
+import { getMyCart } from '@/server-actions/shopping-cart-actions';
 
 export default function ShoppingCart(
     {
@@ -18,16 +18,14 @@ export default function ShoppingCart(
 ) {
     const [visible, setVisible] = useState<boolean>(false);
     const [count, setCount] = useState<number>(0);
-    const [cartItems, setCartItems] = useState<ProductInfo[]>([]);
+    const [cartItems, setCartItems] = useState<CartItemModel[]>([]);
 
     async function fetchData() {
-        // TODO fetch cart items instead
-        const inStockProductQuery = { inventoryStatus: InventoryStatus.InStock, publishStatus: PublishStatus.Published, skip: 0, limit: 20 };
-        const inStockProductResponse = await getMyProducts(inStockProductQuery);
-        const inStockProductList = inStockProductResponse.data;
+        const cartItemsRes = await getMyCart({ populate: 'productId' });
+        const carItems = cartItemsRes.data;
 
-        setCartItems(inStockProductList);
-        setCount(inStockProductList.length);
+        setCartItems(carItems);
+        setCount(carItems.length);
     }
 
     useEffect(() => {
@@ -60,14 +58,15 @@ export default function ShoppingCart(
                     <div className='body'>
                         {
                             cartItems.map(
-                                item => <CartItem key={item._id} productInfo={item} currentQuantity={1} />
+                                item => <CartItem key={item._id} cartItem={item} />
                             )
                         }
                     </div>
                     <div className='bottom'>
                         <div className='flex justify-between items-center p-2'>
                             <div>
-                                <h2>Tổng thanh toán: <Price price={cartItems.map((product) => product.price).reduce((prePrice, curPrice) => prePrice + curPrice, 0)} /></h2>
+                                <h2>Tổng thanh toán: <Price price={cartItems.map((cartItem) =>
+                                    (cartItem.productId as ProductInfo).price * cartItem.quantity).reduce((prePrice, curPrice) => prePrice + curPrice, 0)} /></h2>
                             </div>
 
                             <div>
