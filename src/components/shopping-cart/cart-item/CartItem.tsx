@@ -1,22 +1,22 @@
 'use client'
 
-import Icon from '@/components/common/icon_component';
-import { ProductInfo } from '@/model/market-data-model';
-import { Badge, Button, Checkbox, Popup, Stepper } from 'antd-mobile';
+import { CartItem as CartItemModel, ProductInfo } from '@/model/market-data-model';
+import { Checkbox, Stepper } from 'antd-mobile';
 import { useState } from 'react';
 import Image from "next/image";
 import Price from '@/components/common/Price';
 
 export default function CartItem(
-    { productInfo, currentQuantity }:
-        { productInfo: ProductInfo, currentQuantity: number }) {
-    const [quantity, setQuantity] = useState<number>(currentQuantity);
+    { cartItem }:
+        { cartItem: CartItemModel }) {
+    const [quantity, setQuantity] = useState<number>(cartItem.quantity);
+    const productInfo = cartItem.productId as ProductInfo;
 
     return (
         <>
             <div className='flex items-center p-4 bg-white justify-between'>
                 <div>
-                    <Checkbox value={productInfo._id}></Checkbox>
+                    <Checkbox value={cartItem._id}></Checkbox>
                 </div>
                 <div>
                     <Image width={76} height={76} src={productInfo.imageUrls.at(0) ?? ''} alt="product image" />

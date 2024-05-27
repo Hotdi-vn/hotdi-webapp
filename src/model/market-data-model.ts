@@ -2,6 +2,12 @@ type Map<T> = {
     [key: string]: T;
 };
 
+type AuditFields = {
+    createdBy: string;
+    createdAt: number;
+    updatedAt: number;
+}
+
 export enum CollectionType {
     NoiBatPhanPhat = "NoiBatPhanPhat",
     SanPhamMoiToanh = "SanPhamMoiToanh",
@@ -89,6 +95,13 @@ export class ProductInfo {
         this.inventoryManagementOption = inventoryManagementOption
     }
 }
+
+export type CartItem = AuditFields & {
+    _id: string;
+    cartId: string;
+    productId: ProductInfo | string;
+    quantity: number;
+};
 
 export enum Role {
     Buyer = 'buyer',
