@@ -12,3 +12,13 @@ export async function getMyCart(query: marketService.CartItemQuery): Promise<Res
     }
     return Promise.resolve(res);
 }
+
+export async function addCartItem(productId: string): Promise<ResponseData<CartItem>> {
+    const res = await marketService.addCartItem(productId);
+    if (res.error) {
+        console.log(res.error);
+        return Promise.reject(res.error);
+    }
+    return Promise.resolve(res);
+}
+
