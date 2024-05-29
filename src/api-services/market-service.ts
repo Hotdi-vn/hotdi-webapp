@@ -112,12 +112,12 @@ export async function getMyProducts(query: ProductQuery = { skip: 0, limit: 20 }
     try {
         response = await get<ProductInfo[]>(`${BASE_URL}/v1/products/me${buildProductQueryString(query)}`, 0, session.userProfile?.token);
         if (response.error) {
-            log('Error from createProduct:', response.error.id, response.error.code);
+            log('Error from getMyProducts:', response.error.id, response.error.code);
             throw new ServerError(response.error.id, response.error.code);
         }
         return response;
     } catch (error) {
-        log('Error from createProduct', error);
+        log('Error from getMyProducts', error);
         throw error;
     }
 }
@@ -129,12 +129,29 @@ export async function getMyCartItems(query: CartItemQuery = { skip: 0, limit: 20
     try {
         response = await get<CartItem[]>(`${BASE_URL}/v1/cart-items/me${buildQueryString(query)}`, 0, session.userProfile?.token);
         if (response.error) {
-            log('Error from createProduct:', response.error.id, response.error.code);
+            log('Error from getMyCartItems:', response.error.id, response.error.code);
             throw new ServerError(response.error.id, response.error.code);
         }
         return response;
     } catch (error) {
-        log('Error from createProduct', error);
+        log('Error from getMyCartItems', error);
+        throw error;
+    }
+}
+
+export async function addCartItem(productId: string): Promise<ResponseData<CartItem>> {
+    let response;
+    const session = await getSession();
+
+    try {
+        response = await post<CartItem>(`${BASE_URL}/v1/cart-items`, { productId: productId }, session.userProfile?.token);
+        if (response.error) {
+            log('Error from addCartItems:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response;
+    } catch (error) {
+        log('Error from addCartItems', error);
         throw error;
     }
 }

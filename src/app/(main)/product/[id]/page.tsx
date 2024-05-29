@@ -9,6 +9,7 @@ import Icon from "@/components/common/icon_component";
 import { BackButton } from "@/components/button/BackButton"
 import ShoppingCart from "@/components/shopping-cart/ShoppingCart"
 import ShopHighlightedProducts from "@/components/product-collection/ShopHighlightedProducts"
+import AddToCartButton from "@/components/shopping-cart/AddToCartButton"
 
 export default async function ProductDetails({
   params,
@@ -49,9 +50,7 @@ export default async function ProductDetails({
           </Button>
         </div>
         <div className="basis-3/6">
-          <Button color="primary" shape="rectangular" size="large" block>
-            Thêm vào giỏ hàng
-          </Button>
+          <AddToCartButton productId={productInfo.data._id} />
         </div>
       </div>
     </>
