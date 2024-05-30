@@ -2,11 +2,13 @@
 
 import Icon from '@/components/common/icon_component';
 import { CartItem as CartItemModel, ProductInfo } from '@/model/market-data-model';
-import { Badge, Button, NavBar, Popup } from 'antd-mobile';
+import { Badge, Button, Divider, NavBar, Popup } from 'antd-mobile';
 import { ReactNode, useEffect, useState } from 'react';
 import CartItem from './cart-item/CartItem';
 import Price from '../common/Price';
 import { getMyCart } from '@/server-actions/shopping-cart-actions';
+import ShopCartItems from './cart-item/ShopCartItems';
+import { UserProfile } from '@/libs/session-options';
 
 export default function ShoppingCart(
     {
@@ -55,10 +57,12 @@ export default function ShoppingCart(
                         </NavBar>
 
                     </div>
-                    <div className='body'>
+                    <div className='body divide-y-8'>
                         {
+                            // TODO mapping using new data structure
                             cartItems.map(
-                                item => <CartItem key={item._id} cartItem={item} />
+                                item =>
+                                    <ShopCartItems key={item._id} shopInfo={new UserProfile('token', 'id', 'Chuyện Nhà NaLi', '', [])} cartItems={cartItems} />
                             )
                         }
                     </div>
