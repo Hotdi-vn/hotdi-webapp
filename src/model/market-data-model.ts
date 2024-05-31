@@ -38,12 +38,21 @@ export const PublishStatusDisplayValue: Map<string> = {
     Hidden: 'Đang ẩn',
 }
 
+export type ImageInfo = {
+    _id: string;
+    url: string;
+    size: number;
+    ownerId: string;
+    createdAt: number;
+    __v: number;
+}
+
 export class ProductInfo {
     _id: string
     name: string
     description: string
     imageUrls: string[]
-    images: string[] = []
+    images: string[] | ImageInfo[] = []
     price: number
     location: string
     colectionType: CollectionType
@@ -54,12 +63,13 @@ export class ProductInfo {
     updatedAt: number
     inventoryStatus: InventoryStatus
     publishStatus: PublishStatus
-    inventoryManagementOption: string
+    inventoryManagementOption: boolean
     stockQuantity: number = 0
     weight: number = 0;
     height: number = 0;
     width: number = 0;
     length: number = 0;
+    categoryId?: string = undefined;
 
     constructor(
         id: string,
@@ -76,7 +86,7 @@ export class ProductInfo {
         updatedAt: number,
         inventoryStatus: InventoryStatus,
         publishStatus: PublishStatus,
-        inventoryManagementOption: string
+        inventoryManagementOption: boolean
     ) {
         this._id = id
         this.name = name

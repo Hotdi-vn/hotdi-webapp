@@ -1,5 +1,5 @@
 import { Button, Divider } from "@/components/common/antd_mobile_client_wrapper";
-import { InventoryStatus, ProductInfo } from "@/model/market-data-model";
+import { ImageInfo, InventoryStatus, ProductInfo } from "@/model/market-data-model";
 import Image from "next/image";
 import Icon from "@/components/common/icon_component";
 import ProductActions from "./ProductActions";
@@ -24,7 +24,7 @@ export default function Product({ productInfo }: { productInfo?: ProductInfo }) 
         <div className="flex flex-col bg-white p-3">
             <div className="flex flex-row gap-x-2.5">
                 <div>
-                    <Image width={76} height={76} src={productInfo.imageUrls.at(0) ?? ''} alt="product image" />
+                    <Image width={76} height={76} src={(productInfo.images.at(0) as ImageInfo).url ?? ''} alt="product image" />
                 </div>
                 <div className="flex flex-col justify-between">
                     <div className="text-base font-normal">
@@ -57,7 +57,7 @@ export default function Product({ productInfo }: { productInfo?: ProductInfo }) 
                 </div>
             </div>
             <Divider />
-            <ProductActions inventoryStatus={productInfo.inventoryStatus} publishStatus={productInfo.publishStatus} />
+            <ProductActions productInfo={productInfo} />
         </div>
     );
 }

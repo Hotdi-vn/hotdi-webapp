@@ -42,3 +42,25 @@ export async function post<T>(path: string, requestBody: any = {}, jwt: string =
         body: JSON.stringify(requestBody)
     });
 }
+
+export async function put<T>(path: string, requestBody: any = {}, jwt: string = ''): Promise<ResponseData<T>> {
+    return fetchApi(path, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
+        },
+        body: JSON.stringify(requestBody)
+    });
+}
+
+export async function patch<T>(path: string, requestBody: any = {}, jwt: string = ''): Promise<ResponseData<T>> {
+    return fetchApi(path, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
+        },
+        body: JSON.stringify(requestBody)
+    });
+}

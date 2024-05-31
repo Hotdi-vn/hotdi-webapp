@@ -33,15 +33,15 @@ export default function ProductManagement() {
     const itemsPerLoading = 20;
 
     async function fetchTabData() {
-        const inStockProductQuery = { inventoryStatus: InventoryStatus.InStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading };
+        const inStockProductQuery = { inventoryStatus: InventoryStatus.InStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading, populate: 'images' };
         const inStockProductResponse = await getMyProducts(inStockProductQuery);
         const inStockProductList = inStockProductResponse.data;
 
-        const outOfStockProductQuery = { inventoryStatus: InventoryStatus.OutOfStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading };
+        const outOfStockProductQuery = { inventoryStatus: InventoryStatus.OutOfStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading, populate: 'images' };
         const outOfStockProductResponse = await getMyProducts(outOfStockProductQuery);
         const outOfStockProductList = outOfStockProductResponse.data;
 
-        const hiddenProductQuery = { publishStatus: PublishStatus.Draft, skip: 0, limit: itemsPerLoading };
+        const hiddenProductQuery = { publishStatus: PublishStatus.Draft, skip: 0, limit: itemsPerLoading, populate: 'images' };
         const hiddenProductResponse = await getMyProducts(hiddenProductQuery);
         const hiddenProductList = hiddenProductResponse.data;
 
