@@ -156,7 +156,7 @@ export default function ProductOperation(
                             maxCount={10}
                             multiple={true}
                         >
-                            <div className={clsx("flex flex-col h-28 content-center justify-center align-middle flex-wrap",
+                            <div className={clsx("flex flex-col h-28 content-center f-center align-middle flex-wrap",
                                 {
                                     ["w-screen"]: fileList.length === 0,
                                     ["w-28 border"]: fileList.length > 0
