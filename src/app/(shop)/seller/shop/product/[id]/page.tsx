@@ -17,14 +17,8 @@ export default async function SellerShopProductUpdate(
     const productInfoRes = await getProductById(params.id, { populate: 'images' });
     const categoriesRes = await getCategories({ skip: 0, limit: 0 });
 
-    const navBar =
-        <NavBar backArrow={<BackButton redirectPath="/seller/shop/product" isConfirmedPrompt />} >
-            <div className="text-xl text-left font-normal">Chỉnh sửa sản phẩm</div>
-        </NavBar>;
-
     return (
         <>
-            <div className='top'>{navBar}</div>
             <Suspense >
                 <ProductOperation categories={categoriesRes.data} productInfo={productInfoRes.data} mode={OperationMode.Edit} />
             </Suspense>

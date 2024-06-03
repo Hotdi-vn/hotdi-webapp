@@ -24,7 +24,7 @@ export default function Product({ productInfo }: { productInfo?: ProductInfo }) 
         <div className="flex flex-col bg-white p-3">
             <div className="flex flex-row gap-x-2.5">
                 <div>
-                    <Image width={76} height={76} src={(productInfo.images.at(0) as ImageInfo).url ?? ''} alt="product image" />
+                    <Image width={76} height={76} src={(productInfo.images.at(0) as ImageInfo)?.url ?? ''} alt="product image" />
                 </div>
                 <div className="flex flex-col justify-between">
                     <div className="text-base font-normal">

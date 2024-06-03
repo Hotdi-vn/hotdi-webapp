@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from "react";
-import { ActionSheet, Button, Cascader, CascaderOption, Divider, Form, ImageUploadItem, ImageUploader, Popup, Switch, TextArea } from "antd-mobile";
+import { useEffect, useState, useTransition } from "react";
+import { ActionSheet, Button, Cascader, CascaderOption, Divider, Form, ImageUploadItem, ImageUploader, NavBar, Popup, Switch, TextArea } from "antd-mobile";
 import Icon from "../common/icon_component";
 import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo, PublishStatus, ImageInfo } from "@/model/market-data-model";
 import { Action } from "antd-mobile/es/components/action-sheet";
@@ -10,6 +10,8 @@ import FormattedNumberInput from "../common/FormattedNumberInput";
 import clsx from "clsx";
 import { OperationMode } from "@/constants/common-contants";
 import { Category } from "@/api-services/market-service";
+import { FormInstance } from "antd-mobile/es/components/form";
+import { BackButton } from "../button/BackButton";
 
 export default function ProductOperation(
     {
@@ -31,7 +33,7 @@ export default function ProductOperation(
     const [stockQuantityVisible, setStockQuantityVisible] = useState<boolean>(productInfo?.inventoryManagementOption ?? false);
     const [categorySelection, setCategorySelection] = useState<boolean>(false);
     const [sizeSelection, setSizeSelection] = useState(false);
-    const [formSubmitting, setFormSubmitting] = useState<boolean>(false);
+    const [isFieldsTounch, setIsFieldsTounch] = useState<boolean>(form.isFieldsTouched());
 
     type CascaderOptionExtend = CascaderOption & { isLeaf?: boolean };
     const categoryOptions = buildCategoryOptions(categories);
@@ -65,21 +67,6 @@ export default function ProductOperation(
             key: uploadedFile.fileId,
             url: uploadedFile.fileUrl,
         }
-    }
-
-    async function submitForm(isDraft: boolean = false): Promise<void> {
-        if (isDraft) {
-            form.setFieldValue('publishStatus', PublishStatus.Draft);
-        } else {
-            form.setFieldValue('publishStatus', PublishStatus.Published);
-        }
-
-        const uploadedImages = form.getFieldValue('uploadedImages') as ImageUploadItem[];
-        if (uploadedImages?.length > 0) {
-            form.setFieldValue('images', uploadedImages.map(item => item.key));
-        }
-
-        form.submit();
     }
 
     function buildCategoryOptions(categories: Category[]): CascaderOptionExtend[] {
@@ -132,19 +119,33 @@ export default function ProductOperation(
         return Promise.reject(new Error(rule.message));
     }
 
+    const navBar =
+        <NavBar backArrow={<BackButton redirectPath="/seller/shop/product" isConfirmedPrompt={isFieldsTounch} />} >
+            <div className="text-xl text-left font-normal">{OperationMode.Create === mode ? 'Thêm sản phẩm' : 'Chỉnh sửa sản phẩm'}</div>
+        </NavBar>;
+
     return (
         <>
+            <div className='top'>{navBar}</div>
             <Form
                 onFinish={(productInfo) => {
-                    setFormSubmitting(true);
-                    if (mode == OperationMode.Create) {
+                    if (mode === OperationMode.Create) {
                         sellerCreateProduct(productInfo);
-                    } else if (mode == OperationMode.Edit) {
+                    } else if (mode === OperationMode.Edit) {
                         sellerUpdateProduct(productInfo);
                     }
                 }}
                 requiredMarkStyle='none'
-                onFinishFailed={(error) => console.log(error)}
+                onFinishFailed={
+                    (error) => {
+                        console.log(error)
+                    }
+                }
+                onFieldsChange={() => {
+                    if (!isFieldsTounch) {
+                        setIsFieldsTounch(true);
+                    }
+                }}
                 name="createProductForm" form={form} className="body" initialValues={{ inventoryStatus: InventoryStatus.InStock }}>
                 <div className=" bg-white h-32 flex justify-center content-center flex-wrap">
                     <Form.Item initialValue={defaultUploadedImages} name='uploadedImages' rules={[{ required: true, message: 'Vui lòng tải lên hình ảnh sản phẩm' }]}>
@@ -244,7 +245,7 @@ export default function ProductOperation(
                     <FormattedNumberInput placeholder="Ví dụ 100.000" prefix={'đ'} textAlign="left" formatImmediately />
                 </Form.Item>
 
-                <Form.Item initialValue={productInfo?.inventoryManagementOption} name='inventoryManagementOption' label='Quản lý tồn kho' layout='horizontal' childElementPosition='right'>
+                <Form.Item initialValue={productInfo?.inventoryManagementOption ?? false} name='inventoryManagementOption' label='Quản lý tồn kho' layout='horizontal' childElementPosition='right'>
                     <Switch onChange={setStockQuantityVisible} defaultChecked={productInfo?.inventoryManagementOption} />
                 </Form.Item>
 
@@ -266,7 +267,7 @@ export default function ProductOperation(
                     onAction={(action) => form.setFieldValue('inventoryStatus', action.key)}
                 />
 
-                <Form.Item initialValue={productInfo?.stockQuantity} name='stockQuantity' label='Số lượng' layout='horizontal' childElementPosition='right' hidden={!stockQuantityVisible}
+                <Form.Item initialValue={productInfo?.stockQuantity ?? 0} name='stockQuantity' label='Số lượng' layout='horizontal' childElementPosition='right' hidden={!stockQuantityVisible}
                     rules={[{ type: 'number', min: 0, max: 999999, message: 'Số lượng nằm trong khoảng từ 0 đến 999.999', validator: checkNumber }]}>
                     <FormattedNumberInput placeholder="0" formatImmediately />
                 </Form.Item>
@@ -299,10 +300,46 @@ export default function ProductOperation(
 
                 <Form.Item name='categoryId' hidden rules={[{ required: true }]} />
             </Form >
-            <div className='flex flex-row bottom p-2 gap-x-2'>
-                <Button type="submit" loading={formSubmitting} className="basis-1/2" color='primary' fill="outline" onClick={() => submitForm(true)}>Lưu</Button>
-                <Button type="submit" loading={formSubmitting} className="basis-1/2" color='primary' onClick={() => submitForm()}>{productInfo ? 'Cập nhật' : 'Đăng bán'}</Button>
-            </div>
+            <ProductOperationActions form={form} mode={mode} disableUpdateButton={!isFieldsTounch} />
         </>
+    );
+}
+
+function ProductOperationActions({ form, mode, disableUpdateButton = true }: { form: FormInstance, mode: OperationMode, disableUpdateButton?: boolean }) {
+    const [isPending, startTransition] = useTransition();
+
+
+    async function submitForm(isDraft: boolean = false): Promise<void> {
+        startTransition(() => {
+            if (mode === OperationMode.Create) {
+                if (isDraft) {
+                    form.setFieldValue('publishStatus', PublishStatus.Draft);
+                } else {
+                    form.setFieldValue('publishStatus', PublishStatus.Published);
+                }
+            }
+
+            const uploadedImages = form.getFieldValue('uploadedImages') as ImageUploadItem[];
+            if (uploadedImages?.length > 0) {
+                form.setFieldValue('images', uploadedImages.map(item => item.key));
+            }
+
+            form.submit();
+        })
+    }
+
+
+    return (
+        <div className='flex flex-row bottom p-2 gap-x-2'>
+            {
+                mode === OperationMode.Create ?
+                    <>
+                        <Button type="submit" loading={isPending} className="basis-1/2" color='primary' fill="outline" onClick={() => submitForm(true)}>Lưu</Button>
+                        <Button type="submit" loading={isPending} className="basis-1/2" color='primary' onClick={() => submitForm()}>Đăng bán</Button>
+                    </>
+                    :
+                    <Button disabled={disableUpdateButton} type="submit" loading={isPending} className="basis-full" color='primary' onClick={() => submitForm()}>Cập nhật</Button>
+            }
+        </div>
     );
 }
