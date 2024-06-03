@@ -15,14 +15,8 @@ export default async function SellerShopProductCreate() {
 
     const categoriesRes = await getCategories({ skip: 0, limit: 0 });
 
-    const navBar =
-        <NavBar backArrow={<BackButton redirectPath="/seller/shop/product" isConfirmedPrompt />} >
-            <div className="text-xl text-left font-normal">Thêm sản phẩm</div>
-        </NavBar>;
-
     return (
         <>
-            <div className='top'>{navBar}</div>
             <Suspense>
                 <ProductOperation categories={categoriesRes.data} />
             </Suspense>
