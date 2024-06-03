@@ -2,7 +2,7 @@ import 'server-only'
 
 import { ResponseData, ServerError } from '@/utils/data-fetching-utils';
 import { log } from 'console';
-import { get, getNoCache, post } from '@/utils/server-side-fetching';
+import { get, getNoCache, post, put } from '@/utils/server-side-fetching';
 import { CartItem, InventoryStatus, ProductInfo, PublishStatus, Role } from '@/model/market-data-model';
 import { getSession } from '@/server-actions/authentication-actions';
 import { ERROR_CODE_ITEM_NOT_FOUND } from '@/constants/common-contants';
@@ -34,25 +34,10 @@ export type CategoryQuery = {
     limit?: number;
 }
 
-function buildCategoryQueryString(query: CategoryQuery) {
-    let queryList = [];
-    if (query.parent) {
-        queryList.push(`parent=${query.parent}`);
-    }
-    if (query.skip) {
-        queryList.push(`skip=${query.skip}`);
-    }
-    if (query.limit) {
-        queryList.push(`limit=${query.limit}`);
-    }
-
-    return queryList.length > 0 ? `?${queryList.join('&')}` : '';
-}
-
 export async function getCategories(query: CategoryQuery = { skip: 0, limit: 20 }): Promise<ResponseData<Category[]>> {
     let response;
     try {
-        response = await getNoCache<Category[]>(`${BASE_URL}/v1/categories${buildCategoryQueryString(query)}`);
+        response = await getNoCache<Category[]>(`${BASE_URL}/v1/categories${buildQueryString(query)}`);
         if (response.error) {
             log('Error from getCategories:', response.error.id, response.error.code);
             throw new ServerError(response.error.id, response.error.code);
@@ -80,29 +65,28 @@ export async function createProduct(productInfo: ProductInfo): Promise<ProductIn
     }
 }
 
+export async function updateProduct(productInfo: ProductInfo): Promise<ProductInfo> {
+    let response;
+    const session = await getSession();
+    try {
+        response = await put<ProductInfo>(`${BASE_URL}/v1/products/${productInfo._id}`, productInfo, session.userProfile?.token);
+        if (response.error) {
+            log('Error from updateProduct:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response.data;
+    } catch (error) {
+        log('Error from updateProduct', error);
+        throw error;
+    }
+}
+
 export type ProductQuery = {
     inventoryStatus?: InventoryStatus;
     publishStatus?: PublishStatus;
     skip?: number;
     limit?: number;
-}
-
-function buildProductQueryString(query: ProductQuery) {
-    let queryList = [];
-    if (query.inventoryStatus) {
-        queryList.push(`inventoryStatus=${query.inventoryStatus}`);
-    }
-    if (query.publishStatus) {
-        queryList.push(`publishStatus=${query.publishStatus}`);
-    }
-    if (query.skip) {
-        queryList.push(`skip=${query.skip}`);
-    }
-    if (query.limit) {
-        queryList.push(`limit=${query.limit}`);
-    }
-
-    return queryList.length > 0 ? `?${queryList.join('&')}` : '';
+    populate?: string;
 }
 
 export async function getMyProducts(query: ProductQuery = { skip: 0, limit: 20 }): Promise<ResponseData<ProductInfo[]>> {
@@ -110,7 +94,7 @@ export async function getMyProducts(query: ProductQuery = { skip: 0, limit: 20 }
     const session = await getSession();
 
     try {
-        response = await get<ProductInfo[]>(`${BASE_URL}/v1/products/me${buildProductQueryString(query)}`, 0, session.userProfile?.token);
+        response = await get<ProductInfo[]>(`${BASE_URL}/v1/products/me${buildQueryString(query)}`, 0, session.userProfile?.token);
         if (response.error) {
             log('Error from getMyProducts:', response.error.id, response.error.code);
             throw new ServerError(response.error.id, response.error.code);
@@ -224,4 +208,19 @@ export async function getMyRoles(): Promise<ResponseData<Permission>> {
         throw new ServerError('Error in getMyRoles', 'User not found');
     }
     return getUserRoles(session.userProfile.id)
+}
+
+export async function getProductById(id: string, query: ProductQuery = {}): Promise<ResponseData<ProductInfo>> {
+    let response;
+    try {
+        response = await get<ProductInfo>(`${BASE_URL}/v1/products/${id}${buildQueryString(query)}`);
+        if (response.error) {
+            log('Error from getProductById:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response;
+    } catch (error) {
+        log('Error from getProductById', error);
+        throw error;
+    }
 }
