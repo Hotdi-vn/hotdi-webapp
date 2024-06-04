@@ -51,6 +51,7 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
   if (productInfo.collectionType == "ChoNeHotDi") {
     specialType = true;
     productCardType = ProductCardType.Special;
+    productInfoPadding = true;
   }
 
   const image = (
@@ -83,6 +84,27 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
     </div>
   )
 
+  const priceAndSoldCount = specialType ? (
+    <div className={styles.priceAndSoldCountSpecial}>
+      <div className={styles.productPrice}>
+        {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(productInfo.price)}
+      </div>
+      <div className='text-neutral-300'>|</div>
+      <div className={styles.numberSold}>
+        Đã bán {formatNumber(productInfo.soldCount)}
+      </div>
+    </div>
+  ) : (
+    <div className={styles.priceAndSoldCount}>
+      <div className={styles.productPrice}>
+        {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(productInfo.price)}
+      </div>
+      <div className={styles.numberSold}>
+        Đã bán {formatNumber(productInfo.soldCount)}
+      </div>
+    </div>
+  )
+
   return (
     <Link href={`/product/${productInfo._id}`}>
       <div className={clsx({
@@ -95,16 +117,14 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
           [styles.productInfoContainer]: !productInfoPadding,
           [styles.productInfoContainerWithPadding]: productInfoPadding
         })}>
-          <div className={styles.productName}>
+          <div className={clsx({
+          [styles.productName]: !specialType,
+          [styles.productNameSpecial]: specialType
+        })}>
             {productInfo.name.substring(0, 30)}
             {productInfo.name.length > 30 ? '...' : ''}
           </div>
-          <div className={styles.productPrice}>
-            {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(productInfo.price)}
-          </div>
-          <div className={styles.numberSold}>
-            Đã bán {formatNumber(productInfo.soldCount)}
-          </div>
+          {priceAndSoldCount}
           {
             showLocation ?
               <div className={styles.productLocation}>
