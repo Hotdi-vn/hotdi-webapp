@@ -8,6 +8,7 @@ import { ProductInfo } from '@/model/market-data-model';
 export enum ProductCardType {
   Normal,
   Large,
+  Special
 }
 
 export enum CollectionType {
@@ -46,6 +47,12 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
     productInfoPadding?: boolean, imageRadius?: boolean, productCardType?: ProductCardType, imageSizes?: string, showLocation?: boolean
   }) {
 
+  let specialType = false;
+  if (productInfo.collectionType == "ChoNeHotDi") {
+    specialType = true;
+    productCardType = ProductCardType.Special;
+  }
+
   const image = (
     <Image
       src={productInfo.imageUrls.at(0) ?? ''}
@@ -55,7 +62,8 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
       height={fill ? 0 : height}
       sizes={imageSizes}
       className={clsx({
-        [styles.imageRadius]: imageRadius,
+        [styles.imageRadiusLeft]: specialType,
+        [styles.imageRadius]: imageRadius && !specialType,
         [styles.image]: !imageRadius
       })}
     />
@@ -63,6 +71,10 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
 
   const imageContainer = shortImage ? (
     <div className={`${styles.imageContainer} ${styles.fourByThree}`}>
+      {image}
+    </div>
+  ) : specialType ? (
+    <div className={`${styles.imageContainer} ${styles.special}`}>
       {image}
     </div>
   ) : (
@@ -75,7 +87,8 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
     <Link href={`/product/${productInfo._id}`}>
       <div className={clsx({
         [styles.cardContainer]: productCardType == ProductCardType.Normal,
-        [styles.cardContainerLarge]: productCardType == ProductCardType.Large
+        [styles.cardContainerLarge]: productCardType == ProductCardType.Large,
+        [styles.cardContainerSpecial]: productCardType == ProductCardType.Special
       })}>
         {imageContainer}
         <Space direction="vertical" className={clsx({

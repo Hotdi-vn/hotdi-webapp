@@ -8,6 +8,14 @@
   white-space: normal;
 }
 
+.cardContainerSpecial {
+  width: 75vw;
+  white-space: normal;
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+}
+
 .imageContainer {
   position: relative;
 }
@@ -20,12 +28,23 @@
   aspect-ratio: 4/3;
 }
 
+.imageContainer.special {
+  aspect-ratio: 1;
+  width: 100px;
+}
+
 .image {
   object-fit: cover;
 }
 
 .imageRadius {
   border-radius: 8px;
+  object-fit: cover;
+}
+
+.imageRadiusLeft {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
   object-fit: cover;
 }
 
