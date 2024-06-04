@@ -1,13 +1,16 @@
 'use client'
 import { UserProfile } from "@/libs/session-options";
 import { useState } from "react";
+import Image from "next/image";
 
 const UserCard = ({ userProfile }: { userProfile: UserProfile }) => {
     const [imageError, setImageError] = useState(false);
     return (
         <div className="flex gap-2 p-3 justify-center bg-white">
             <div>
-                <img
+                <Image
+                    width={32}
+                    height={32}
                     className="float-left block mx-auto h-16 rounded-full"
                     src={imageError ? userProfile.picture : '/logo.png'}
                     onErrorCapture={() => setImageError(true)}
