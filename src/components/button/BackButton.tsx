@@ -1,23 +1,33 @@
 'use client'
 
 import Icon from '@/components/common/icon_component';
-import { Dialog } from 'antd-mobile';
+import { Modal } from 'antd-mobile';
+import { ExclamationCircleFill } from 'antd-mobile-icons';
 import { useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
 
 export function BackButton(
     {
         redirectPath, isConfirmedPrompt,
+        header = <ExclamationCircleFill
+            style={{
+                fontSize: 64,
+                color: 'var(--adm-color-warning)',
+            }}
+        />,
+        title = 'Thoát không lưu?',
         confirmedPromptMessage = 'Thông tin sản phẩm sẽ không được lưu nếu bạn rời đi. Bạn có muốn rời đi?',
-        cancelText = 'Ở lại',
+        cancelText = 'Tiếp tục chỉnh sửa',
         confirmText = 'Rời đi',
         icon = <Icon name='back' />
     }:
         {
             redirectPath?: string, isConfirmedPrompt?: boolean,
+            header?: ReactNode,
+            title?: string,
             confirmedPromptMessage?: string,
-            cancelText?: string,
-            confirmText?: string,
+            cancelText?: ReactNode,
+            confirmText?: ReactNode,
             icon?: ReactNode
         }) {
     const router = useRouter();
@@ -28,13 +38,24 @@ export function BackButton(
 
     const onClick = () => {
         if (isConfirmedPrompt) {
-            Dialog.confirm({
+            Modal.show({
+                closeOnAction: true,
+                header: header,
+                title: title,
                 content: confirmedPromptMessage,
-                cancelText: cancelText,
-                confirmText: confirmText,
-                onConfirm() {
-                    back();
-                },
+                actions: [
+                    {
+                        key: 'cancel',
+                        text: cancelText,
+                        primary: true
+                    },
+                    {
+                        key: 'confirm',
+                        text: confirmText,
+                        danger: true,
+                        onClick: () => { back(); }
+                    },
+                ]
             })
 
         } else {
@@ -43,6 +64,9 @@ export function BackButton(
     }
 
     return (
-        <div onClick={onClick}>{icon}</div>
+        <div onClick={onClick}>
+            {icon}
+
+        </div>
     )
 }

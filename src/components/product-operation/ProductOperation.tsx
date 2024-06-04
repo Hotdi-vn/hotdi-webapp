@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useTransition } from "react";
-import { ActionSheet, Button, Cascader, CascaderOption, Divider, Form, ImageUploadItem, ImageUploader, NavBar, Popup, Switch, TextArea } from "antd-mobile";
+import { ActionSheet, Button, Cascader, CascaderOption, Divider, Form, ImageUploadItem, ImageUploader, Modal, NavBar, Popup, Switch, TextArea, Toast } from "antd-mobile";
 import Icon from "../common/icon_component";
 import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo, PublishStatus, ImageInfo } from "@/model/market-data-model";
 import { Action } from "antd-mobile/es/components/action-sheet";
@@ -12,6 +12,7 @@ import { OperationMode } from "@/constants/common-contants";
 import { Category } from "@/api-services/market-service";
 import { FormInstance } from "antd-mobile/es/components/form";
 import { BackButton } from "../button/BackButton";
+import { ExclamationCircleFill } from "antd-mobile-icons";
 
 export default function ProductOperation(
     {
@@ -128,11 +129,32 @@ export default function ProductOperation(
         <>
             <div className='top'>{navBar}</div>
             <Form
-                onFinish={(productInfo) => {
-                    if (mode === OperationMode.Create) {
-                        sellerCreateProduct(productInfo);
-                    } else if (mode === OperationMode.Edit) {
-                        sellerUpdateProduct(productInfo);
+                onFinish={async (productInfo) => {
+                    try {
+                        if (mode === OperationMode.Create) {
+                            await sellerCreateProduct(productInfo);
+                            Toast.show({
+                                content: 'Tạo sản phẩm thành công',
+                                position: 'top'
+                            });
+                        } else if (mode === OperationMode.Edit) {
+                            await sellerUpdateProduct(productInfo);
+                            Toast.show({
+                                content: 'Cập nhật sản phẩm thành công',
+                                position: 'top'
+                            });
+                        }
+                    } catch (error) {
+                        Modal.alert({
+                            header: <ExclamationCircleFill
+                                style={{
+                                    fontSize: 64,
+                                    color: 'var(--adm-color-warning)',
+                                }}
+                            />,
+                            content: 'Có lỗi xảy ra. Vui lòng thử lại.',
+                            confirmText: 'OK'
+                        })
                     }
                 }}
                 requiredMarkStyle='none'

@@ -14,32 +14,28 @@ const CarouselProduct = (prop: any) => {
                 <Image
                     width={400}
                     height={400}
-                    src={activeImg} 
-                    alt="" 
-                    className='w-full h-full aspect-square object-cover rounded-xl' 
+                    src={activeImg}
+                    alt=""
+                    className='w-full h-full aspect-square object-cover rounded-xl'
                     onClick={() => {
                         setVisible(true)
-                    }}/>
+                    }} />
                 <div className='flex flex-row h-24 overflow-scroll flex-nowrap'>
                     {images.map((image: string, index: number) => {
                         return (
-                            <Image 
-                            width={96}
-                            height={96}
-                            src={image} key={index} alt="" className='w-24 h-24 rounded-md cursor-pointer border-solid border-2 border-black mx-3 float-left' onClick={() => setActiveImage(image)}/>
+                            <Image
+                                width={96}
+                                height={96}
+                                src={image} key={index} alt="" className='w-24 h-24 rounded-md cursor-pointer border-solid border-2 border-black mx-3 float-left' onClick={() => setActiveImage(image)} />
                         )
                     })}
                 </div>
             </div>
             <ImageViewer
-                classNames={{
-                mask: 'customize-mask',
-                body: 'customize-body',
-                }}
                 image={activeImg}
                 visible={visible}
                 onClose={() => {
-                setVisible(false)
+                    setVisible(false)
                 }}
             />
         </div>
