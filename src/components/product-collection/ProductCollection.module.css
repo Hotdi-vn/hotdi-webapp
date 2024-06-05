@@ -4,7 +4,7 @@
   padding-bottom: 20px;
 }
 
-.wrapper.special {
+.wrapperSpecial {
   background-color: #7A9350;
   font-size: 16px;
   padding-bottom: 20px;
@@ -37,18 +37,13 @@
   grid-template-rows: repeat(2, 1fr);
 }
 
-.collection.special {
-  grid-template-rows: repeat(2, 1fr);
-
-}
-
 .title {
   color: #3A6F05;
   font-weight: 700;
   font-size: 1.25em;
 }
 
-.title.special {
+.titleSpecial {
   color: #FFFFFF;
   font-weight: 700;
   font-size: 1.25em;
@@ -59,7 +54,7 @@
   align-items: center;
 }
 
-.revealButton.special {
+.revealButtonSpecial {
   color: #FFFFFF;
   display: flex;
   align-items: center;

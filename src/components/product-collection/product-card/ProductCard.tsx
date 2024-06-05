@@ -47,12 +47,7 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
     productInfoPadding?: boolean, imageRadius?: boolean, productCardType?: ProductCardType, imageSizes?: string, showLocation?: boolean
   }) {
 
-  let specialType = false;
-  if (productInfo.collectionType == "ChoNeHotDi") {
-    specialType = true;
-    productCardType = ProductCardType.Special;
-    productInfoPadding = true;
-  }
+  const specialType = productCardType == ProductCardType.Special ? true : false;
 
   const image = (
     <Image
@@ -70,40 +65,17 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
     />
   )
 
-  const imageContainer = shortImage ? (
-    <div className={`${styles.imageContainer} ${styles.fourByThree}`}>
-      {image}
-    </div>
-  ) : specialType ? (
-    <div className={`${styles.imageContainer} ${styles.special}`}>
-      {image}
-    </div>
-  ) : (
-    <div className={`${styles.imageContainer} ${styles.square}`}>
+  const imageContainer = (
+    <div className={clsx({
+      [`${styles.imageContainer} ${styles.fourByThree}`] : shortImage,
+      [`${styles.imageContainer} ${styles.special}`] : specialType,
+      [`${styles.imageContainer} ${styles.square}`] : !shortImage && !specialType
+    })}>
       {image}
     </div>
   )
 
-  const priceAndSoldCount = specialType ? (
-    <div className={styles.priceAndSoldCountSpecial}>
-      <div className={styles.productPrice}>
-        {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(productInfo.price)}
-      </div>
-      <div className='text-neutral-300'>|</div>
-      <div className={styles.numberSold}>
-        Đã bán {formatNumber(productInfo.soldCount)}
-      </div>
-    </div>
-  ) : (
-    <div className={styles.priceAndSoldCount}>
-      <div className={styles.productPrice}>
-        {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(productInfo.price)}
-      </div>
-      <div className={styles.numberSold}>
-        Đã bán {formatNumber(productInfo.soldCount)}
-      </div>
-    </div>
-  )
+  productInfoPadding = specialType ? true : false;
 
   return (
     <Link href={`/product/${productInfo._id}`}>
@@ -124,7 +96,18 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
             {productInfo.name.substring(0, 30)}
             {productInfo.name.length > 30 ? '...' : ''}
           </div>
-          {priceAndSoldCount}
+          <div className={clsx({
+            [styles.priceAndSoldCountSpecial] : specialType,
+            [styles.priceAndSoldCount] : !specialType
+          })}>
+            <div className={styles.productPrice}>
+              {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(productInfo.price)}
+            </div>
+            {specialType && <div className='text-neutral-300'>|</div>}
+            <div className={styles.numberSold}>
+              Đã bán {formatNumber(productInfo.soldCount)}
+            </div>
+          </div>
           {
             showLocation ?
               <div className={styles.productLocation}>

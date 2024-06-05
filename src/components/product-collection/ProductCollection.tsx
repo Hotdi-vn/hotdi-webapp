@@ -1,13 +1,16 @@
 import React from 'react';
-import ProductCard, { CollectionType } from "./product-card/ProductCard";
+import ProductCard, { CollectionType, ProductCardType } from "./product-card/ProductCard";
 import styles from "./ProductCollection.module.css"
 import { RightOutline } from '@/components/common/antd_mobile_client_wrapper';
 import Link from 'next/link';
 import { get, getNoCache } from '@/utils/server-side-fetching';
 import { ProductInfo } from '@/model/market-data-model';
+import clsx from 'clsx';
 
-export default async function ProductCollection({ collectionType, title, twoRows, special }:
-  { collectionType: CollectionType, title: string, twoRows?: boolean, special?: boolean }) {
+export default async function ProductCollection({ collectionType, title, twoRows }:
+  { collectionType: CollectionType, title: string, twoRows?: boolean }) {
+
+  const specialType = collectionType == "ChoNeHotDi" ? true : false;
 
   const response = await getNoCache<ProductInfo[]>(`/market/v1/products?collectionType=${collectionType}`);
 
@@ -17,43 +20,44 @@ export default async function ProductCollection({ collectionType, title, twoRows
 
   const productList: ProductInfo[] = response.data;
 
-  const collectionItems = productList.map((productInfo, index) => (
-    <ProductCard
-      key={productInfo._id}
-      productInfo={productInfo}
-      shortImage={twoRows}
-    />
-  ));
+  const collectionItems = productList.map((productInfo, index) => {
+    const productCardType = specialType ? ProductCardType.Special : ProductCardType.Normal;
+    return (
+      <ProductCard
+        key={productInfo._id}
+        productInfo={productInfo}
+        shortImage={twoRows}
+        productCardType={productCardType}
+      />
+    )
+  });
 
-  const collection = special ? (
-      <div className={`${styles.collection} ${styles.special}`}>
+  const collection = (
+    <div className={clsx({
+      [`${styles.collection} ${styles.twoRows}`] : twoRows,
+      [styles.collection] : !twoRows 
+    })}>
         {collectionItems}
-      </div>
-    ) :
-    twoRows ? (
-      <div className={`${styles.collection} ${styles.twoRows}`}>
-        {collectionItems}
-      </div>
-  ) : (
-    <div className={styles.collection}>
-      {collectionItems}
     </div>
-  );
-
-  const wrapperStyle = special ? `${styles.wrapper} ${styles.special}` : styles.wrapper;
-
-  const titleStyle = special ? `${styles.title} ${styles.special}` : styles.title;
-
-  const revealButtonStyle = special ? `${styles.revealButton} ${styles.special}` : styles.revealButton;
+  )
 
   return (
-    <div className={wrapperStyle}>
+    <div className={clsx({
+      [styles.wrapperSpecial] : specialType,
+      [styles.wrapper] : !specialType
+    })}>
       <div className={styles.header}>
-        <h1 className={titleStyle}>
+        <h1 className={clsx({
+          [styles.titleSpecial] : specialType,
+          [styles.title] : !specialType
+        })}>
           {title}
         </h1>
         <Link href={`/product?collection=${title}`}>
-          <div className={revealButtonStyle}>
+          <div className={clsx({
+            [styles.revealButtonSpecial] : specialType,
+            [styles.revealButton] : !specialType
+          })}>
             Xem thêm <RightOutline />
           </div>
         </Link>
