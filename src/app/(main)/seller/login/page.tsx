@@ -32,6 +32,16 @@ export default function SellerLogin({
         <form>
           <input type='hidden' name={LOGIN_REDIRECT_URL_FIELD_NAME} value={loginRedirectUrl} />
           <input type='hidden' name={SELLER_LOGIN_FIELD_NAME} value='true' />
+          <SubmitButton formAction={zaloLogin} className="w-full rounded-sm border h-11">
+            <Image
+              className="float-left ms-1.5"
+              src="/zalo.png"
+              width={16}
+              height={16}
+              alt="icon"
+            />
+            Zalo
+          </SubmitButton>
           <SubmitButton formAction={facebookLogin} className="w-full rounded-sm border h-11">
             <Image
               className="float-left ms-1.5"
@@ -41,16 +51,6 @@ export default function SellerLogin({
               alt="icon"
             />
             Facebook
-          </SubmitButton>
-          <SubmitButton formAction={zaloLogin} className="w-full rounded-sm border h-11">
-            <Image
-              className="float-left ms-1.5"
-              src="/fb.png"
-              width={16}
-              height={16}
-              alt="icon"
-            />
-            Zalo
           </SubmitButton>
         </form>
       </div>
