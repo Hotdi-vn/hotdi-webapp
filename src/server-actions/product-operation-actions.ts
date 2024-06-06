@@ -4,7 +4,6 @@ import { ProductInfo } from "@/model/market-data-model";
 import * as marketService from "@/api-services/market-service";
 import { uploadFile } from "@/api-services/file-service";
 import { redirect } from "next/navigation";
-import { Category } from "@/api-services/market-service";
 
 export async function sellerCreateProduct(productInfo: ProductInfo) {
     await marketService.createProduct(productInfo);

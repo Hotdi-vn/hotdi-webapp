@@ -6,27 +6,9 @@ import { get, getNoCache, post, put } from '@/utils/server-side-fetching';
 import { CartItem, InventoryStatus, ProductInfo, PublishStatus, Role } from '@/model/market-data-model';
 import { getSession } from '@/server-actions/authentication-actions';
 import { ERROR_CODE_ITEM_NOT_FOUND } from '@/constants/common-contants';
+import { Category } from '@/model/market-data-model';
 
 const BASE_URL = '/market';
-
-export class Category {
-    _id: string;
-    name: string;
-    imageUrl: string;
-    parent: string = '';
-    ancestors: string[] = [];
-    isLeaf: boolean = false;
-
-    constructor(
-        id: string,
-        name: string,
-        imageUrl: string,
-    ) {
-        this._id = id
-        this.name = name
-        this.imageUrl = imageUrl
-    }
-}
 
 export type CategoryQuery = {
     parent?: string;

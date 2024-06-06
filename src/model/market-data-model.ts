@@ -117,3 +117,21 @@ export enum Role {
     Buyer = 'buyer',
     Seller = 'seller',
 }
+export class Category {
+    id: string;
+    name: string;
+    imageUrl: string;
+    parent: string = '';
+    ancestors: string[] = [];
+    isLeaf: boolean = false;
+
+    constructor(
+        id: string,
+        name: string,
+        imageUrl: string
+    ) {
+        this.id = id;
+        this.name = name;
+        this.imageUrl = imageUrl;
+    }
+}
