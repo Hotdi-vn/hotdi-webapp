@@ -9,7 +9,7 @@ import { sellerCreateProduct, sellerUpdateProduct, uploadProductImage } from "@/
 import FormattedNumberInput from "../common/FormattedNumberInput";
 import clsx from "clsx";
 import { OperationMode } from "@/constants/common-contants";
-import { Category } from "@/api-services/market-service";
+import { Category } from '@/model/market-data-model';
 import { FormInstance } from "antd-mobile/es/components/form";
 import { BackButton } from "../button/BackButton";
 import { ExclamationCircleFill } from "antd-mobile-icons";
@@ -37,9 +37,9 @@ export default function ProductOperation(
     const [isFieldsTounch, setIsFieldsTounch] = useState<boolean>(form.isFieldsTouched());
 
     type CascaderOptionExtend = CascaderOption & { isLeaf?: boolean };
-    const categoryOptions = buildCategoryOptions(categories);
-    const productCategory = productInfo ? categories.find(cate => productInfo.categoryId === cate._id) : undefined;
-    const defaultCategory = [...(productCategory?.ancestors ?? []), productCategory?._id ?? ''];
+    const categoryOptions = buildCategoryOptions('0', categories);
+    const productCategory = productInfo ? categories.find(cate => productInfo.categoryId === cate.id) : undefined;
+    const defaultCategory = [...(productCategory?.ancestors ?? []), productCategory?.id ?? ''];
 
     function populateProductInfo() {
         if (productInfo && OperationMode.Create !== mode) {
@@ -70,28 +70,16 @@ export default function ProductOperation(
         }
     }
 
-    function buildCategoryOptions(categories: Category[]): CascaderOptionExtend[] {
-        const rootCategories = categories.filter(cat => cat.parent === '0');
-        const childCategories = categories.filter(cat => cat.parent !== '0');
-        const rootOptions = rootCategories.map<CascaderOptionExtend>(category => ({
-            value: category._id,
-            label: category.name,
-            isLeaf: category.isLeaf,
-            children: category.isLeaf ? undefined : buildChildrenOptions(category, childCategories)
-        }));
-        return rootOptions;
-    }
-
-    function buildChildrenOptions(parentCategory: Category, categories: Category[]): CascaderOptionExtend[] | undefined {
-        const childCategories = categories.filter(cat => cat.parent === parentCategory._id);
-        const remainingCategories = categories.filter(cat => cat.parent != parentCategory._id);
-        const children = childCategories.map<CascaderOptionExtend>(cat => ({
-            value: cat._id,
+    function buildCategoryOptions(parentId: string, categories: Category[]): CascaderOptionExtend[] {
+        const parentCatogories = categories.filter(cat => cat.parent === parentId);
+        const remainingCategories = categories.filter(cat => cat.parent != parentId);
+        const options = parentCatogories.map<CascaderOptionExtend>(cat => ({
+            value: cat.id,
             label: cat.name,
             isLeaf: cat.isLeaf,
-            children: cat.isLeaf ? undefined : buildChildrenOptions(cat, remainingCategories)
+            children: cat.isLeaf ? undefined : buildCategoryOptions(cat.id, remainingCategories)
         }));
-        return children;
+        return options;
     }
 
     useEffect(() => {
