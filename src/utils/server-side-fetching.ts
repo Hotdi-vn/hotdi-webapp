@@ -2,10 +2,10 @@ import 'server-only'
 import { InternalServerError, ResponseData } from './data-fetching-utils';
 import { log } from 'console';
 
-async function fetchApi(path: string, options?: any): Promise<any> {
+async function fetchApi(path: string, options?: any, apiEndpoint: string = process.env.API_ENDPOINT ?? ''): Promise<any> {
     let res;
     try {
-        res = await fetch(`${process.env.API_ENDPOINT}${path}`, options);
+        res = await fetch(`${apiEndpoint}${path}`, options);
         return res.json();
     } catch (error) {
         log('Error when fetching api', error);
@@ -17,7 +17,7 @@ async function fetchApi(path: string, options?: any): Promise<any> {
 }
 
 export async function get<T>(
-    path: string, cacheDuration: number = 0, jwt: string = '', cacheTags: [] = []
+    path: string, cacheDuration: number = 0, jwt: string = '', cacheTags: [] = [], apiEndpoint?: string
 ): Promise<ResponseData<T>> {
     return fetchApi(path, {
         headers: {
@@ -25,14 +25,14 @@ export async function get<T>(
             'Authorization': `Bearer ${jwt}`
         },
         next: { revalidate: cacheDuration, tags: cacheTags }
-    });
+    }, apiEndpoint);
 }
 
-export async function getNoCache<T>(path: string): Promise<ResponseData<T>> {
-    return fetchApi(path, { next: { revalidate: 0 } });
+export async function getNoCache<T>(path: string, apiEndpoint?: string): Promise<ResponseData<T>> {
+    return fetchApi(path, { next: { revalidate: 0 } }, apiEndpoint);
 }
 
-export async function post<T>(path: string, requestBody: any = {}, jwt: string = ''): Promise<ResponseData<T>> {
+export async function post<T>(path: string, requestBody: any = {}, jwt: string = '', apiEndpoint?: string): Promise<ResponseData<T>> {
     return fetchApi(path, {
         method: 'POST',
         headers: {
@@ -40,10 +40,10 @@ export async function post<T>(path: string, requestBody: any = {}, jwt: string =
             'Authorization': `Bearer ${jwt}`
         },
         body: JSON.stringify(requestBody)
-    });
+    }, apiEndpoint);
 }
 
-export async function put<T>(path: string, requestBody: any = {}, jwt: string = ''): Promise<ResponseData<T>> {
+export async function put<T>(path: string, requestBody: any = {}, jwt: string = '', apiEndpoint?: string): Promise<ResponseData<T>> {
     return fetchApi(path, {
         method: 'PUT',
         headers: {
@@ -51,10 +51,10 @@ export async function put<T>(path: string, requestBody: any = {}, jwt: string = 
             'Authorization': `Bearer ${jwt}`
         },
         body: JSON.stringify(requestBody)
-    });
+    }, apiEndpoint);
 }
 
-export async function patch<T>(path: string, requestBody: any = {}, jwt: string = ''): Promise<ResponseData<T>> {
+export async function patch<T>(path: string, requestBody: any = {}, jwt: string = '', apiEndpoint?: string): Promise<ResponseData<T>> {
     return fetchApi(path, {
         method: 'PATCH',
         headers: {
@@ -62,5 +62,5 @@ export async function patch<T>(path: string, requestBody: any = {}, jwt: string 
             'Authorization': `Bearer ${jwt}`
         },
         body: JSON.stringify(requestBody)
-    });
+    }, apiEndpoint);
 }

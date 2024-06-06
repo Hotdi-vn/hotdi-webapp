@@ -9,7 +9,14 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function facebookLogin(formData: FormData) {
-    const redirectUri = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/auth/facebook/login?redirect_uri=${process.env.NEXT_PUBLIC_DOMAIN}/login/callback/facebook`;
+    const redirectUri = `${process.env.NEXT_PUBLIC_AUTH_ENDPOINT}/facebook/login?redirect_uri=${process.env.NEXT_PUBLIC_DOMAIN}/login/callback/facebook`;
+    cookies().set(LOGIN_REDIRECT_URL_COOKIE, formData.get(LOGIN_REDIRECT_URL_FIELD_NAME)?.toString() ?? '/');
+    cookies().set(SELLER_LOGIN_COOKIE, formData.get(SELLER_LOGIN_FIELD_NAME)?.toString() ?? 'false');
+    redirect(redirectUri);
+}
+
+export async function zaloLogin(formData: FormData) {
+    const redirectUri = `${process.env.NEXT_PUBLIC_AUTH_ENDPOINT}/zalo/login?redirect_uri=${process.env.NEXT_PUBLIC_DOMAIN}/login/callback/zalo`;
     cookies().set(LOGIN_REDIRECT_URL_COOKIE, formData.get(LOGIN_REDIRECT_URL_FIELD_NAME)?.toString() ?? '/');
     cookies().set(SELLER_LOGIN_COOKIE, formData.get(SELLER_LOGIN_FIELD_NAME)?.toString() ?? 'false');
     redirect(redirectUri);
