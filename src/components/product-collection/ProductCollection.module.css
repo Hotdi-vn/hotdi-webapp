@@ -4,7 +4,7 @@
   padding-bottom: 20px;
 }
 
-.wrapperHorizontal {
+.wrapperGreen {
   background-color: #7A9350;
   font-size: 16px;
   padding-bottom: 20px;
@@ -43,7 +43,7 @@
   font-size: 1.25em;
 }
 
-.titleHorizontal {
+.titleWhite {
   color: #FFFFFF;
   font-weight: 700;
   font-size: 1.25em;
@@ -54,7 +54,7 @@
   align-items: center;
 }
 
-.revealButtonHorizontal {
+.revealButtonWhite {
   color: #FFFFFF;
   display: flex;
   align-items: center;

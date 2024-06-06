@@ -10,8 +10,6 @@ import clsx from 'clsx';
 export default async function ProductCollection({ collectionType, title, twoRows }:
   { collectionType: CollectionType, title: string, twoRows?: boolean }) {
 
-  const horizontalCard = collectionType == "ChoNeHotDi" ? true : false;
-
   const response = await getNoCache<ProductInfo[]>(`/market/v1/products?collectionType=${collectionType}`);
 
   if (response.error) {
@@ -21,7 +19,7 @@ export default async function ProductCollection({ collectionType, title, twoRows
   const productList: ProductInfo[] = response.data;
 
   const collectionItems = productList.map((productInfo, index) => {
-    const productCardType = horizontalCard ? ProductCardType.Horizontal : ProductCardType.Normal;
+    const productCardType = collectionType == CollectionType.ChoNeHotDi ? ProductCardType.Horizontal : ProductCardType.Normal;
     return (
       <ProductCard
         key={productInfo._id}
@@ -43,20 +41,20 @@ export default async function ProductCollection({ collectionType, title, twoRows
 
   return (
     <div className={clsx({
-      [styles.wrapperHorizontal] : horizontalCard,
-      [styles.wrapper] : !horizontalCard
+      [styles.wrapperGreen] : collectionType == CollectionType.ChoNeHotDi,
+      [styles.wrapper] : collectionType !== CollectionType.ChoNeHotDi
     })}>
       <div className={styles.header}>
         <h1 className={clsx({
-          [styles.titleHorizontal] : horizontalCard,
-          [styles.title] : !horizontalCard
+          [styles.titleWhite] : collectionType == CollectionType.ChoNeHotDi,
+          [styles.title] : collectionType !== CollectionType.ChoNeHotDi
         })}>
           {title}
         </h1>
         <Link href={`/product?collection=${title}`}>
           <div className={clsx({
-            [styles.revealButtonHorizontal] : horizontalCard,
-            [styles.revealButton] : !horizontalCard
+            [styles.revealButtonWhite] : collectionType == CollectionType.ChoNeHotDi,
+            [styles.revealButton] : collectionType !== CollectionType.ChoNeHotDi
           })}>
             Xem thêm <RightOutline />
           </div>
