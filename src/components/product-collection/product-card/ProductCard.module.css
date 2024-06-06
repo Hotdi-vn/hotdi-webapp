@@ -8,7 +8,7 @@
   white-space: normal;
 }
 
-.cardContainerSpecial {
+.cardContainerHorizontal {
   width: 75vw;
   white-space: normal;
   background-color: white;
@@ -28,7 +28,7 @@
   aspect-ratio: 4/3;
 }
 
-.imageContainer.special {
+.imageContainer.horizontal {
   aspect-ratio: 1;
   width: 100px;
 }
@@ -63,7 +63,7 @@
   min-height: 48px;
   margin-top: 8px;
 }
-.productNameSpecial {
+.productNameHorizontal {
   color: #333333;
   display: flex;
   overflow: hidden;
@@ -83,9 +83,10 @@
   gap: 8px;
 }
 
-.priceAndSoldCountSpecial {
+.priceAndSoldCountHorizontal {
   display: flex;
-  gap: 8px
+  gap: 8px;
+  align-items: center
 }
 
 .productLocation {

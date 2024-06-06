@@ -4,11 +4,12 @@ import styles from './ProductCard.module.css';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { ProductInfo } from '@/model/market-data-model';
+import Price from '@/components/common/Price';
 
 export enum ProductCardType {
   Normal,
   Large,
-  Special
+  Horizontal
 }
 
 export enum CollectionType {
@@ -47,7 +48,7 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
     productInfoPadding?: boolean, imageRadius?: boolean, productCardType?: ProductCardType, imageSizes?: string, showLocation?: boolean
   }) {
 
-  const specialType = productCardType == ProductCardType.Special ? true : false;
+  const horizontalCard = productCardType == ProductCardType.Horizontal ? true : false;
 
   const image = (
     <Image
@@ -58,31 +59,31 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
       height={fill ? 0 : height}
       sizes={imageSizes}
       className={clsx({
-        [styles.imageRadiusLeft]: specialType,
-        [styles.imageRadius]: imageRadius && !specialType,
-        [styles.image]: !imageRadius
+        [styles.imageRadiusLeft]: horizontalCard,
+        [styles.imageRadius]: imageRadius && !horizontalCard,
+        [styles.image]: !imageRadius 
       })}
     />
   )
 
   const imageContainer = (
     <div className={clsx({
+      [`${styles.imageContainer} ${styles.horizontal}`] : horizontalCard,
       [`${styles.imageContainer} ${styles.fourByThree}`] : shortImage,
-      [`${styles.imageContainer} ${styles.special}`] : specialType,
-      [`${styles.imageContainer} ${styles.square}`] : !shortImage && !specialType
+      [`${styles.imageContainer} ${styles.square}`] : !shortImage && !horizontalCard
     })}>
       {image}
     </div>
   )
 
-  productInfoPadding = specialType ? true : false;
+  productInfoPadding = horizontalCard ? true : productInfoPadding;
 
   return (
     <Link href={`/product/${productInfo._id}`}>
       <div className={clsx({
         [styles.cardContainer]: productCardType == ProductCardType.Normal,
         [styles.cardContainerLarge]: productCardType == ProductCardType.Large,
-        [styles.cardContainerSpecial]: productCardType == ProductCardType.Special
+        [styles.cardContainerHorizontal]: productCardType == ProductCardType.Horizontal
       })}>
         {imageContainer}
         <Space direction="vertical" className={clsx({
@@ -90,20 +91,18 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
           [styles.productInfoContainerWithPadding]: productInfoPadding
         })}>
           <div className={clsx({
-          [styles.productName]: !specialType,
-          [styles.productNameSpecial]: specialType
+          [styles.productName]: !horizontalCard,
+          [styles.productNameHorizontal]: horizontalCard
         })}>
             {productInfo.name.substring(0, 30)}
             {productInfo.name.length > 30 ? '...' : ''}
           </div>
           <div className={clsx({
-            [styles.priceAndSoldCountSpecial] : specialType,
-            [styles.priceAndSoldCount] : !specialType
+            [styles.priceAndSoldCountHorizontal] : horizontalCard,
+            [styles.priceAndSoldCount] : !horizontalCard
           })}>
-            <div className={styles.productPrice}>
-              {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(productInfo.price)}
-            </div>
-            {specialType && <div className='text-neutral-300'>|</div>}
+            <Price price={productInfo.price} />
+            {horizontalCard && <div className='text-neutral-300'>|</div>}
             <div className={styles.numberSold}>
               Đã bán {formatNumber(productInfo.soldCount)}
             </div>

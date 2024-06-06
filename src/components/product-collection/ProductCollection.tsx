@@ -10,7 +10,7 @@ import clsx from 'clsx';
 export default async function ProductCollection({ collectionType, title, twoRows }:
   { collectionType: CollectionType, title: string, twoRows?: boolean }) {
 
-  const specialType = collectionType == "ChoNeHotDi" ? true : false;
+  const horizontalCard = collectionType == "ChoNeHotDi" ? true : false;
 
   const response = await getNoCache<ProductInfo[]>(`/market/v1/products?collectionType=${collectionType}`);
 
@@ -21,7 +21,7 @@ export default async function ProductCollection({ collectionType, title, twoRows
   const productList: ProductInfo[] = response.data;
 
   const collectionItems = productList.map((productInfo, index) => {
-    const productCardType = specialType ? ProductCardType.Special : ProductCardType.Normal;
+    const productCardType = horizontalCard ? ProductCardType.Horizontal : ProductCardType.Normal;
     return (
       <ProductCard
         key={productInfo._id}
@@ -43,20 +43,20 @@ export default async function ProductCollection({ collectionType, title, twoRows
 
   return (
     <div className={clsx({
-      [styles.wrapperSpecial] : specialType,
-      [styles.wrapper] : !specialType
+      [styles.wrapperHorizontal] : horizontalCard,
+      [styles.wrapper] : !horizontalCard
     })}>
       <div className={styles.header}>
         <h1 className={clsx({
-          [styles.titleSpecial] : specialType,
-          [styles.title] : !specialType
+          [styles.titleHorizontal] : horizontalCard,
+          [styles.title] : !horizontalCard
         })}>
           {title}
         </h1>
         <Link href={`/product?collection=${title}`}>
           <div className={clsx({
-            [styles.revealButtonSpecial] : specialType,
-            [styles.revealButton] : !specialType
+            [styles.revealButtonHorizontal] : horizontalCard,
+            [styles.revealButton] : !horizontalCard
           })}>
             Xem thêm <RightOutline />
           </div>
