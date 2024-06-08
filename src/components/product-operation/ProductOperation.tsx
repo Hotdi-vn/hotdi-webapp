@@ -274,7 +274,12 @@ export default function ProductOperation(
                     actions={actions}
                     onClose={() => setInventoryStatusSelection(false)}
                     closeOnAction
-                    onAction={(action) => form.setFieldValue('inventoryStatus', action.key)}
+                    onAction={(action) => {
+                        if (form.getFieldValue('inventoryStatus') != action.key) {
+                            form.setFieldValue('inventoryStatus', action.key);
+                            form.validateFields(['inventoryStatus']);
+                        }
+                    }}
                 />
 
                 <Form.Item initialValue={productInfo?.stockQuantity ?? 0} name='stockQuantity' label='Số lượng' layout='horizontal' childElementPosition='right' hidden={!stockQuantityVisible}
@@ -294,8 +299,10 @@ export default function ProductOperation(
                     placeholder='Chưa chọn'
                     title='Chọn danh mục'
                     onConfirm={(values) => {
-                        form.setFieldValue('categoryId', values[values.length - 1]);
-                        form.validateFields(['category']);
+                        if (form.getFieldValue('categoryId') != values[values.length - 1]) {
+                            form.setFieldValue('categoryId', values[values.length - 1]);
+                            form.validateFields(['category']);
+                        }
                     }}
                 >
                     {(items) =>
