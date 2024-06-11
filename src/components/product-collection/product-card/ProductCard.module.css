@@ -8,6 +8,14 @@
   white-space: normal;
 }
 
+.cardContainerHorizontal {
+  width: 75vw;
+  white-space: normal;
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+}
+
 .imageContainer {
   position: relative;
 }
@@ -20,12 +28,23 @@
   aspect-ratio: 4/3;
 }
 
+.imageContainer.horizontal {
+  aspect-ratio: 1;
+  width: 100px;
+}
+
 .image {
   object-fit: cover;
 }
 
 .imageRadius {
   border-radius: 8px;
+  object-fit: cover;
+}
+
+.imageRadiusLeft {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
   object-fit: cover;
 }
 
@@ -44,7 +63,11 @@
   min-height: 48px;
   margin-top: 8px;
 }
-
+.productNameHorizontal {
+  color: #333333;
+  display: flex;
+  overflow: hidden;
+}
 .productPrice {
   color: #3A6F05;
   font-weight: 500;
@@ -52,6 +75,18 @@
 
 .numberSold {
   font-size: 12px;
+}
+
+.priceAndSoldCount {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.priceAndSoldCountHorizontal {
+  display: flex;
+  gap: 8px;
+  align-items: center
 }
 
 .productLocation {
