@@ -7,6 +7,7 @@ import ProductManagement from "@/components/product-management/ProductManagement
 import { BackButton } from "@/components/button/BackButton";
 import { NavigationButton } from "@/components/button/NavigationButton";
 import { Suspense } from "react";
+import { SkeletonParagraph } from "antd-mobile/es/components/skeleton/skeleton";
 
 export default async function SellerShopProduct() {
     const session = await getSession();
@@ -29,10 +30,9 @@ export default async function SellerShopProduct() {
             <div className='body'>
                 <div className='top'>
                     {navBar}
-
                 </div>
                 <div>
-                    <Suspense>
+                    <Suspense fallback={<SkeletonParagraph animated lineCount={20} />}>
                         <ProductManagement />
                     </Suspense>
                 </div>

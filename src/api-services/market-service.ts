@@ -47,7 +47,7 @@ export async function createProduct(productInfo: ProductInfo): Promise<ProductIn
     }
 }
 
-export async function updateProduct(productInfo: ProductInfo): Promise<ProductInfo> {
+export async function updateProduct(productInfo: ProductInfo | Partial<ProductInfo>): Promise<ProductInfo> {
     let response;
     const session = await getSession();
     try {

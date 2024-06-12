@@ -26,7 +26,10 @@ export default function ProductActions({ productInfo }:
     const actionConfig: { [key: string]: Action } = {
         UpdateInventory: {
             key: 'UpdateInventory',
-            text: 'Cập nhật kho'
+            text: 'Cập nhật kho',
+            onClick() {
+                router.push(`/seller/shop/product/${productInfo._id}/updateInventory`);
+            },
         },
         Copy: {
             key: 'Copy',
