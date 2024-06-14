@@ -1,10 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/server-actions/authentication-actions";
 import { LOGIN_REDIRECT_URL_FIELD_NAME } from "@/constants/common-contants";
-import { NavBar } from "@/components/common/antd_mobile_client_wrapper";
-import { BackButton } from "@/components/button/BackButton";
 import ProductOperation from "@/components/product-operation/ProductOperation";
-import { Suspense } from "react";
 import { getCategories } from "@/api-services/market-service";
 
 export default async function SellerShopProductCreate() {
@@ -17,10 +14,7 @@ export default async function SellerShopProductCreate() {
 
     return (
         <>
-            <Suspense>
-                <ProductOperation categories={categoriesRes.data} />
-            </Suspense>
-
+            <ProductOperation categories={categoriesRes.data} />
         </>
     )
 }
