@@ -1,25 +1,43 @@
 'use server'
 
-import { InventoryStatus, ProductInfo } from "@/model/market-data-model";
+import { InventoryStatus, InventoryTabName, ProductInfo, PublishStatus } from "@/model/market-data-model";
 import * as marketService from "@/api-services/market-service";
 import { uploadFile } from "@/api-services/file-service";
 import { redirect } from "next/navigation";
 
 export async function sellerCreateProduct(productInfo: ProductInfo) {
-    await marketService.createProduct(productInfo);
-    redirect('/seller/shop/product');
+    const newProduct = await marketService.createProduct(productInfo);
+    redirect(`/seller/shop/product?defaultTab=${calculateInventoryDefaultTab(newProduct)}`);
+}
+
+function calculateInventoryDefaultTab(productInfo: ProductInfo) {
+    let result;
+    switch (productInfo.publishStatus) {
+        case PublishStatus.Draft:
+        case PublishStatus.Hidden:
+            result = InventoryTabName.Hidden;
+            break;
+        case PublishStatus.Published:
+            result = productInfo.inventoryStatus === InventoryStatus.InStock ? InventoryTabName.InStock : InventoryTabName.OutOfStock;
+            break;
+        default:
+            result = InventoryTabName.InStock;
+            break;
+    }
+
+    return encodeURIComponent(result);
 }
 
 export async function sellerUpdateProduct(productInfo: ProductInfo) {
-    await marketService.updateProduct(productInfo);
-    redirect('/seller/shop/product');
+    const updatedProduct = await marketService.updateProduct(productInfo);
+    redirect(`/seller/shop/product?defaultTab=${calculateInventoryDefaultTab(updatedProduct)}`);
 }
 
 export async function sellerUpdateProductInventory(
     productInventory:
         { _id: string, inventoryManagementOption: boolean, inventoryStatus: InventoryStatus, stockQuantity: number }) {
-    await marketService.updateProduct(productInventory);
-    redirect('/seller/shop/product');
+    const updatedProduct = await marketService.updateProduct(productInventory);
+    redirect(`/seller/shop/product?defaultTab=${calculateInventoryDefaultTab(updatedProduct)}`);
 }
 
 export async function uploadProductImage(formData: FormData) {

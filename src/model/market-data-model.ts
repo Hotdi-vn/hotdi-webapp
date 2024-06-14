@@ -135,3 +135,10 @@ export class Category {
         this.imageUrl = imageUrl;
     }
 }
+
+export enum InventoryTabName {
+    InStock = 'Còn hàng',
+    OutOfStock = 'Hết hàng',
+    Hidden = 'Đang ẩn'
+}
+

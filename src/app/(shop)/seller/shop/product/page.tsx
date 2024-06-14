@@ -8,8 +8,13 @@ import { BackButton } from "@/components/button/BackButton";
 import { NavigationButton } from "@/components/button/NavigationButton";
 import { Suspense } from "react";
 import { SkeletonParagraph } from "antd-mobile/es/components/skeleton/skeleton";
+import { InventoryTabName } from "@/model/market-data-model";
 
-export default async function SellerShopProduct() {
+export default async function SellerShopProduct({
+    searchParams
+}: {
+    searchParams: { [key: string]: string | string[] | undefined }
+}) {
     const session = await getSession();
     if (!session.isLoggedIn) {
         redirect(`/seller/login?${LOGIN_REDIRECT_URL_FIELD_NAME}=/seller/shop`);
@@ -32,8 +37,8 @@ export default async function SellerShopProduct() {
                     {navBar}
                 </div>
                 <div>
-                    <Suspense fallback={<SkeletonParagraph animated lineCount={20} />}>
-                        <ProductManagement />
+                    <Suspense fallback={<SkeletonParagraph animated lineCount={26} />}>
+                        <ProductManagement defaultTab={searchParams['defaultTab'] as InventoryTabName} />
                     </Suspense>
                 </div>
             </div>
