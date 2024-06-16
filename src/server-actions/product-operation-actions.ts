@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 
 export async function sellerCreateProduct(productInfo: ProductInfo) {
     const newProduct = await marketService.createProduct(productInfo);
-    redirect(`/seller/shop/product?defaultTab=${calculateInventoryDefaultTab(newProduct)}`);
+    redirectToProductManagementPage(newProduct);
 }
 
 function calculateInventoryDefaultTab(productInfo: ProductInfo) {
@@ -28,17 +28,40 @@ function calculateInventoryDefaultTab(productInfo: ProductInfo) {
     return encodeURIComponent(result);
 }
 
+function redirectToProductManagementPage(productInfo: ProductInfo) {
+    redirect(`/seller/shop/product?defaultTab=${calculateInventoryDefaultTab(productInfo)}`);
+}
+
 export async function sellerUpdateProduct(productInfo: ProductInfo) {
     const updatedProduct = await marketService.updateProduct(productInfo);
-    redirect(`/seller/shop/product?defaultTab=${calculateInventoryDefaultTab(updatedProduct)}`);
+    redirectToProductManagementPage(updatedProduct);
 }
 
 export async function sellerUpdateProductInventory(
     productInventory:
         { _id: string, inventoryManagementOption: boolean, inventoryStatus: InventoryStatus, stockQuantity: number }) {
     const updatedProduct = await marketService.updateProduct(productInventory);
-    redirect(`/seller/shop/product?defaultTab=${calculateInventoryDefaultTab(updatedProduct)}`);
+    redirectToProductManagementPage(updatedProduct);
 }
+
+export async function sellerHideProduct(id: string) {
+    const updatedProduct = await marketService.updateProduct({ _id: id, publishStatus: PublishStatus.Draft });
+    return updatedProduct;
+    // redirectToProductManagementPage(updatedProduct);
+}
+
+export async function sellerPublishProduct(id: string) {
+    const updatedProduct = await marketService.updateProduct({ _id: id, publishStatus: PublishStatus.Published });
+    return updatedProduct;
+    // redirectToProductManagementPage(updatedProduct);
+}
+
+export async function sellerMarkOutOfStockProduct(id: string) {
+    const updatedProduct = await marketService.updateProduct({ _id: id, inventoryStatus: InventoryStatus.OutOfStock, stockQuantity: 0 });
+    return updatedProduct;
+    // redirectToProductManagementPage(updatedProduct);
+}
+
 
 export async function uploadProductImage(formData: FormData) {
     const result = await uploadFile(formData);

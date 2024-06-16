@@ -1,11 +1,14 @@
 'use client'
 
 import { Button } from "@/components/common/antd_mobile_client_wrapper";
-import { InventoryStatus, ProductInfo, PublishStatus } from "@/model/market-data-model";
+import { InventoryStatus, InventoryTabName, ProductInfo, PublishStatus } from "@/model/market-data-model";
 import ActionSheet, { Action } from "antd-mobile/es/components/action-sheet";
 import Icon from "@/components/common/icon_component";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
+import { sellerHideProduct, sellerMarkOutOfStockProduct, sellerPublishProduct } from "@/server-actions/product-operation-actions";
+import { showError, showSuccess } from "@/utils/message-utils";
+import { InventoryDataContext, TabData } from "../InventoryTabData";
 
 const DISPLAY_ACTIONS_NUM = 3;
 
@@ -22,6 +25,8 @@ enum Actions {
 export default function ProductActions({ productInfo }:
     { productInfo: ProductInfo }) {
     const router = useRouter();
+    const [executingAction, setExecutingAction] = useState<boolean>(false);
+    const inventoryDataContext = useContext(InventoryDataContext)!;
 
     const actionConfig: { [key: string]: Action } = {
         UpdateInventory: {
@@ -44,21 +49,88 @@ export default function ProductActions({ productInfo }:
         },
         OutOfStock: {
             key: 'OutOfStock',
-            text: 'Hết hàng'
+            text: 'Hết hàng',
+            async onClick() {
+                try {
+                    setExecutingAction(true);
+                    const updatedProduct = await sellerMarkOutOfStockProduct(productInfo._id);
+                    updateInventoryData(Actions.OutOfStock, updatedProduct);
+                    showSuccess('Cập nhật kho thàng công');
+                } catch (error) {
+                    showError(error);
+                }
+            },
         },
         Show: {
             key: 'Show',
-            text: 'Hiển thị'
+            text: 'Hiển thị',
+            async onClick() {
+                try {
+                    setExecutingAction(true);
+                    const updatedProduct = await sellerPublishProduct(productInfo._id);
+                    updateInventoryData(Actions.Show, updatedProduct);
+                    showSuccess('Cập nhật trạng thái thàng công');
+                } catch (error) {
+                    showError(error);
+                }
+            },
         },
         Hide: {
             key: 'Hide',
-            text: 'Ẩn'
+            text: 'Ẩn',
+            async onClick() {
+                try {
+                    setExecutingAction(true);
+                    const updatedProduct = await sellerHideProduct(productInfo._id);
+                    updateInventoryData(Actions.Hide, updatedProduct);
+                    showSuccess('Cập nhật trạng thái thàng công');
+                } catch (error) {
+                    showError(error);
+                }
+            },
         },
         Delete: {
             key: 'Delete',
             text: 'Xóa'
         },
     };
+
+    function updateInventoryData(action: Actions, updatedProduct: ProductInfo) {
+        const inventoryData = { ...inventoryDataContext.inventoryData };
+
+        if (action !== Actions.Copy) {
+            // Remove item in active tab
+            const currentTabData = inventoryData[inventoryDataContext.activeTab];
+            currentTabData.initialProductList = currentTabData.initialProductList.filter(prod => prod._id !== updatedProduct._id);
+            currentTabData.total--;
+        }
+
+        // Add item in target tab
+        let targetTab = undefined;
+        switch (action) {
+            case Actions.OutOfStock:
+                targetTab = inventoryData[InventoryTabName.OutOfStock];
+                break;
+            case Actions.Show:
+                targetTab = inventoryData[updatedProduct.inventoryStatus === InventoryStatus.InStock ? InventoryTabName.InStock : InventoryTabName.OutOfStock];
+                break;
+            case Actions.Hide:
+                targetTab = inventoryData[InventoryTabName.Hidden];
+                break;
+            case Actions.Copy:
+                targetTab = inventoryData[inventoryDataContext.activeTab];
+                break;
+            default:
+                break;
+        }
+
+        if (targetTab) {
+            targetTab.initialProductList = [updatedProduct, ...targetTab.initialProductList];
+            targetTab.total++;
+        }
+
+        inventoryDataContext.setInventoryData(inventoryData);
+    }
 
     function getActions(inventoryStatus: InventoryStatus, publishStatus: PublishStatus) {
         let actionList = [];
@@ -95,13 +167,14 @@ export default function ProductActions({ productInfo }:
 
     return (
         <div className="flex flex-row justify-between">
-            {displayActions.map(action => <Button key={action.key} onClick={() => handleAction(action)}>{action.text}</Button>)}
+            {displayActions.map(action => <Button loading={executingAction} key={action.key} onClick={() => handleAction(action)}>{action.text}</Button>)}
             <div>
                 <Button onClick={() => setMoreActionsVisible(true)}><Icon name='more' /></Button>
                 <ActionSheet
                     visible={moreActionsVisible}
                     actions={moreActions}
                     onClose={() => setMoreActionsVisible(false)}
+                    closeOnAction
                 />
             </div>
         </div>
