@@ -47,19 +47,26 @@ export async function sellerUpdateProductInventory(
 export async function sellerHideProduct(id: string) {
     const updatedProduct = await marketService.updateProduct({ _id: id, publishStatus: PublishStatus.Draft });
     return updatedProduct;
-    // redirectToProductManagementPage(updatedProduct);
 }
 
 export async function sellerPublishProduct(id: string) {
     const updatedProduct = await marketService.updateProduct({ _id: id, publishStatus: PublishStatus.Published });
     return updatedProduct;
-    // redirectToProductManagementPage(updatedProduct);
 }
 
 export async function sellerMarkOutOfStockProduct(id: string) {
     const updatedProduct = await marketService.updateProduct({ _id: id, inventoryStatus: InventoryStatus.OutOfStock, stockQuantity: 0 });
     return updatedProduct;
-    // redirectToProductManagementPage(updatedProduct);
+}
+
+export async function sellerCopyProduct(product: ProductInfo) {
+    const createdProduct = await marketService.createProduct(product);
+    return createdProduct;
+}
+
+export async function sellerDeleteProduct(id: string) {
+    const updatedProduct = await marketService.deleteProduct(id);
+    return updatedProduct;
 }
 
 
