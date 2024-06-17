@@ -2,7 +2,7 @@
 
 import { ProductInfo } from "@/model/market-data-model";
 import Product from "../product/Product";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InfiniteScroll } from "antd-mobile";
 import { ProductQuery } from "@/api-services/market-service";
 import InfiniteScrollContent from "@/components/common/InfiniteScrollContent";
@@ -24,9 +24,14 @@ export default function ProductInventory(
         setHasMore(productList.length < (responseData.total));
     }
 
+    useEffect(() => {
+        setProductList(initialProductList);
+    }, [initialProductList]);
+
     return (
         <div className="flex flex-col gap-2">
             {
+
                 productList.map(product =>
                     <Product key={product._id} productInfo={product} />
                 )

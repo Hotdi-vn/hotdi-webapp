@@ -1,4 +1,3 @@
-import ProductInventory from "./product-inventory/ProductInventory";
 import { InventoryStatus, PublishStatus } from "@/model/market-data-model";
 import InventoryTabData from "./InventoryTabData";
 import { getMyProducts } from "@/api-services/market-service";
@@ -19,35 +18,32 @@ export default async function ProductManagement({ defaultTab = InventoryTabName.
     const hiddenProductResponse = await getMyProducts(hiddenProductQuery);
     const hiddenProductList = hiddenProductResponse.data;
 
-    const tabData = {
+    const inventoryTabData = {
         [InventoryTabName.InStock]: {
-            title: TabTitle({ title: InventoryTabName.InStock, total: inStockProductResponse.total }),
-            content: <ProductInventory key={InventoryTabName.InStock} initialProductList={inStockProductList} query={inStockProductQuery} />
+            title: InventoryTabName.InStock,
+            total: inStockProductResponse.total,
+            initialProductList: inStockProductList,
+            query: inStockProductQuery
         },
         [InventoryTabName.OutOfStock]: {
-            title: TabTitle({ title: InventoryTabName.OutOfStock, total: outOfStockProductResponse.total }),
-            content: <ProductInventory key={InventoryTabName.OutOfStock} initialProductList={outOfStockProductList} query={outOfStockProductQuery} />
+            title: InventoryTabName.OutOfStock,
+            total: outOfStockProductResponse.total,
+            initialProductList: outOfStockProductList,
+            query: outOfStockProductQuery
         },
         [InventoryTabName.Hidden]: {
-            title: TabTitle({ title: InventoryTabName.Hidden, total: hiddenProductResponse.total }),
-            content: <ProductInventory key={InventoryTabName.Hidden} initialProductList={hiddenProductList} query={hiddenProductQuery} />
+            title: InventoryTabName.Hidden,
+            total: hiddenProductResponse.total,
+            initialProductList: hiddenProductList,
+            query: hiddenProductQuery
         },
     }
 
     return (
         <div>
-            <InventoryTabData tabData={tabData} defaultTab={defaultTab} />
+            <InventoryTabData tabData={inventoryTabData} defaultTab={defaultTab} />
         </div>
 
     );
-}
-
-function TabTitle({ title, total }: { title: string; total: number; }) {
-    return (
-        <div className="flex flex-col items-center">
-            <div className="text-sm text-black">{title}</div>
-            <div className="text-xs">{total}</div>
-        </div>
-    );
-}
+};
 
