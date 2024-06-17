@@ -64,3 +64,14 @@ export async function patch<T>(path: string, requestBody: any = {}, jwt: string 
         body: JSON.stringify(requestBody)
     }, apiEndpoint);
 }
+
+export async function deleteApi<T>(path: string, requestBody: any = {}, jwt: string = '', apiEndpoint?: string): Promise<ResponseData<T>> {
+    return fetchApi(path, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
+        },
+        body: JSON.stringify(requestBody)
+    }, apiEndpoint);
+}

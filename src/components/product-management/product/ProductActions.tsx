@@ -4,10 +4,10 @@ import { Button } from "@/components/common/antd_mobile_client_wrapper";
 import { InventoryStatus, InventoryTabName, ProductInfo, PublishStatus } from "@/model/market-data-model";
 import ActionSheet, { Action } from "antd-mobile/es/components/action-sheet";
 import Icon from "@/components/common/icon_component";
-import { useContext, useState } from "react";
+import { useContext, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { sellerHideProduct, sellerMarkOutOfStockProduct, sellerPublishProduct } from "@/server-actions/product-operation-actions";
-import { showError, showSuccess } from "@/utils/message-utils";
+import { sellerCopyProduct, sellerDeleteProduct, sellerHideProduct, sellerMarkOutOfStockProduct, sellerPublishProduct } from "@/server-actions/product-operation-actions";
+import { showDeleteConfirmation, showError, showSuccess } from "@/utils/message-utils";
 import { InventoryDataContext, TabData } from "../InventoryTabData";
 
 const DISPLAY_ACTIONS_NUM = 3;
@@ -25,7 +25,7 @@ enum Actions {
 export default function ProductActions({ productInfo }:
     { productInfo: ProductInfo }) {
     const router = useRouter();
-    const [executingAction, setExecutingAction] = useState<boolean>(false);
+    const [pending, startTransition] = useTransition();
     const inventoryDataContext = useContext(InventoryDataContext)!;
 
     const actionConfig: { [key: string]: Action } = {
@@ -38,7 +38,19 @@ export default function ProductActions({ productInfo }:
         },
         Copy: {
             key: 'Copy',
-            text: 'Sao chép'
+            text: 'Sao chép',
+            onClick() {
+                startTransition(async () => {
+                    try {
+                        const copyProduct = { ...productInfo, _id: '', name: `${productInfo.name} (sao chép)` };
+                        const createdProduct = await sellerCopyProduct(copyProduct);
+                        updateInventoryData(Actions.Copy, createdProduct);
+                        showSuccess('Sao chép sản phẩm thành công');
+                    } catch (error) {
+                        showError(error);
+                    }
+                })
+            },
         },
         Edit: {
             key: 'Edit',
@@ -50,48 +62,66 @@ export default function ProductActions({ productInfo }:
         OutOfStock: {
             key: 'OutOfStock',
             text: 'Hết hàng',
-            async onClick() {
-                try {
-                    setExecutingAction(true);
-                    const updatedProduct = await sellerMarkOutOfStockProduct(productInfo._id);
-                    updateInventoryData(Actions.OutOfStock, updatedProduct);
-                    showSuccess('Cập nhật kho thàng công');
-                } catch (error) {
-                    showError(error);
-                }
+            onClick() {
+                startTransition(async () => {
+                    try {
+                        const updatedProduct = await sellerMarkOutOfStockProduct(productInfo._id);
+                        updateInventoryData(Actions.OutOfStock, updatedProduct);
+                        showSuccess('Cập nhật kho thành công');
+                    } catch (error) {
+                        showError(error);
+                    }
+                })
             },
         },
         Show: {
             key: 'Show',
             text: 'Hiển thị',
-            async onClick() {
-                try {
-                    setExecutingAction(true);
-                    const updatedProduct = await sellerPublishProduct(productInfo._id);
-                    updateInventoryData(Actions.Show, updatedProduct);
-                    showSuccess('Cập nhật trạng thái thàng công');
-                } catch (error) {
-                    showError(error);
-                }
+            onClick() {
+                startTransition(async () => {
+                    try {
+                        const updatedProduct = await sellerPublishProduct(productInfo._id);
+                        updateInventoryData(Actions.Show, updatedProduct);
+                        showSuccess('Cập nhật trạng thái thành công');
+                    } catch (error) {
+                        showError(error);
+                    }
+                })
             },
         },
         Hide: {
             key: 'Hide',
             text: 'Ẩn',
-            async onClick() {
-                try {
-                    setExecutingAction(true);
-                    const updatedProduct = await sellerHideProduct(productInfo._id);
-                    updateInventoryData(Actions.Hide, updatedProduct);
-                    showSuccess('Cập nhật trạng thái thàng công');
-                } catch (error) {
-                    showError(error);
-                }
+            onClick() {
+                startTransition(async () => {
+                    try {
+                        const updatedProduct = await sellerHideProduct(productInfo._id);
+                        updateInventoryData(Actions.Hide, updatedProduct);
+                        showSuccess('Cập nhật trạng thái thành công');
+                    } catch (error) {
+                        showError(error);
+                    }
+                })
             },
         },
         Delete: {
             key: 'Delete',
-            text: 'Xóa'
+            text: 'Xóa',
+            onClick() {
+                showDeleteConfirmation({
+                    deleteFunc: () => {
+                        startTransition(async () => {
+                            try {
+                                const deletedProduct = await sellerDeleteProduct(productInfo._id);
+                                updateInventoryData(Actions.Delete, deletedProduct);
+                                showSuccess('Xóa sản phẩm thành công');
+                            } catch (error) {
+                                showError(error);
+                            }
+                        })
+                    }
+                })
+            },
         },
     };
 
@@ -167,7 +197,7 @@ export default function ProductActions({ productInfo }:
 
     return (
         <div className="flex flex-row justify-between">
-            {displayActions.map(action => <Button loading={executingAction} key={action.key} onClick={() => handleAction(action)}>{action.text}</Button>)}
+            {displayActions.map(action => <Button loading={pending} key={action.key} onClick={() => handleAction(action)}>{action.text}</Button>)}
             <div>
                 <Button onClick={() => setMoreActionsVisible(true)}><Icon name='more' /></Button>
                 <ActionSheet

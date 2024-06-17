@@ -2,7 +2,7 @@ import 'server-only'
 
 import { ResponseData, ServerError } from '@/utils/data-fetching-utils';
 import { log } from 'console';
-import { get, getNoCache, post, put } from '@/utils/server-side-fetching';
+import { deleteApi, get, getNoCache, post, put } from '@/utils/server-side-fetching';
 import { CartItem, InventoryStatus, ProductInfo, PublishStatus, Role } from '@/model/market-data-model';
 import { getSession } from '@/server-actions/authentication-actions';
 import { ERROR_CODE_ITEM_NOT_FOUND } from '@/constants/common-contants';
@@ -59,6 +59,22 @@ export async function updateProduct(productInfo: ProductInfo | Partial<ProductIn
         return response.data;
     } catch (error) {
         log('Error from updateProduct', error);
+        throw error;
+    }
+}
+
+export async function deleteProduct(id: string): Promise<ProductInfo> {
+    let response;
+    const session = await getSession();
+    try {
+        response = await deleteApi<ProductInfo>(`${BASE_URL}/v1/products/${id}`, {}, session.userProfile?.token);
+        if (response.error) {
+            log('Error from deleteProduct:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response.data;
+    } catch (error) {
+        log('Error from deleteProduct', error);
         throw error;
     }
 }
