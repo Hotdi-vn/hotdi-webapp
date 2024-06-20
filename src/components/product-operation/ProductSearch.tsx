@@ -15,15 +15,15 @@ export default function ProductSearch() {
 
     async function search(value: string) {
         startSearch(async () => {
-            const inStockProductQuery = { name: value, inventoryStatus: InventoryStatus.InStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading, populate: 'images' };
+            const inStockProductQuery = { search: value, inventoryStatus: InventoryStatus.InStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading, populate: 'images' };
             const inStockProductResponse = await getMyProducts(inStockProductQuery);
             const inStockProductList = inStockProductResponse.data;
 
-            const outOfStockProductQuery = { name: value, nventoryStatus: InventoryStatus.OutOfStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading, populate: 'images' };
+            const outOfStockProductQuery = { search: value, nventoryStatus: InventoryStatus.OutOfStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading, populate: 'images' };
             const outOfStockProductResponse = await getMyProducts(outOfStockProductQuery);
             const outOfStockProductList = outOfStockProductResponse.data;
 
-            const hiddenProductQuery = { name: value, publishStatus: PublishStatus.Draft, skip: 0, limit: itemsPerLoading, populate: 'images' };
+            const hiddenProductQuery = { search: value, publishStatus: PublishStatus.Draft, skip: 0, limit: itemsPerLoading, populate: 'images' };
             const hiddenProductResponse = await getMyProducts(hiddenProductQuery);
             const hiddenProductList = hiddenProductResponse.data;
 

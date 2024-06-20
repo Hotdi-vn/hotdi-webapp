@@ -84,7 +84,7 @@ export async function deleteProduct(id: string): Promise<ProductInfo> {
 }
 
 export type ProductQuery = {
-    name?: string,
+    search?: string,
     inventoryStatus?: InventoryStatus;
     publishStatus?: PublishStatus;
     skip?: number;
