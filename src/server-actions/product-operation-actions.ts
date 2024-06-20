@@ -45,22 +45,22 @@ export async function sellerUpdateProductInventory(
 }
 
 export async function sellerHideProduct(id: string) {
-    const updatedProduct = await marketService.updateProduct({ _id: id, publishStatus: PublishStatus.Draft });
+    const updatedProduct = await marketService.updateProduct({ _id: id, publishStatus: PublishStatus.Draft }, { populate: 'images' });
     return updatedProduct;
 }
 
 export async function sellerPublishProduct(id: string) {
-    const updatedProduct = await marketService.updateProduct({ _id: id, publishStatus: PublishStatus.Published });
+    const updatedProduct = await marketService.updateProduct({ _id: id, publishStatus: PublishStatus.Published }, { populate: 'images' });
     return updatedProduct;
 }
 
 export async function sellerMarkOutOfStockProduct(id: string) {
-    const updatedProduct = await marketService.updateProduct({ _id: id, inventoryStatus: InventoryStatus.OutOfStock, stockQuantity: 0 });
+    const updatedProduct = await marketService.updateProduct({ _id: id, inventoryStatus: InventoryStatus.OutOfStock, stockQuantity: 0 }, { populate: 'images' });
     return updatedProduct;
 }
 
 export async function sellerCopyProduct(product: ProductInfo) {
-    const createdProduct = await marketService.createProduct(product);
+    const createdProduct = await marketService.createProduct(product, { populate: 'images' });
     return createdProduct;
 }
 
