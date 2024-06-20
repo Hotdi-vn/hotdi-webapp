@@ -21,7 +21,7 @@ export default function ProductInventory(
         query.skip = productList.length;
         const responseData = await getMyProducts(query);
         setProductList(pre => [...pre, ...responseData.data]);
-        setHasMore(productList.length < (responseData.total));
+        setHasMore(responseData.data.length > 0 && productList.length < (responseData.total));
     }
 
     useEffect(() => {
