@@ -9,6 +9,7 @@ import { NavigationButton } from "@/components/button/NavigationButton";
 import { Suspense } from "react";
 import { SkeletonParagraph } from "antd-mobile/es/components/skeleton/skeleton";
 import { InventoryTabName } from "@/model/market-data-model";
+import Link from "next/link";
 
 export default async function SellerShopProduct({
     searchParams
@@ -21,7 +22,11 @@ export default async function SellerShopProduct({
     }
 
     const icons = <div className="flex flex-row gap-3.5">
-        <div><Icon name='search' /></div>
+        <div>
+            <Link href={`/seller/shop/product/search`}>
+                <Icon name='search' />
+            </Link>
+        </div>
         <div><Icon name='message' /></div>
     </div>;
 
