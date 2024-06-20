@@ -31,11 +31,15 @@ export async function getCategories(query: CategoryQuery = { skip: 0, limit: 20 
     }
 }
 
-export async function createProduct(productInfo: ProductInfo): Promise<ProductInfo> {
+export type ProductPopulateQuery = {
+    populate?: string;
+}
+
+export async function createProduct(productInfo: ProductInfo, populateQuery: ProductPopulateQuery = {}): Promise<ProductInfo> {
     let response;
     const session = await getSession();
     try {
-        response = await post<ProductInfo>(`${BASE_URL}/v1/products`, productInfo, session.userProfile?.token);
+        response = await post<ProductInfo>(`${BASE_URL}/v1/products${buildQueryString(populateQuery)}`, productInfo, session.userProfile?.token);
         if (response.error) {
             log('Error from createProduct:', response.error.id, response.error.code);
             throw new ServerError(response.error.id, response.error.code);
@@ -47,11 +51,11 @@ export async function createProduct(productInfo: ProductInfo): Promise<ProductIn
     }
 }
 
-export async function updateProduct(productInfo: ProductInfo | Partial<ProductInfo>): Promise<ProductInfo> {
+export async function updateProduct(productInfo: ProductInfo | Partial<ProductInfo>, populateQuery: ProductPopulateQuery = {}): Promise<ProductInfo> {
     let response;
     const session = await getSession();
     try {
-        response = await put<ProductInfo>(`${BASE_URL}/v1/products/${productInfo._id}`, productInfo, session.userProfile?.token);
+        response = await put<ProductInfo>(`${BASE_URL}/v1/products/${productInfo._id}${buildQueryString(populateQuery)}`, productInfo, session.userProfile?.token);
         if (response.error) {
             log('Error from updateProduct:', response.error.id, response.error.code);
             throw new ServerError(response.error.id, response.error.code);
