@@ -133,3 +133,11 @@ a {
 .adm-image-uploader-cell-mask-message {
   display: none !important;
 }
+
+.hotdi-message-success .adm-toast-main {
+  top: 5% !important;
+  max-width: 90vw !important;
+  background-color: #7AC78F !important;
+  color: #3A6F05 !important;
+  word-break: break-word !important;
+}

@@ -1,5 +1,5 @@
 import { Modal, Toast } from "antd-mobile";
-import { ExclamationCircleFill } from "antd-mobile-icons";
+import { CheckCircleFill, ExclamationCircleFill } from "antd-mobile-icons";
 import { ToastProps } from "antd-mobile/es/components/toast/toast";
 import { ReactNode } from "react";
 
@@ -19,8 +19,9 @@ export function showError(error: any) {
 
 export function showSuccess(content: ReactNode, props: ToastProps = { content: content, position: 'top' }) {
     Toast.show({
-        content: props.content,
-        position: props.position
+        content: <div className="flex flex-row items-center gap-1"><CheckCircleFill fontSize={18} /> {props.content}</div>,
+        position: props.position,
+        maskClassName: 'hotdi-message-success'
     });
 }
 
