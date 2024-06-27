@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState, useTransition } from "react";
-import { ActionSheet, Button, Cascader, CascaderOption, Divider, Form, ImageUploadItem, ImageUploader, Modal, NavBar, Popup, Switch, TextArea, Toast } from "antd-mobile";
+import { ActionSheet, Button, Cascader, CascaderOption, Divider, Form, ImageUploadItem, ImageUploader, NavBar, Popup, Switch, TextArea } from "antd-mobile";
 import Icon from "../common/icon_component";
-import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo, PublishStatus, ImageInfo } from "@/model/market-data-model";
+import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo, PublishStatus, ImageInfo, calculateInventoryDefaultTab } from "@/model/market-data-model";
 import { Action } from "antd-mobile/es/components/action-sheet";
 import { sellerCreateProduct, sellerUpdateProduct, uploadProductImage } from "@/server-actions/product-operation-actions";
 import FormattedNumberInput from "../common/FormattedNumberInput";
@@ -12,22 +12,22 @@ import { OperationMode } from "@/constants/common-contants";
 import { Category } from '@/model/market-data-model';
 import { FormInstance } from "antd-mobile/es/components/form";
 import { BackButton } from "../button/BackButton";
-import { ExclamationCircleFill } from "antd-mobile-icons";
+import { useRouter } from "next/navigation";
+import { showError, showSuccess } from "@/utils/message-utils";
 
-export default function ProductOperation(
-    {
-        productInfo,
-        categories,
-        mode = OperationMode.Create
-    }:
-        {
-            productInfo?: ProductInfo,
-            categories: Category[]
-            mode?: OperationMode
-        }
-) {
+export default function ProductOperation({
+    productInfo,
+    categories,
+    mode = OperationMode.Create,
+    redirectPath = '/seller/shop/product',
+}: {
+    productInfo?: ProductInfo,
+    categories: Category[],
+    mode?: OperationMode,
+    redirectPath?: string,
+}) {
     const defaultUploadedImages = productInfo?.images.map(image => ({ key: (image as ImageInfo)._id, url: (image as ImageInfo).url })) ?? [];
-
+    const router = useRouter();
     const [form] = Form.useForm<ProductInfo>();
     const [fileList, setFileList] = useState<ImageUploadItem[]>(defaultUploadedImages);
     const [inventoryStatusSelection, setInventoryStatusSelection] = useState<boolean>(false);
@@ -82,6 +82,11 @@ export default function ProductOperation(
         return options;
     }
 
+    function redirect(productInfo: ProductInfo) {
+        const querySign = redirectPath.includes('?') ? '&' : '?';
+        router.push(`${redirectPath}${querySign}defaultTab=${calculateInventoryDefaultTab(productInfo)}`);
+    }
+
     useEffect(() => {
         populateProductInfo();
     }, []);
@@ -109,7 +114,7 @@ export default function ProductOperation(
     }
 
     const navBar =
-        <NavBar backArrow={<BackButton redirectPath="/seller/shop/product" isConfirmedPrompt={isFieldsTounch} />} >
+        <NavBar backArrow={<BackButton redirectPath={redirectPath} isConfirmedPrompt={isFieldsTounch} />} >
             <div className="text-xl text-left font-normal">{OperationMode.Create === mode ? 'Thêm sản phẩm' : 'Chỉnh sửa sản phẩm'}</div>
         </NavBar>;
 
@@ -120,29 +125,16 @@ export default function ProductOperation(
                 onFinish={async (productInfo) => {
                     try {
                         if (mode === OperationMode.Create) {
-                            await sellerCreateProduct(productInfo);
-                            Toast.show({
-                                content: 'Tạo sản phẩm thành công',
-                                position: 'top'
-                            });
+                            const product = await sellerCreateProduct(productInfo);
+                            redirect(product);
+                            showSuccess('Tạo sản phẩm thành công');
                         } else if (mode === OperationMode.Edit) {
-                            await sellerUpdateProduct(productInfo);
-                            Toast.show({
-                                content: 'Cập nhật sản phẩm thành công',
-                                position: 'top'
-                            });
+                            const product = await sellerUpdateProduct(productInfo);
+                            redirect(product);
+                            showSuccess('Cập nhật sản phẩm thành công');
                         }
                     } catch (error) {
-                        Modal.alert({
-                            header: <ExclamationCircleFill
-                                style={{
-                                    fontSize: 64,
-                                    color: 'var(--adm-color-warning)',
-                                }}
-                            />,
-                            content: 'Có lỗi xảy ra. Vui lòng thử lại.',
-                            confirmText: 'OK'
-                        })
+                        showError(error);
                     }
                 }}
                 requiredMarkStyle='none'

@@ -2,21 +2,22 @@
 
 import { useState, useTransition } from "react";
 import { Button, Form, NavBar, Radio, Space, Switch } from "antd-mobile";
-import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo } from "@/model/market-data-model";
+import { InventoryStatus, InventoryStatusDisplayValue, ProductInfo, calculateInventoryDefaultTab } from "@/model/market-data-model";
 import { sellerUpdateProductInventory } from "@/server-actions/product-operation-actions";
 import FormattedNumberInput from "../common/FormattedNumberInput";
 import { FormInstance } from "antd-mobile/es/components/form";
 import { BackButton } from "../button/BackButton";
 import { showError, showSuccess } from "@/utils/message-utils";
+import { useRouter } from "next/navigation";
 
-export default function ProductInventoryUpdate(
-    {
-        productInfo,
-    }:
-        {
-            productInfo: ProductInfo
-        }
-) {
+export default function ProductInventoryUpdate({
+    productInfo,
+    redirectPath = '/seller/shop/product',
+}: {
+    productInfo: ProductInfo,
+    redirectPath?: string,
+}) {
+    const router = useRouter();
     const [form] = Form.useForm<ProductInfo>();
     const [stockQuantityVisible, setStockQuantityVisible] = useState<boolean>(productInfo?.inventoryManagementOption ?? false);
     const [isFieldsTounch, setIsFieldsTounch] = useState<boolean>(form.isFieldsTouched());
@@ -28,8 +29,13 @@ export default function ProductInventoryUpdate(
         return Promise.reject(new Error(rule.message));
     }
 
+    function redirect(productInfo: ProductInfo) {
+        const querySign = redirectPath.includes('?') ? '&' : '?';
+        router.push(`${redirectPath}${querySign}defaultTab=${calculateInventoryDefaultTab(productInfo)}`);
+    }
+
     const navBar =
-        <NavBar backArrow={<BackButton redirectPath="/seller/shop/product" isConfirmedPrompt={isFieldsTounch} />} >
+        <NavBar backArrow={<BackButton redirectPath={redirectPath} isConfirmedPrompt={isFieldsTounch} />} >
             <div className="text-xl text-left font-normal">Cập nhật tồn kho</div>
         </NavBar>;
 
@@ -39,7 +45,8 @@ export default function ProductInventoryUpdate(
             <Form
                 onFinish={async (productInfo) => {
                     try {
-                        await sellerUpdateProductInventory(productInfo);
+                        const product = await sellerUpdateProductInventory(productInfo);
+                        redirect(product);
                         showSuccess('Cập nhật kho thành công');
                     } catch (error) {
                         showError(error);

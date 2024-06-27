@@ -6,9 +6,22 @@ import { InventoryTabName, ProductInfo } from "@/model/market-data-model";
 import ProductInventory from "./product-inventory/ProductInventory";
 import { ProductQuery } from "@/api-services/market-service";
 
-export const InventoryDataContext = createContext<{ activeTab: string, inventoryData: Record<string, TabData>, setInventoryData: Dispatch<SetStateAction<Record<string, TabData>>> } | null>(null);
+export const InventoryDataContext = createContext<{
+    activeTab: string,
+    inventoryData: Record<string, TabData>,
+    setInventoryData: Dispatch<SetStateAction<Record<string, TabData>>>,
+    redirectPath?: string,
+} | null>(null);
 
-export default function InventoryTabData({ tabData = {}, defaultTab = InventoryTabName.InStock }: { tabData?: Record<string, TabData>; defaultTab?: InventoryTabName; }) {
+export default function InventoryTabData({
+    tabData = {},
+    defaultTab = InventoryTabName.InStock,
+    redirectPath = '/seller/shop/product',
+}: {
+    tabData?: Record<string, TabData>,
+    defaultTab?: InventoryTabName,
+    redirectPath?: string,
+}) {
     const [activeTab, setActiveTab] = useState<string>(defaultTab);
     const [inventoryData, setInventoryData] = useState<Record<string, TabData>>(tabData);
     const activeTabData = inventoryData?.[activeTab];
@@ -38,7 +51,7 @@ export default function InventoryTabData({ tabData = {}, defaultTab = InventoryT
                 </Tabs>
             </div>
             <div>
-                <InventoryDataContext.Provider value={{ activeTab, inventoryData, setInventoryData }}>
+                <InventoryDataContext.Provider value={{ redirectPath, activeTab, inventoryData, setInventoryData }}>
                     <ProductInventory key={activeTabData?.title}
                         initialProductList={activeTabData?.initialProductList}
                         query={activeTabData?.query} />

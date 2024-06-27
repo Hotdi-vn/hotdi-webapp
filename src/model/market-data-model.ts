@@ -142,3 +142,21 @@ export enum InventoryTabName {
     Hidden = 'Đang ẩn'
 }
 
+export function calculateInventoryDefaultTab(productInfo: ProductInfo) {
+    let result;
+    switch (productInfo.publishStatus) {
+        case PublishStatus.Draft:
+        case PublishStatus.Hidden:
+            result = InventoryTabName.Hidden;
+            break;
+        case PublishStatus.Published:
+            result = productInfo.inventoryStatus === InventoryStatus.InStock ? InventoryTabName.InStock : InventoryTabName.OutOfStock;
+            break;
+        default:
+            result = InventoryTabName.InStock;
+            break;
+    }
+
+    return encodeURIComponent(result);
+}
+
