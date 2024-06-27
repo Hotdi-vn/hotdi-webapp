@@ -16,11 +16,6 @@ export default async function SellerShopProduct({
 }: {
     searchParams: { [key: string]: string | string[] | undefined }
 }) {
-    const session = await getSession();
-    if (!session.isLoggedIn) {
-        redirect(`/seller/login?${LOGIN_REDIRECT_URL_FIELD_NAME}=/seller/shop`);
-    }
-
     const icons = <div className="flex flex-row gap-3.5">
         <div>
             <Link href={`/seller/shop/product/search`}>

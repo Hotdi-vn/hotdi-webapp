@@ -33,7 +33,7 @@ export default function ProductActions({ productInfo }:
             key: 'UpdateInventory',
             text: 'Cập nhật kho',
             onClick() {
-                router.push(`/seller/shop/product/${productInfo._id}/updateInventory`);
+                router.push(`/seller/shop/product/${productInfo._id}/updateInventory?redirectPath=${inventoryDataContext.redirectPath}`);
             },
         },
         Copy: {
@@ -56,7 +56,7 @@ export default function ProductActions({ productInfo }:
             key: 'Edit',
             text: 'Sửa',
             onClick() {
-                router.push(`/seller/shop/product/${productInfo._id}`);
+                router.push(`/seller/shop/product/${productInfo._id}?redirectPath=${inventoryDataContext.redirectPath}`);
             },
         },
         OutOfStock: {

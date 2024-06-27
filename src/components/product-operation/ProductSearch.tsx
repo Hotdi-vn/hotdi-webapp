@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { ErrorBlock, NavBar, SearchBar } from "antd-mobile";
 import { getMyProducts } from "@/server-actions/product-operation-actions";
 import { BackButton } from "../button/BackButton";
@@ -8,7 +8,13 @@ import InventoryTabData, { TabData } from "../product-management/InventoryTabDat
 import { InventoryStatus, InventoryTabName, PublishStatus } from "@/model/market-data-model";
 import { SkeletonParagraph } from "antd-mobile/es/components/skeleton/skeleton";
 
-export default function ProductSearch() {
+export default function ProductSearch({
+    defaultSearchValue,
+    defaultTab = InventoryTabName.InStock,
+}: {
+    defaultSearchValue?: string,
+    defaultTab?: InventoryTabName,
+}) {
     const itemsPerLoading = 20;
     const [inventoryData, setInventoryData] = useState<Record<string, TabData>>();
     const [pending, startSearch] = useTransition();
@@ -51,9 +57,15 @@ export default function ProductSearch() {
         });
     }
 
+    useEffect(() => {
+        if (defaultSearchValue) {
+            search(defaultSearchValue);
+        }
+    }, []);
+
     const navBar =
         <NavBar backArrow={<BackButton redirectPath="/seller/shop/product" />} >
-            <SearchBar placeholder='tìm ở đây nè...' onSearch={search} />
+            <SearchBar defaultValue={defaultSearchValue} placeholder='tìm ở đây nè...' onSearch={search} />
         </NavBar>;
 
     return (
@@ -66,7 +78,7 @@ export default function ProductSearch() {
                         :
                         inventoryData ?
                             <div>
-                                <InventoryTabData tabData={inventoryData} />
+                                <InventoryTabData redirectPath={`/seller/shop/product/search?defaultSearchValue=${defaultSearchValue}`} tabData={inventoryData} defaultTab={defaultTab} />
                             </div>
                             :
                             <div className="flex justify-center">
