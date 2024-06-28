@@ -17,6 +17,7 @@ export default function ProductSearch({
 }) {
     const itemsPerLoading = 20;
     const [inventoryData, setInventoryData] = useState<Record<string, TabData>>();
+    const [searchValue, setSearchValue] = useState<string>(defaultSearchValue ?? '');
     const [pending, startSearch] = useTransition();
 
     async function search(value: string) {
@@ -54,12 +55,13 @@ export default function ProductSearch({
                 },
             }
             setInventoryData(inventoryTabData);
+            setSearchValue(value);
         });
     }
 
     useEffect(() => {
-        if (defaultSearchValue) {
-            search(defaultSearchValue);
+        if (searchValue) {
+            search(searchValue);
         }
     }, []);
 
@@ -78,7 +80,7 @@ export default function ProductSearch({
                         :
                         inventoryData ?
                             <div>
-                                <InventoryTabData redirectPath={`/seller/shop/product/search?defaultSearchValue=${defaultSearchValue}`} tabData={inventoryData} defaultTab={defaultTab} />
+                                <InventoryTabData redirectPath={`/seller/shop/product/search?defaultSearchValue=${searchValue}`} tabData={inventoryData} defaultTab={defaultTab} />
                             </div>
                             :
                             <div className="flex justify-center">

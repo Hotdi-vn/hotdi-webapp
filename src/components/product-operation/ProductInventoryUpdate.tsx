@@ -30,8 +30,10 @@ export default function ProductInventoryUpdate({
     }
 
     function redirect(productInfo: ProductInfo) {
-        const querySign = redirectPath.includes('?') ? '&' : '?';
-        router.push(`${redirectPath}${querySign}defaultTab=${calculateInventoryDefaultTab(productInfo)}`);
+        const url = new URL(redirectPath, 'http://dummy.com');
+        const params = url.searchParams;
+        params.set('defaultTab', calculateInventoryDefaultTab(productInfo));
+        router.push(`${url.pathname}?${params.toString()}`);
     }
 
     const navBar =
