@@ -83,8 +83,10 @@ export default function ProductOperation({
     }
 
     function redirect(productInfo: ProductInfo) {
-        const querySign = redirectPath.includes('?') ? '&' : '?';
-        router.push(`${redirectPath}${querySign}defaultTab=${calculateInventoryDefaultTab(productInfo)}`);
+        const url = new URL(redirectPath, 'http://dummy.com');
+        const params = url.searchParams;
+        params.set('defaultTab', calculateInventoryDefaultTab(productInfo));
+        router.push(`${url.pathname}?${params.toString()}`);
     }
 
     useEffect(() => {
@@ -204,7 +206,8 @@ export default function ProductOperation({
                     showCloseButton
                     forceRender
                     onClose={() => {
-                        setSizeSelection(false)
+                        form.validateFields(['size']);
+                        setSizeSelection(false);
                     }}
                 >
                     <div style={{ padding: '40px 20px 20px', width: '100vw' }}>
@@ -238,7 +241,10 @@ export default function ProductOperation({
                             <FormattedNumberInput isFloat placeholder="0" suffix='cm' />
                         </Form.Item>
                         <Divider />
-                        <Button block color="primary" onClick={() => setSizeSelection(false)}>Lưu</Button>
+                        <Button block color="primary" onClick={() => {
+                            form.validateFields(['size']);
+                            setSizeSelection(false);
+                        }}>Lưu</Button>
                     </div>
                 </Popup>
 

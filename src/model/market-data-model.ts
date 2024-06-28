@@ -157,6 +157,6 @@ export function calculateInventoryDefaultTab(productInfo: ProductInfo) {
             break;
     }
 
-    return encodeURIComponent(result);
+    return result;
 }
 

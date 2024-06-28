@@ -25,6 +25,7 @@ export default function InventoryTabData({
     const [activeTab, setActiveTab] = useState<string>(defaultTab);
     const [inventoryData, setInventoryData] = useState<Record<string, TabData>>(tabData);
     const activeTabData = inventoryData?.[activeTab];
+    redirectPath = redirectPath.concat(redirectPath.includes('?') ? '&' : '?', 'defaultTab=', activeTab);
 
     useEffect(() => {
         setActiveTab(defaultTab);
