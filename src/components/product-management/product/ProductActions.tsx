@@ -28,12 +28,19 @@ export default function ProductActions({ productInfo }:
     const [pending, startTransition] = useTransition();
     const inventoryDataContext = useContext(InventoryDataContext)!;
 
+    function calculateRedirectPath() {
+        const url = new URL(inventoryDataContext.redirectPath ?? '/', 'http://dummy.com');
+        const params = url.searchParams;
+        params.set('defaultTab', inventoryDataContext.activeTab);
+        return encodeURIComponent(`${url.pathname}?${params.toString()}`);
+    }
+
     const actionConfig: { [key: string]: Action } = {
         UpdateInventory: {
             key: 'UpdateInventory',
             text: 'Cập nhật kho',
             onClick() {
-                router.push(`/seller/shop/product/${productInfo._id}/updateInventory?redirectPath=${inventoryDataContext.redirectPath}`);
+                router.push(`/seller/shop/product/${productInfo._id}/updateInventory?redirectPath=${calculateRedirectPath()}`);
             },
         },
         Copy: {
@@ -56,7 +63,7 @@ export default function ProductActions({ productInfo }:
             key: 'Edit',
             text: 'Sửa',
             onClick() {
-                router.push(`/seller/shop/product/${productInfo._id}?redirectPath=${inventoryDataContext.redirectPath}`);
+                router.push(`/seller/shop/product/${productInfo._id}?redirectPath=${calculateRedirectPath()}`);
             },
         },
         OutOfStock: {
