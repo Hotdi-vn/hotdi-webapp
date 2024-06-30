@@ -43,10 +43,10 @@ export default function FormattedNumberInput(
 
     return (
         <div className="flex flex-row gap-2 items-center">
-            <div className="basis-1/12">
+            <div className="basis-1/12 w-8 max-w-16">
                 {prefix}
             </div>
-            <div className="grow">
+            <div className="basis-10/12">
                 <Input style={{ '--text-align': textAlign }} value={formattedValue} placeholder={placeholder} type="string"
                     onKeyUp={formatImmediately ? formatNumber : undefined} onBlur={formatImmediately ? undefined : formatNumber}
                     onChange={onFormattedValueChange} />
@@ -54,7 +54,7 @@ export default function FormattedNumberInput(
             <div>
                 <Input value={value?.toString()} type="hidden" onChange={onNumberValueChange} />
             </div>
-            <div className="basis-1/12">
+            <div className="basis-1/12 w-8 max-w-16">
                 {suffix}
             </div>
         </div>
