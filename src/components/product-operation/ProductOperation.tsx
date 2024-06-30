@@ -108,8 +108,12 @@ export default function ProductOperation({
     }
 
     const checkSize = (rule: any, value: number) => {
-        if (form.getFieldValue('weight') && form.getFieldValue('height')
-            && form.getFieldValue('width') && form.getFieldValue('length')) {
+        const weight = form.getFieldValue('weight');
+        const height = form.getFieldValue('height');
+        const width = form.getFieldValue('width');
+        const length = form.getFieldValue('length');
+        if ((weight || weight === 0) && (height || height === 0)
+            && (width || width === 0) && (length || length === 0)) {
             return Promise.resolve();
         }
         return Promise.reject(new Error(rule.message));
