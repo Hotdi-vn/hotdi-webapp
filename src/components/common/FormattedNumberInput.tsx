@@ -29,7 +29,7 @@ export default function FormattedNumberInput(
         } else {
             value = undefined;
         }
-        setFormattedValue(value ? value.toLocaleString(locales) : '');
+        setFormattedValue(value || value === 0 ? value.toLocaleString(locales) : '');
         triggerValue(value);
     }
 
