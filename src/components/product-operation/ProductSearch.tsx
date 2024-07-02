@@ -26,7 +26,7 @@ export default function ProductSearch({
             const inStockProductResponse = await getMyProducts(inStockProductQuery);
             const inStockProductList = inStockProductResponse.data;
 
-            const outOfStockProductQuery = { search: value, nventoryStatus: InventoryStatus.OutOfStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading, populate: 'images' };
+            const outOfStockProductQuery = { search: value, inventoryStatus: InventoryStatus.OutOfStock, publishStatus: PublishStatus.Published, skip: 0, limit: itemsPerLoading, populate: 'images' };
             const outOfStockProductResponse = await getMyProducts(outOfStockProductQuery);
             const outOfStockProductList = outOfStockProductResponse.data;
 
