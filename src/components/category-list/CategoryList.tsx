@@ -15,13 +15,13 @@ export default async function CategoryList() {
     }
 
     return (
-        <div className={styles.categories}>
+        <div className="flex flex-col flex-wrap w-screen h-56 bg-[#C27946] overflow-auto gap-x-12 gap-y-4 px-8 py-5">
             {
                 categories.data.map(
                     category =>
                         <ProductCategory key={category.id} imageSource={category.imageUrl} categoryName={category.name} />
                 )
-            };
+            }
         </div>
-    );
+    )
 }

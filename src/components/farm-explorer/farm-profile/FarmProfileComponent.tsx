@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import styles from './FarmProfile.module.css';
 import Date from '@/components/common/Date';
 
 export class FarmProfile {
@@ -39,20 +38,20 @@ export class FarmProfile {
 export default function FarmProfileComponent({ farmProfile }:
     { farmProfile: FarmProfile }) {
     return (
-        <div className={styles.farmProfile}>
-            <div className={styles.farmInfo}>
+        <div className="flex flex-col items-start gap-3 bg-white">
+            <div className="flex flex-row gap-[5px] p-2.5">
                 <Image src={farmProfile.avatarUrl} width={40} height={40} alt='Farm profile avatar image' />
-                <div className={styles.farmName}>
+                <div className="flex flex-col">
                     <div className="text-base"><b>{farmProfile.name}</b></div>
                     <Date date={new (Date as any)(farmProfile.updatedAt)}></Date>
                 </div>
             </div>
-            <div className={styles.farmCoverImage}>
+            <div className="flex">
                 <Image src={farmProfile.coverImageUrl} width={420} height={260} alt='Farm profile cover image' />
             </div>
-            <div className={styles.farmDescription}>
+            <div className="flex p-[5px]">
                 {farmProfile.description}
             </div>
         </div>
-    );
+    )
 }

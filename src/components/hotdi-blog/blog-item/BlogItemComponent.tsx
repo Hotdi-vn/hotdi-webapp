@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import styles from './BlogItem.module.css';
 import Link from 'next/link';
 import Date from '@/components/common/Date';
 
@@ -34,7 +33,7 @@ export default function BlogItemComponent({ blogItem }:
                     <Date date={blogItem.lastUpdatedDate}></Date>
                 </div>
             </div>
-            <div className="flex pt-[5px] pb-3 px-3">
+            <div className="flex pt-[5px] pb-3 px-3 text-sm">
                 <div>
                     {blogItem.content.substring(0, 150)}...
                     <Link href='http://hotdi.vn/' className="text-neutral-400"> xem thêm</Link>
