@@ -5,7 +5,12 @@ type Map<T> = {
 type AuditFields = {
     createdBy: string;
     createdAt: number;
+    updatedBy: string,
     updatedAt: number;
+}
+
+type BaseFields = AuditFields & {
+    _id: string;
 }
 
 export enum CollectionType {
@@ -160,3 +165,17 @@ export function calculateInventoryDefaultTab(productInfo: ProductInfo) {
     return result;
 }
 
+export type SellerProfile = BaseFields & {
+    name: string;
+    description: string;
+    avatarUrl: string;
+    coverImageUrl: string;
+    status: SellerProfileStatus
+}
+
+export enum SellerProfileStatus {
+    New = 'New',
+    WaitingApproval = 'WaitingApproval',
+    Rejected = 'Rejected',
+    Approved = 'Approved',
+}

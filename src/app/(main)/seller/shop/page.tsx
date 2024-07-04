@@ -1,9 +1,11 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/server-actions/authentication-actions";
 import { LOGIN_REDIRECT_URL_FIELD_NAME } from "@/constants/common-contants";
-import { List, ListItem, NavBar, TabBar } from "@/components/common/antd_mobile_client_wrapper";
+import { List, ListItem, NavBar, NoticeBar, TabBar } from "@/components/common/antd_mobile_client_wrapper";
 import Icon from '@/components/common/icon_component';
 import Link from "next/link";
+import ShopInfoCard from "@/components/shop-management/ShopInfoCard";
+import { SellerProfile, SellerProfileStatus } from "@/model/market-data-model";
 
 export default async function SellerShop() {
     const session = await getSession();
@@ -22,6 +24,19 @@ export default async function SellerShop() {
             <div className="text-xl text-left font-normal">Shop Của Tôi</div>
         </NavBar>;
 
+    const sellerProfile: SellerProfile = {
+        _id: '1',
+        name: 'Sample Shop',
+        description: 'Shop description',
+        status: SellerProfileStatus.New,
+        avatarUrl: '',
+        coverImageUrl: '',
+        createdAt: 0,
+        createdBy: '',
+        updatedAt: 0,
+        updatedBy: ''
+    };
+
     const menuList =
         <List>
             <ListItem arrow={<Icon name='navigateRight' />}>
@@ -31,11 +46,14 @@ export default async function SellerShop() {
             </ListItem>
         </List>;
     return (
-        <>
+        <div className="flex flex-col gap-2">
             <div className='top'>{navBar}</div>
+            <div>
+                <ShopInfoCard seller={sellerProfile} />
+            </div>
             <div>
                 {menuList}
             </div>
-        </>
+        </div>
     )
 }

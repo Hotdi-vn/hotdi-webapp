@@ -227,3 +227,13 @@ export async function getProductById(id: string, query: ProductQuery = {}): Prom
         throw error;
     }
 }
+
+/**
+ * Sellers services start
+ */
+
+
+
+/**
+ * Sellers services end
+ */
