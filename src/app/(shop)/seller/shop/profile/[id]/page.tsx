@@ -1,3 +1,6 @@
+import ShopProfileOperation from "@/components/shop-management/ShopProfileOperation"
+import { SellerProfile, SellerProfileStatus } from "@/model/market-data-model";
+
 export default async function SellerShopProfileUpdate({
     params,
     searchParams
@@ -7,9 +10,23 @@ export default async function SellerShopProfileUpdate({
         [key: string]: string | string[] | undefined
     }
 }) {
+
+    const sellerProfile: SellerProfile = {
+        _id: '1',
+        name: 'Sample Shop',
+        description: 'Shop description',
+        status: SellerProfileStatus.New,
+        avatarUrl: '',
+        coverImageUrl: '',
+        createdAt: 0,
+        createdBy: '',
+        updatedAt: 0,
+        updatedBy: ''
+    };
+
     return (
-        <div>
-            Shop profile page {params.id}
-        </div>
+        <>
+            <ShopProfileOperation profile={sellerProfile} />
+        </>
     )
 }
