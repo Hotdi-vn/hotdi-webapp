@@ -20,10 +20,10 @@ export default function Home() {
   return (
     <Application bottom={<BottomNavBar />} top={navBar}>
       <Banner />
-      <Suspense>
-        <CategoryList />
-      </Suspense>
       <div className='gap-12'>
+        <Suspense>
+          <CategoryList />
+        </Suspense>
         <Suspense>
           <ProductCollection collectionType={CollectionType.NoiBatPhanPhat} title='Nổi Bật Phần Phật' />
         </Suspense>
@@ -31,7 +31,7 @@ export default function Home() {
           <ProductCollection collectionType={CollectionType.SanPhamMoiToanh} title='Sản Phẩm Mới Toanh' />
         </Suspense>
         <Suspense>
-          <ProductCollection collectionType={CollectionType.ChoNeHotDi} title='Cho Nè - Hốt Đi' twoRows />
+          <ProductCollection collectionType={CollectionType.ChoNeHotDi} title='Cho Nè - Hốt Đi' />
         </Suspense>
         <Suspense>
           <ProductCollection collectionType={CollectionType.DoTuoiRoiRoi} title='Đồ Tươi Roi Rói' twoRows />

@@ -4,5 +4,6 @@
 
 .bannerItem {
     width: 100vw;
-    height: auto;
+    max-height: 150px;
+
 }

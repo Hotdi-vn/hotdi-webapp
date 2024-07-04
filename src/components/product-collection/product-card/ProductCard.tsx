@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { Space, EnvironmentOutline } from '@/components/common/antd_mobile_client_wrapper';
-import styles from './ProductCard.module.css';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { ProductInfo } from '@/model/market-data-model';
@@ -59,18 +58,18 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
       height={fill ? 0 : height}
       sizes={imageSizes}
       className={clsx({
-        [styles.imageRadiusLeft]: horizontalCard,
-        [styles.imageRadius]: imageRadius && !horizontalCard,
-        [styles.image]: !imageRadius 
+        ["object-cover rounded-tl-lg rounded-bl-lg"]: horizontalCard,
+        ["object-cover rounded-lg"]: imageRadius && !horizontalCard,
+        ["object-cover"]: !imageRadius 
       })}
     />
   )
 
   const imageContainer = (
     <div className={clsx({
-      [`${styles.imageContainer} ${styles.horizontal}`] : horizontalCard,
-      [`${styles.imageContainer} ${styles.fourByThree}`] : shortImage,
-      [`${styles.imageContainer} ${styles.square}`] : !shortImage && !horizontalCard
+      ["relative aspect-[1] w-[100px]"] : horizontalCard,
+      ["relative aspect-[4/3]"] : shortImage,
+      ["relative aspect-[1]"] : !shortImage && !horizontalCard
     })}>
       {image}
     </div>
@@ -81,37 +80,37 @@ export default function ProductCard({ productInfo, shortImage, fill = true, widt
   return (
     <Link href={`/product/${productInfo._id}`}>
       <div className={clsx({
-        [styles.cardContainer]: productCardType == ProductCardType.Normal,
-        [styles.cardContainerLarge]: productCardType == ProductCardType.Large,
-        [styles.cardContainerHorizontal]: productCardType == ProductCardType.Horizontal
+        ["w-[136px] whitespace-normal"]: productCardType == ProductCardType.Normal,
+        ["w-[48vw] whitespace-normal"]: productCardType == ProductCardType.Large,
+        ["w-[75vw] whitespace-normal bg-white flex rounded-lg"]: productCardType == ProductCardType.Horizontal
       })}>
         {imageContainer}
         <Space direction="vertical" className={clsx({
-          [styles.productInfoContainer]: !productInfoPadding,
-          [styles.productInfoContainerWithPadding]: productInfoPadding
+          ["p-[auto]"]: !productInfoPadding,
+          ["px-3 py-2"]: productInfoPadding
         })}>
           <div className={clsx({
-          [styles.productName]: !horizontalCard,
-          [styles.productNameHorizontal]: horizontalCard
+          ["text-[#333333] flex overflow-hidden min-h-[35px] mt-2"]: !horizontalCard,
+          ["text-[#333333] flex overflow-hidden"]: horizontalCard
         })}>
             {productInfo.name.substring(0, 30)}
             {productInfo.name.length > 30 ? '...' : ''}
           </div>
           <div className={clsx({
-            [styles.priceAndSoldCountHorizontal] : horizontalCard,
-            [styles.priceAndSoldCount] : !horizontalCard
+            ["flex items-center gap-2"] : horizontalCard,
+            ["flex flex-col gap-2"] : !horizontalCard
           })}>
             <Price price={productInfo.price} />
             {horizontalCard && <div className='text-neutral-300'>|</div>}
-            <div className={styles.numberSold}>
+            <div className="text-xs text-[#333333]">
               Đã bán {formatNumber(productInfo.soldCount)}
             </div>
           </div>
           {
             showLocation ?
-              <div className={styles.productLocation}>
+              <div className={"flex items-center gap-[0.25em] text-neutral-400 text-[0.75em]"}>
                 <EnvironmentOutline />
-                <div className={styles.productLocationText}>{productInfo.location}</div>
+                <div className="overflow-hidden">{productInfo.location}</div>
               </div>
               :
               undefined
