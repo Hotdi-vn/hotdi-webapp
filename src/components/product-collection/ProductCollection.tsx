@@ -1,6 +1,5 @@
 import React from 'react';
 import ProductCard, { CollectionType, ProductCardType } from "./product-card/ProductCard";
-import styles from "./ProductCollection.module.css"
 import { RightOutline } from '@/components/common/antd_mobile_client_wrapper';
 import Link from 'next/link';
 import { get, getNoCache } from '@/utils/server-side-fetching';
@@ -32,8 +31,9 @@ export default async function ProductCollection({ collectionType, title, twoRows
 
   const collection = (
     <div className={clsx({
-      [`${styles.collection} ${styles.twoRows}`] : twoRows,
-      [styles.collection] : !twoRows 
+      ["grid-rows-[repeat(2,1fr)] grid grid-flow-col auto-rows-min auto-cols-min gap-[1em] w-screen overflow-x-scroll overflow-y-hidden whitespace-nowrap overscroll-x-contain px-8 pb-5"] : collectionType == CollectionType.ChoNeHotDi,
+      ["grid-rows-[repeat(2,1fr)] grid grid-flow-col auto-rows-min auto-cols-min gap-[1em] w-screen overflow-x-scroll overflow-y-hidden whitespace-nowrap overscroll-x-contain px-3 pb-5"] : twoRows,
+      ["grid grid-flow-col auto-rows-min auto-cols-min gap-[1em] w-screen overflow-x-scroll overflow-y-hidden whitespace-nowrap overscroll-x-contain px-3 pb-5"] : !twoRows && collectionType !== CollectionType.ChoNeHotDi
     })}>
         {collectionItems}
     </div>
@@ -41,20 +41,20 @@ export default async function ProductCollection({ collectionType, title, twoRows
 
   return (
     <div className={clsx({
-      [styles.wrapperGreen] : collectionType == CollectionType.ChoNeHotDi,
-      [styles.wrapper] : collectionType !== CollectionType.ChoNeHotDi
+      ["bg-[#376116] bg-[url('/background-paper-texture.png')] bg-blend-soft-light text-base"] : collectionType == CollectionType.ChoNeHotDi,
+      ["bg-white text-base"] : collectionType !== CollectionType.ChoNeHotDi
     })}>
-      <div className={styles.header}>
+      <div className="flex w-screen justify-between items-center py-5 px-3">
         <h1 className={clsx({
-          [styles.titleWhite] : collectionType == CollectionType.ChoNeHotDi,
-          [styles.title] : collectionType !== CollectionType.ChoNeHotDi
+          ["text-white font-bold text-[1.25em]"] : collectionType == CollectionType.ChoNeHotDi,
+          ["text-[#3A6F05] font-bold text-[1.25em]"] : collectionType !== CollectionType.ChoNeHotDi
         })}>
           {title}
         </h1>
         <Link href={`/product?collection=${title}`}>
           <div className={clsx({
-            [styles.revealButtonWhite] : collectionType == CollectionType.ChoNeHotDi,
-            [styles.revealButton] : collectionType !== CollectionType.ChoNeHotDi
+            ["text-white flex items-center"] : collectionType == CollectionType.ChoNeHotDi,
+            ["flex items-center"] : collectionType !== CollectionType.ChoNeHotDi
           })}>
             Xem thêm <RightOutline />
           </div>
