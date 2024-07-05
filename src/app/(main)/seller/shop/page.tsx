@@ -34,7 +34,16 @@ export default async function SellerShop() {
         createdAt: 0,
         createdBy: '',
         updatedAt: 0,
-        updatedBy: ''
+        updatedBy: '',
+        addresses: [
+            {
+                province: '',
+                city: 'TP Hồ Chí Minh',
+                district: 'TP Thủ Đức',
+                ward: 'Bình Trưng Tây',
+                address: '370 Nguyễn Duy Trinh',
+            }
+        ],
     };
 
     const menuList =

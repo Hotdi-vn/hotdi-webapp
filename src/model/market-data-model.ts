@@ -170,7 +170,16 @@ export type SellerProfile = BaseFields & {
     description: string;
     avatarUrl: string;
     coverImageUrl: string;
-    status: SellerProfileStatus
+    status: SellerProfileStatus;
+    addresses: Address[];
+}
+
+export type Address = {
+    province: string;
+    city: string;
+    district: string;
+    ward: string;
+    address: string;
 }
 
 export enum SellerProfileStatus {
