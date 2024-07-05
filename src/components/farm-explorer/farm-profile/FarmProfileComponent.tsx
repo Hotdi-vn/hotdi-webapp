@@ -1,5 +1,5 @@
+import DateFormatter from '@/components/common/DateFormatter';
 import Image from 'next/image';
-import Date from '@/components/common/Date';
 
 export class FarmProfile {
     id: string;
@@ -43,7 +43,7 @@ export default function FarmProfileComponent({ farmProfile }:
                 <Image src={farmProfile.avatarUrl} width={40} height={40} alt='Farm profile avatar image' />
                 <div className="flex flex-col">
                     <div className="text-base"><b>{farmProfile.name}</b></div>
-                    <Date date={new (Date as any)(farmProfile.updatedAt)}></Date>
+                    <DateFormatter date={new Date(farmProfile.updatedAt)}></DateFormatter>
                 </div>
             </div>
             <div className="flex">

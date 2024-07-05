@@ -1,4 +1,4 @@
-export default function Date({ date, locales = 'vi', format = {
+export default function DateFormatter({ date, locales = 'vi', format = {
     year: "numeric",
     month: "short",
     day: "numeric"
@@ -9,6 +9,7 @@ export default function Date({ date, locales = 'vi', format = {
         day: "numeric" | "2-digit"
     }
 }) {
+
     return (
         <div className="text-gray-500/75 text-xs">
             {Intl.DateTimeFormat(locales, format).format(date)}
