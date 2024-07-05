@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import Date from '@/components/common/Date';
+import DateFormatter from '@/components/common/DateFormatter';
 
 export class BlogItem {
     avatarUrl: string;
@@ -30,7 +30,7 @@ export default function BlogItemComponent({ blogItem }:
                 <Image src={blogItem.avatarUrl} width={40} height={40} alt='Blog author avatar image' />
                 <div className="flex flex-col px-[5px]">
                     <div className="text-base"><b>{blogItem.name}</b></div>
-                    <Date date={blogItem.lastUpdatedDate}></Date>
+                    <DateFormatter date={blogItem.lastUpdatedDate}></DateFormatter>
                 </div>
             </div>
             <div className="flex pt-[5px] pb-3 px-3 text-sm">
