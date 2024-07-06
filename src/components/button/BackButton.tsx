@@ -19,7 +19,8 @@ export function BackButton(
         confirmedPromptMessage = 'Thông tin sản phẩm sẽ không được lưu nếu bạn rời đi. Bạn có muốn rời đi?',
         cancelText = 'Tiếp tục chỉnh sửa',
         confirmText = 'Rời đi',
-        icon = <Icon name='back' />
+        icon = <Icon name='back' />,
+        customOnClick,
     }:
         {
             redirectPath?: string, isConfirmedPrompt?: boolean,
@@ -28,7 +29,8 @@ export function BackButton(
             confirmedPromptMessage?: string,
             cancelText?: ReactNode,
             confirmText?: ReactNode,
-            icon?: ReactNode
+            icon?: ReactNode,
+            customOnClick?: () => void,
         }) {
     const router = useRouter();
 
@@ -36,32 +38,34 @@ export function BackButton(
         redirectPath ? router.push(redirectPath) : router.back();
     }
 
-    const onClick = () => {
-        if (isConfirmedPrompt) {
-            Modal.show({
-                closeOnAction: true,
-                header: header,
-                title: title,
-                content: confirmedPromptMessage,
-                actions: [
-                    {
-                        key: 'cancel',
-                        text: cancelText,
-                        primary: true
-                    },
-                    {
-                        key: 'confirm',
-                        text: confirmText,
-                        danger: true,
-                        onClick: () => { back(); }
-                    },
-                ]
-            })
+    const onClick = customOnClick ?
+        customOnClick :
+        () => {
+            if (isConfirmedPrompt) {
+                Modal.show({
+                    closeOnAction: true,
+                    header: header,
+                    title: title,
+                    content: confirmedPromptMessage,
+                    actions: [
+                        {
+                            key: 'cancel',
+                            text: cancelText,
+                            primary: true
+                        },
+                        {
+                            key: 'confirm',
+                            text: confirmText,
+                            danger: true,
+                            onClick: () => { back(); }
+                        },
+                    ]
+                })
 
-        } else {
-            back();
+            } else {
+                back();
+            }
         }
-    }
 
     return (
         <div onClick={onClick}>
