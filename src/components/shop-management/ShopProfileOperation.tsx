@@ -7,6 +7,7 @@ import { FormInstance } from "antd-mobile/es/components/form";
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { showError } from "@/utils/message-utils";
+import Icon from '@/components/common/icon_component';
 
 export default function ShopProfileOperation({
     profile
@@ -86,20 +87,77 @@ export default function ShopProfileOperation({
                         <Popup
                             position='right'
                             visible={addressSelection}
-                            showCloseButton
                             forceRender
                             onClose={() => {
                                 form.validateFields(['addresses']);
                                 setAddressSelection(false);
                             }}
                         >
-                            <div style={{ padding: '40px 20px 20px', width: '100vw' }}>
+                            <div>
+                                <div className='top'>
+                                    <NavBar backArrow={<BackButton customOnClick={() => { setAddressSelection(false); }} />} >
+                                        <div className="text-xl text-left font-normal">Địa chỉ</div>
+                                    </NavBar>
+                                </div>
+                                <div className="body w-screen h-screen">
+                                    <Form.Item style={{ padding: '0 12px' }} label='Tỉnh / Thành phố'
+                                        layout='vertical' childElementPosition='normal' arrow
+                                        shouldUpdate={(prevValues, curValues) => prevValues.addresses !== curValues.addresses}
+                                        onClick={() => setAddressSelection(true)}
+                                    >
+                                        {
+                                            ({ getFieldValue }) =>
+                                                <div className="flex flex-col">
+                                                    <div>{getFieldValue('addresses') ? getFieldValue('addresses')[0].city : ''}</div>
+                                                </div>
+                                        }
+                                    </Form.Item>
 
-                                <Divider />
-                                <Button block color="primary" onClick={() => {
-                                    form.validateFields(['addresses']);
-                                    setAddressSelection(false);
-                                }}>Xác nhận địa chỉ</Button>
+                                    <Form.Item style={{ padding: '0 12px' }} label='Huyện / Quận'
+                                        layout='vertical' childElementPosition='normal' arrow
+                                        shouldUpdate={(prevValues, curValues) => prevValues.addresses !== curValues.addresses}
+                                        onClick={() => setAddressSelection(true)}
+                                    >
+                                        {
+                                            ({ getFieldValue }) =>
+                                                <div className="flex flex-col">
+                                                    <div>{getFieldValue('addresses') ? getFieldValue('addresses')[0].district : ''}</div>
+                                                </div>
+                                        }
+                                    </Form.Item>
+
+                                    <Form.Item style={{ padding: '0 12px' }} label='Xã / Phường'
+                                        layout='vertical' childElementPosition='normal' arrow
+                                        shouldUpdate={(prevValues, curValues) => prevValues.addresses !== curValues.addresses}
+                                        onClick={() => setAddressSelection(true)}
+                                    >
+                                        {
+                                            ({ getFieldValue }) =>
+                                                <div className="flex flex-col">
+                                                    <div>{getFieldValue('addresses') ? getFieldValue('addresses')[0].ward : ''}</div>
+                                                </div>
+                                        }
+                                    </Form.Item>
+
+                                    <Form.Item style={{ padding: '0 12px' }} label='Số nhà, đường'
+                                        layout='vertical' childElementPosition='normal' arrow
+                                        shouldUpdate={(prevValues, curValues) => prevValues.addresses !== curValues.addresses}
+                                        onClick={() => setAddressSelection(true)}
+                                    >
+                                        {
+                                            ({ getFieldValue }) =>
+                                                <div className="flex flex-col">
+                                                    <div>{getFieldValue('addresses') ? getFieldValue('addresses')[0].address : ''}</div>
+                                                </div>
+                                        }
+                                    </Form.Item>
+                                </div>
+                                <div className="flex flex-row bottom p-2 gap-x-2">
+                                    <Button block color="primary" onClick={() => {
+                                        form.validateFields(['addresses']);
+                                        setAddressSelection(false);
+                                    }}>Xác nhận địa chỉ</Button>
+                                </div>
                             </div>
                         </Popup>
 
