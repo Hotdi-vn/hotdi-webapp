@@ -37,11 +37,28 @@ export default async function SellerShop() {
         updatedBy: '',
         addresses: [
             {
-                province: '',
-                city: 'TP Hồ Chí Minh',
-                district: 'TP Thủ Đức',
-                ward: 'Bình Trưng Tây',
-                address: '370 Nguyễn Duy Trinh',
+                province: {
+                    code: '01',
+                    name: '',
+                    parent: '0'
+                },
+                city: {
+                    code: '01',
+                    name: 'TP Hồ Chí Minh',
+                    parent: '0'
+                },
+
+                district: {
+                    code: '01',
+                    name: 'TP Thủ Đức',
+                    parent: '0'
+                },
+                ward: {
+                    code: '01',
+                    name: 'Bình Trưng Tây',
+                    parent: '0'
+                },
+                street: '370 Nguyễn Duy Trinh',
             }
         ],
     };
