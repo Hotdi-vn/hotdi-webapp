@@ -3,7 +3,7 @@ import 'server-only'
 import { ResponseData, ServerError } from '@/utils/data-fetching-utils';
 import { log } from 'console';
 import { deleteApi, get, getNoCache, post, put } from '@/utils/server-side-fetching';
-import { CartItem, InventoryStatus, ProductInfo, PublishStatus, Role } from '@/model/market-data-model';
+import { CartItem, InventoryStatus, Location, ProductInfo, PublishStatus, Role } from '@/model/market-data-model';
 import { getSession } from '@/server-actions/authentication-actions';
 import { ERROR_CODE_ITEM_NOT_FOUND } from '@/constants/common-contants';
 import { Category } from '@/model/market-data-model';
@@ -236,4 +236,25 @@ export async function getProductById(id: string, query: ProductQuery = {}): Prom
 
 /**
  * Sellers services end
+ */
+
+/**
+ * Location services start
+ */
+export async function getLocationByParentCode(parentCode: string): Promise<ResponseData<Location[]>> {
+    let response;
+    try {
+        response = await get<Location[]>(`${BASE_URL}/v1/locations/parent/${parentCode}`, 86400);
+        if (response.error) {
+            log('Error from getLocationByParentCode:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response;
+    } catch (error) {
+        log('Error from getLocationByParentCode', error);
+        throw error;
+    }
+}
+/**
+ * Location services end
  */

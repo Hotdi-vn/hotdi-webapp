@@ -175,11 +175,11 @@ export type SellerProfile = BaseFields & {
 }
 
 export type Address = {
-    province: string;
-    city: string;
-    district: string;
-    ward: string;
-    address: string;
+    province?: Location;
+    city?: Location;
+    district?: Location;
+    ward?: Location;
+    street?: string;
 }
 
 export enum SellerProfileStatus {
@@ -187,4 +187,10 @@ export enum SellerProfileStatus {
     WaitingApproval = 'WaitingApproval',
     Rejected = 'Rejected',
     Approved = 'Approved',
+}
+
+export type Location = {
+    code: string;
+    name: string;
+    parent: string;
 }
