@@ -141,3 +141,20 @@ a {
   color: #3A6F05 !important;
   word-break: break-word !important;
 }
+
+.hotdi-avatar-uploader .adm-image-uploader-cell {
+  border-radius: 40px;
+}
+
+.hotdi-avatar-uploader .adm-list-item {
+  border-radius: 40px;
+  padding: 0px;
+}
+
+.hotdi-avatar-uploader .adm-list-item-content {
+  padding: 0px;
+}
+
+.hotdi-avatar-uploader .adm-list-item-content-main {
+  padding: 0px;
+}

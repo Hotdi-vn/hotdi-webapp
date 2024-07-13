@@ -8,6 +8,9 @@ import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { showError } from "@/utils/message-utils";
 import AddressInput from "../common/AddressInput";
+import AvatarUploader from "../common/AvatarUploader";
+import Image from "next/image";
+import { log } from "console";
 
 export default function ShopProfileOperation({
     profile
@@ -36,7 +39,7 @@ export default function ShopProfileOperation({
                 <div>
                     <Form onFinish={async (sellerProfile) => {
                         try {
-
+                            console.log(sellerProfile);
                         } catch (error) {
                             showError(error);
                         }
@@ -55,6 +58,16 @@ export default function ShopProfileOperation({
                         name="sellerProfileOperationForm"
                         form={form}
                     >
+                        <div className="w-screen h-32 relative">
+                            <div className="w-screen h-24 absolute top-0 left-0">
+                                <Image src={'/shop-cover.png'} width={390} height={90} alt="Shop cover" />
+                            </div>
+                            <div className="hotdi-avatar-uploader absolute bottom-0 left-0 right-0 ml-auto mr-auto w-20">
+                                <Form.Item name='avatar'>
+                                    <AvatarUploader />
+                                </Form.Item>
+                            </div>
+                        </div>
                         <Form.Item name='name' label='Tên shop' rules={[{ required: true, max: 64, message: 'Vui lòng nhập tên shop' }]}>
                             <TextArea placeholder='Nhập tên sản phẩm' maxLength={64} showCount rows={1} />
                         </Form.Item>
@@ -121,7 +134,7 @@ function ShopOperationActions({
             case SellerProfileStatus.Rejected:
                 return (
                     <>
-                        <Button className="basis-1/2" color="default" fill="outline">Lưu</Button>
+                        <Button className="basis-1/2" color="default" fill="outline" onClick={() => submitForm()}>Lưu</Button>
                         <Button className="basis-1/2" color="primary">Nộp hồ sơ</Button>
                     </>
                 );
