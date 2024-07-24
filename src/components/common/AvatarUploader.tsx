@@ -1,9 +1,10 @@
 'use client'
 
-import { Button, ImageUploadItem, ImageUploader, ImageUploaderRef } from "antd-mobile";
+import { ImageUploadItem, ImageUploader, ImageUploaderRef, Image } from "antd-mobile";
 import { useEffect, useRef, useState } from "react";
 import { uploadImage } from "@/server-actions/file-server-actions";
 import { PictureOutline } from "antd-mobile-icons";
+import clsx from "clsx";
 
 export default function AvatarUploader({
     value,
@@ -12,8 +13,10 @@ export default function AvatarUploader({
     value?: ImageUploadItem,
     onChange?: (value: ImageUploadItem) => void,
 }) {
-    const [fileList, setFileList] = useState<ImageUploadItem[]>(value ? [value] : []);
     const input = useRef<ImageUploaderRef>(null);
+    const [fileList, setFileList] = useState<ImageUploadItem[]>(value ? [value] : []);
+    const [showUploadIcon, setShowUploadIcon] = useState<boolean>(true);
+
 
     const onOpen = () => {
         const nativeInput = input.current?.nativeElement;
@@ -38,6 +41,10 @@ export default function AvatarUploader({
         if (uploadedFile == null) {
             return { url: '' };
         }
+        onUploadFileChange([{
+            key: uploadedFile.fileId,
+            url: uploadedFile.fileUrl,
+        }]);
         return {
             key: uploadedFile.fileId,
             url: uploadedFile.fileUrl,
@@ -55,23 +62,41 @@ export default function AvatarUploader({
                     '--cell-size': '80px',
                 }}
                 value={fileList}
-                onChange={onUploadFileChange}
+                beforeUpload={(file) => {
+                    if (showUploadIcon) {
+                        setShowUploadIcon(false);
+                    }
+                    if (fileList.length > 0) {
+                        setFileList([]);
+                    }
+                    return Promise.resolve(file);
+                }}
                 upload={uploadAvatar}
-                maxCount={1}
+                maxCount={2}
                 columns={1}
-                preview={true}
+                ref={input}
+                renderItem={(originNode, file, fileList) => {
+                    return (
+                        <div>
+                            <Image
+                                className="rounded-full"
+                                src={file.url}
+                                width={80}
+                                height={80}
+                                fit='cover'
+                                onClick={onOpen}
+                            />
+                        </div>
+                    );
+                }}
             >
                 <div
-                    style={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: 40,
-                        backgroundColor: '#f5f5f5',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        color: '#999999',
-                    }}
+                    className={clsx("w-20 h-20 rounded-full bg-[#f5f5f5] justify-center items-center text-[#999999]",
+                        {
+                            ["flex"]: showUploadIcon,
+                            ["hidden"]: !showUploadIcon,
+                        }
+                    )}
                 >
                     <PictureOutline style={{ fontSize: 32 }} />
                 </div>
