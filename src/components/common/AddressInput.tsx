@@ -23,8 +23,8 @@ export default function AddressInput({
         onChange?.({ ...value, ...changedValue });
     }
 
-    const onProvinceChange = (location?: Location) => {
-        triggerValue({ province: location });
+    const onCityChange = (location?: Location) => {
+        triggerValue({ city: location })
     }
 
     const onDistrictChange = (location?: Location) => {
@@ -35,8 +35,8 @@ export default function AddressInput({
         triggerValue({ ward: location })
     }
 
-    const onStreetChange = (street?: string) => {
-        triggerValue({ street: street })
+    const onAddressChange = (address?: string) => {
+        triggerValue({ address: address })
     }
 
     useEffect(() => {
@@ -49,10 +49,10 @@ export default function AddressInput({
                 <div className="flex flex-col">
                     {value ?
                         <>
-                            <div>{value?.province?.name}</div>
-                            <div>{value?.district?.name}</div>
-                            <div>{value?.ward?.name}</div>
-                            <div>{value?.street}</div>
+                            <div>{(value?.city as Location)?.name}</div>
+                            <div>{(value?.district as Location)?.name}</div>
+                            <div>{(value?.ward as Location)?.name}</div>
+                            <div>{value?.address}</div>
                         </>
                         :
                         placeholder
@@ -67,28 +67,28 @@ export default function AddressInput({
                     </NavBar>
                 </div>
                 <div className="body h-screen w-screen">
-                    <Form.Item name="province" style={{ padding: '0 12px' }} label='Tỉnh / Thành phố'
+                    <Form.Item name="city" style={{ padding: '0 12px' }} label='Tỉnh / Thành phố'
                         layout='vertical' childElementPosition='normal' arrow
                     >
-                        <LocationSelector key={'province'} onChange={(value) => onProvinceChange(value)} placeholder="Chọn tỉnh / thành" title="Tỉnh / Thành phố" />
+                        <LocationSelector key={'city'} onChange={(value) => onCityChange(value)} placeholder="Chọn tỉnh / thành" title="Tỉnh / Thành phố" />
                     </Form.Item>
 
                     <Form.Item name="district" style={{ padding: '0 12px' }} label='Huyện / Quận'
                         layout='vertical' childElementPosition='normal' arrow dependencies={['province']}
                     >
-                        <LocationSelector key={'district'} parentCode={value?.province?.code} onChange={(value) => onDistrictChange(value)} placeholder="Chọn huyện / quận" title="Huyện / Quận" />
+                        <LocationSelector key={'district'} parentCode={(value?.city as Location)?.code} onChange={(value) => onDistrictChange(value)} placeholder="Chọn huyện / quận" title="Huyện / Quận" />
                     </Form.Item>
 
                     <Form.Item name="ward" style={{ padding: '0 12px' }} label='Xã / Phường'
                         layout='vertical' childElementPosition='normal' arrow dependencies={['province', 'district']}
                     >
-                        <LocationSelector key={'ward'} parentCode={value?.district?.code} onChange={(value) => onWardChange(value)} placeholder="Chọn xã / phường" title="Xã / Phường" />
+                        <LocationSelector key={'ward'} parentCode={(value?.district as Location)?.code} onChange={(value) => onWardChange(value)} placeholder="Chọn xã / phường" title="Xã / Phường" />
                     </Form.Item>
 
                     <Form.Item name="street" style={{ padding: '0 12px' }} label='Số nhà, đường'
                         layout='vertical' childElementPosition='normal'
                     >
-                        <Input onChange={(value) => onStreetChange(value)} placeholder="Nhập địa chỉ nhà và tên đường" />
+                        <Input onChange={(value) => onAddressChange(value)} placeholder="Nhập địa chỉ nhà và tên đường" />
                     </Form.Item>
                 </div>
 

@@ -1,4 +1,4 @@
-import { SellerProfile, SellerProfileStatus } from "@/model/market-data-model";
+import { ImageInfo, ShopProfile, ShopProfileStatus } from "@/model/market-data-model";
 import ProfileStatusNotice from "./ProfileStatusNotice";
 import { Avatar, Button } from "@/components/common/antd_mobile_client_wrapper";
 import { CheckCircleFill, ExclamationCircleFill, ForbidFill } from "antd-mobile-icons";
@@ -7,21 +7,21 @@ import { NavigationButton } from "../button/NavigationButton";
 
 export default async function ShopInfoCard(
     {
-        seller,
+        profile,
     }: {
-        seller: SellerProfile,
+        profile?: ShopProfile,
     }
 ) {
 
     function getTick(): [string, ReactNode] {
-        switch (seller.status) {
-            case SellerProfileStatus.New:
+        switch (profile?.status) {
+            case ShopProfileStatus.New:
                 return ['#E8E8E8', ''];
-            case SellerProfileStatus.WaitingApproval:
+            case ShopProfileStatus.WaitingApproval:
                 return ['#FF8F1F', <ForbidFill key={1} />];
-            case SellerProfileStatus.Rejected:
+            case ShopProfileStatus.Rejected:
                 return ['#FF3141', <ExclamationCircleFill key={2} />];
-            case SellerProfileStatus.Approved:
+            case ShopProfileStatus.Approved:
                 return ['#00B578', <CheckCircleFill key={3} />];
             default:
                 return ['#E8E8E8', ''];
@@ -29,11 +29,11 @@ export default async function ShopInfoCard(
     }
 
     const [color, tick] = getTick();
-    const shopIcon = seller.avatarUrl ? seller.avatarUrl : '/icons/shop_active.svg';
+    const shopIcon = profile?.avatarImageId ? (profile.avatarImageId as ImageInfo)?.url : '/icons/shop_active.svg';
     return (
         <div className="flex flex-col gap-2">
             <div>
-                <ProfileStatusNotice status={seller.status} />
+                <ProfileStatusNotice status={profile?.status} />
             </div>
             <div className="flex flex-col p-3 bg-white gap-6">
                 <div className="flex flex-row gap-2">
@@ -47,17 +47,17 @@ export default async function ShopInfoCard(
                     />
                     <div className="flex flex-col">
                         <div className="flex flex-row text-xl font-medium">
-                            {seller.name}
+                            {profile ? profile.name : "Tên shop"}
                             {tick}
                         </div>
                         <div className="text-xs font-normal text-[#999999]">
-                            {`hotdi.vn/${seller._id}`}
+                            {profile ? `hotdi.vn/${profile.username}` : ''}
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-row gap-2">
                     <Button disabled className="basis-1/2" color="primary">Xem shop</Button>
-                    <NavigationButton path={`/seller/shop/profile/${seller._id}`} className="basis-1/2" color="default" fill="outline">Hồ sơ shop</NavigationButton>
+                    <NavigationButton path={`/seller/shop/profile`} className="basis-1/2" color="default" fill="outline">Hồ sơ shop</NavigationButton>
                 </div>
             </div>
         </div>
