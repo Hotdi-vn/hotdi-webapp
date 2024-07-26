@@ -3,7 +3,7 @@ import 'server-only'
 import { ResponseData, ServerError } from '@/utils/data-fetching-utils';
 import { log } from 'console';
 import { deleteApi, get, getNoCache, post, put } from '@/utils/server-side-fetching';
-import { CartItem, InventoryStatus, Location, ProductInfo, PublishStatus, Role } from '@/model/market-data-model';
+import { CartItem, InventoryStatus, Location, ProductInfo, PublishStatus, Role, ShopProfile } from '@/model/market-data-model';
 import { getSession } from '@/server-actions/authentication-actions';
 import { ERROR_CODE_ITEM_NOT_FOUND } from '@/constants/common-contants';
 import { Category } from '@/model/market-data-model';
@@ -229,13 +229,87 @@ export async function getProductById(id: string, query: ProductQuery = {}): Prom
 }
 
 /**
- * Sellers services start
+ * Shop services start
  */
 
+export type ShopProfileQuery = {
+    populate?: 'avatarImageId' | 'coverImageId';
+}
+
+export async function getMyShopProfile(query: ShopProfileQuery = {}): Promise<ResponseData<ShopProfile> | null> {
+    let response;
+    const session = await getSession();
+
+    try {
+        response = await get<ShopProfile>(`${BASE_URL}/v1/shops/me${buildQueryString(query)}`, 0, session.userProfile?.token);
+        if (response.error) {
+            if (response.error.code === ERROR_CODE_ITEM_NOT_FOUND) {
+                return null;
+            }
+            log('Error from getMyShopProfile:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response;
+    } catch (error) {
+        log('Error from getMyShopProfile', error);
+        throw error;
+    }
+}
+
+export async function createMyShopProfile(profile: ShopProfile, query: ShopProfileQuery = {}): Promise<ResponseData<ShopProfile>> {
+    let response;
+    const session = await getSession();
+
+    try {
+        response = await post<ShopProfile>(`${BASE_URL}/v1/shops/me${buildQueryString(query)}`, profile, session.userProfile?.token);
+        if (response.error) {
+            log('Error from createMyShopProfile:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response;
+    } catch (error) {
+        log('Error from createMyShopProfile', error);
+        throw error;
+    }
+}
+
+export async function updateMyShopProfile(profile: Partial<ShopProfile>, query: ShopProfileQuery = {}): Promise<ResponseData<ShopProfile>> {
+    let response;
+    const session = await getSession();
+
+    try {
+        response = await put<ShopProfile>(`${BASE_URL}/v1/shops/me${buildQueryString(query)}`, profile, session.userProfile?.token);
+        if (response.error) {
+            log('Error from updateMyShopProfile:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response;
+    } catch (error) {
+        log('Error from updateMyShopProfile', error);
+        throw error;
+    }
+}
+
+export async function submitMyShopProfile(profile: ShopProfile, query: ShopProfileQuery = {}): Promise<ResponseData<ShopProfile>> {
+    let response;
+    const session = await getSession();
+
+    try {
+        response = await post<ShopProfile>(`${BASE_URL}/v1/shops/me/submit${buildQueryString(query)}`, profile, session.userProfile?.token);
+        if (response.error) {
+            log('Error from submitMyShopProfile:', response.error.id, response.error.code);
+            throw new ServerError(response.error.id, response.error.code);
+        }
+        return response;
+    } catch (error) {
+        log('Error from submitMyShopProfile', error);
+        throw error;
+    }
+}
 
 
 /**
- * Sellers services end
+ * Shop services end
  */
 
 /**

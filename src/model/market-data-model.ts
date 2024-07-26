@@ -165,24 +165,33 @@ export function calculateInventoryDefaultTab(productInfo: ProductInfo) {
     return result;
 }
 
-export type SellerProfile = BaseFields & {
+export type ShopProfile = BaseFields & {
     name: string;
+    username: string;
+    avatarImageId: string | ImageInfo;
+    coverImageId: string | ImageInfo;
     description: string;
-    avatarUrl: string;
-    coverImageUrl: string;
-    status: SellerProfileStatus;
     addresses: Address[];
+    userInCharge: string;
+    phone: string;
+    email: string;
+    taxCode: string;
+    businessLicense: string;
+    status: ShopProfileStatus;
+    adminStatusUpdater: string;
+    adminStatusComment: string;
+    adminStatusUpdatedAt: number;
+
 }
 
 export type Address = {
-    province?: Location;
-    city?: Location;
-    district?: Location;
-    ward?: Location;
-    street?: string;
+    city?: Location | string;
+    district?: Location | string;
+    ward?: Location | string;
+    address?: string;
 }
 
-export enum SellerProfileStatus {
+export enum ShopProfileStatus {
     New = 'New',
     WaitingApproval = 'WaitingApproval',
     Rejected = 'Rejected',
