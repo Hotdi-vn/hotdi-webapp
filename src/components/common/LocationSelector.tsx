@@ -1,10 +1,10 @@
 'use client'
 
-import { Location } from "@/model/market-data-model";
 import { getLocationByParentCode } from "@/server-actions/shop-operation-actions";
 import { CheckList, NavBar, Popup } from "antd-mobile";
 import { useEffect, useState } from "react";
 import { BackButton } from "../button/BackButton";
+import { Location } from "@/model/market-data-model";
 
 export default function LocationSelector({
     parentCode = '0',
@@ -14,7 +14,7 @@ export default function LocationSelector({
     placeholder,
 }: {
     parentCode?: string,
-    value?: Location,
+    value?: Location | string,
     onChange?: (value?: Location) => void,
     title: string,
     placeholder?: string,
@@ -24,6 +24,16 @@ export default function LocationSelector({
 
     const triggerValue = (changedValue?: Location) => {
         onChange?.(changedValue);
+    }
+
+    function getValue() {
+        if (!value) {
+            return '';
+        }
+        if (typeof value === 'object') {
+            return (value as Location).name;
+        }
+        return value;
     }
 
     async function loadLocation() {
@@ -40,7 +50,7 @@ export default function LocationSelector({
         <div>
 
             <div onClick={() => setVisible(true)}>
-                {value ? value?.name : placeholder}
+                {value ? getValue()?.toString() : placeholder}
             </div>
 
             <Popup visible={visible} position="right">
@@ -50,11 +60,11 @@ export default function LocationSelector({
                     </NavBar>
                 </div>
                 <div className="body h-screen w-screen">
-                    <CheckList onChange={(value) => triggerValue(locationList.find((location) => location.code === value.at(0)))}>
+                    <CheckList defaultValue={value ? [getValue()?.toString()] : undefined} onChange={(value) => triggerValue(locationList.find((location) => location.name === value.at(0)))}>
                         {
                             locationList.map(
                                 (location, index) =>
-                                    <CheckList.Item key={location.code} value={location.code}>{location.name}</CheckList.Item>
+                                    <CheckList.Item key={location.code} value={location.name}>{location.name}</CheckList.Item>
                             )
                         }
                     </CheckList>

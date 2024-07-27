@@ -39,6 +39,16 @@ export default function AddressInput({
         triggerValue({ address: address })
     }
 
+    function getLocationValue(value?: Location | string) {
+        if (!value) {
+            return undefined;
+        }
+        if (typeof value === 'object') {
+            return (value as Location).name;
+        }
+        return value;
+    }
+
     useEffect(() => {
     }, []);
 
@@ -49,9 +59,9 @@ export default function AddressInput({
                 <div className="flex flex-col">
                     {value ?
                         <>
-                            <div>{(value?.city as Location)?.name}</div>
-                            <div>{(value?.district as Location)?.name}</div>
-                            <div>{(value?.ward as Location)?.name}</div>
+                            <div>{getLocationValue(value?.city)?.toString()}</div>
+                            <div>{getLocationValue(value?.district)?.toString()}</div>
+                            <div>{getLocationValue(value?.ward)?.toString()}</div>
                             <div>{value?.address}</div>
                         </>
                         :

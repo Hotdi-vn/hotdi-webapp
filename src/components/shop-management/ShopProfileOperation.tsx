@@ -1,6 +1,6 @@
 'use client'
 
-import { Address, Location, ShopProfile, ShopProfileStatus } from "@/model/market-data-model";
+import { Address, ImageInfo, Location, ShopProfile, ShopProfileStatus } from "@/model/market-data-model";
 import { Button, Form, ImageUploadItem, Input, NavBar, TextArea } from "antd-mobile";
 import { BackButton } from "../button/BackButton";
 import { FormInstance } from "antd-mobile/es/components/form";
@@ -54,6 +54,7 @@ export default function ShopProfileOperation({
     useEffect(() => {
         if (profile) {
             form.setFieldsValue(profile);
+            form.setFieldValue('addresses', profile.addresses[0]);
         }
     }, []);
     return (
@@ -107,7 +108,7 @@ export default function ShopProfileOperation({
                                 <Image src={'/shop-cover.png'} width={390} height={90} alt="Shop cover" />
                             </div>
                             <div className="hotdi-avatar-uploader absolute bottom-0 left-0 right-0 ml-auto mr-auto w-20">
-                                <Form.Item name='avatarImageId'>
+                                <Form.Item name='avatarImageId' initialValue={profile ? { key: (profile.avatarImageId as ImageInfo)?._id, url: (profile.avatarImageId as ImageInfo)?.url } : undefined}>
                                     <AvatarUploader />
                                 </Form.Item>
                             </div>

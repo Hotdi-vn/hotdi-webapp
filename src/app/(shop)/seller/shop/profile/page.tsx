@@ -1,5 +1,4 @@
 import ShopProfileOperation from "@/components/shop-management/ShopProfileOperation"
-import { ShopProfile, ShopProfileStatus } from "@/model/market-data-model";
 import { getMyShopProfile } from "@/server-actions/shop-operation-actions";
 
 export default async function SellerShopProfileUpdate({
@@ -12,7 +11,7 @@ export default async function SellerShopProfileUpdate({
     }
 }) {
 
-    const shopProfile = await getMyShopProfile();
+    const shopProfile = await getMyShopProfile({ populate: 'avatarImageId' });
 
     return (
         <>
