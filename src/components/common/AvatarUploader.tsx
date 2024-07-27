@@ -15,7 +15,7 @@ export default function AvatarUploader({
 }) {
     const input = useRef<ImageUploaderRef>(null);
     const [fileList, setFileList] = useState<ImageUploadItem[]>(value ? [value] : []);
-    const [showUploadIcon, setShowUploadIcon] = useState<boolean>(true);
+    const [showUploadIcon, setShowUploadIcon] = useState<boolean>(fileList.length > 0 ? false : true);
 
 
     const onOpen = () => {
