@@ -29,11 +29,8 @@ export default function ProductInventoryUpdate({
         return Promise.reject(new Error(rule.message));
     }
 
-    function redirect(productInfo: ProductInfo) {
-        const url = new URL(redirectPath, 'http://dummy.com');
-        const params = url.searchParams;
-        params.set('defaultTab', calculateInventoryDefaultTab(productInfo));
-        router.push(`${url.pathname}?${params.toString()}`);
+    function redirect() {
+        router.push(redirectPath);
     }
 
     const navBar =
@@ -48,7 +45,7 @@ export default function ProductInventoryUpdate({
                 onFinish={async (productInfo) => {
                     try {
                         const product = await sellerUpdateProductInventory(productInfo);
-                        redirect(product);
+                        redirect();
                         showSuccess('Cập nhật kho thành công');
                     } catch (error) {
                         showError(error);
