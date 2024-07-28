@@ -49,7 +49,11 @@ export default function ProductActions({ productInfo }:
             onClick() {
                 startTransition(async () => {
                     try {
-                        const copyProduct = { ...productInfo, _id: '', name: `${productInfo.name} (sao chép)` };
+                        let copyProductName = `(Sao chép) ${productInfo.name} `;
+                        if (copyProductName.length > 120) {
+                            copyProductName = copyProductName.slice(0, 120);
+                        }
+                        const copyProduct = { ...productInfo, _id: '', name: copyProductName, soldCount: 0 };
                         const createdProduct = await sellerCopyProduct(copyProduct);
                         updateInventoryData(Actions.Copy, createdProduct);
                         showSuccess('Sao chép sản phẩm thành công');
