@@ -2,7 +2,7 @@
 
 import { Address, Location } from "@/model/market-data-model";
 import { Button, Form, Input, NavBar, Popup } from "antd-mobile";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BackButton } from "../button/BackButton";
 import LocationSelector from "./LocationSelector";
 
@@ -13,44 +13,35 @@ export default function AddressInput({
     placeholder = 'Nhập địa chỉ',
 }: {
     value?: Address,
-    onChange?: (value: Address) => void,
+    onChange?: (value: Partial<Address>) => void,
     title?: string,
     placeholder?: string,
 }) {
     const [visible, setVisible] = useState<boolean>(false);
+    const [city, setCity] = useState<Location | undefined>(value?.city);
+    const [district, setDistrict] = useState<Location | undefined>(value?.district);
+    const [ward, setWard] = useState<Location | undefined>(value?.ward);
+    const [street, setStreet] = useState<string | undefined>(value?.address);
 
     const triggerValue = (changedValue: Partial<Address>) => {
         onChange?.({ ...value, ...changedValue });
     }
 
     const onCityChange = (location?: Location) => {
-        triggerValue({ city: location })
+        setCity(location);
     }
 
     const onDistrictChange = (location?: Location) => {
-        triggerValue({ district: location })
+        setDistrict(location);
     }
 
     const onWardChange = (location?: Location) => {
-        triggerValue({ ward: location })
+        setWard(location);
     }
 
     const onAddressChange = (address?: string) => {
-        triggerValue({ address: address })
+        setStreet(address);
     }
-
-    function getLocationValue(value?: Location | string) {
-        if (!value) {
-            return undefined;
-        }
-        if (typeof value === 'object') {
-            return (value as Location).name;
-        }
-        return value;
-    }
-
-    useEffect(() => {
-    }, []);
 
     return (
         <div>
@@ -59,10 +50,10 @@ export default function AddressInput({
                 <div className="flex flex-col">
                     {value ?
                         <>
-                            <div>{getLocationValue(value?.city)?.toString()}</div>
-                            <div>{getLocationValue(value?.district)?.toString()}</div>
-                            <div>{getLocationValue(value?.ward)?.toString()}</div>
-                            <div>{value?.address}</div>
+                            <div>{city?.name}</div>
+                            <div>{district?.name}</div>
+                            <div>{ward?.name}</div>
+                            <div>{street}</div>
                         </>
                         :
                         placeholder
@@ -77,25 +68,25 @@ export default function AddressInput({
                     </NavBar>
                 </div>
                 <div className="body h-screen w-screen">
-                    <Form.Item name="city" style={{ padding: '0 12px' }} label='Tỉnh / Thành phố'
+                    <Form.Item name="city" style={{ padding: '0 12px' }} label='Tỉnh / Thành phố' initialValue={city}
                         layout='vertical' childElementPosition='normal' arrow
                     >
                         <LocationSelector key={'city'} onChange={(value) => onCityChange(value)} placeholder="Chọn tỉnh / thành" title="Tỉnh / Thành phố" />
                     </Form.Item>
 
-                    <Form.Item name="district" style={{ padding: '0 12px' }} label='Huyện / Quận'
-                        layout='vertical' childElementPosition='normal' arrow dependencies={['province']}
+                    <Form.Item name="district" style={{ padding: '0 12px' }} label='Huyện / Quận' initialValue={district}
+                        layout='vertical' childElementPosition='normal' arrow dependencies={['city']}
                     >
-                        <LocationSelector key={'district'} parentCode={(value?.city as Location)?.code} onChange={(value) => onDistrictChange(value)} placeholder="Chọn huyện / quận" title="Huyện / Quận" />
+                        <LocationSelector key={'district'} parentCode={city?.code} onChange={(value) => onDistrictChange(value)} placeholder="Chọn huyện / quận" title="Huyện / Quận" />
                     </Form.Item>
 
-                    <Form.Item name="ward" style={{ padding: '0 12px' }} label='Xã / Phường'
-                        layout='vertical' childElementPosition='normal' arrow dependencies={['province', 'district']}
+                    <Form.Item name="ward" style={{ padding: '0 12px' }} label='Xã / Phường' initialValue={ward}
+                        layout='vertical' childElementPosition='normal' arrow dependencies={['city', 'district']}
                     >
-                        <LocationSelector key={'ward'} parentCode={(value?.district as Location)?.code} onChange={(value) => onWardChange(value)} placeholder="Chọn xã / phường" title="Xã / Phường" />
+                        <LocationSelector key={'ward'} parentCode={district?.code} onChange={(value) => onWardChange(value)} placeholder="Chọn xã / phường" title="Xã / Phường" />
                     </Form.Item>
 
-                    <Form.Item name="street" style={{ padding: '0 12px' }} label='Số nhà, đường'
+                    <Form.Item name="street" style={{ padding: '0 12px' }} label='Số nhà, đường' initialValue={street}
                         layout='vertical' childElementPosition='normal'
                     >
                         <Input onChange={(value) => onAddressChange(value)} placeholder="Nhập địa chỉ nhà và tên đường" />
@@ -104,6 +95,12 @@ export default function AddressInput({
 
                 <div className="flex flex-row bottom p-2 gap-x-2">
                     <Button block color="primary" onClick={() => {
+                        triggerValue({
+                            city: city,
+                            district: district,
+                            ward: ward,
+                            address: street,
+                        });
                         setVisible(false);
                     }}>Xác nhận địa chỉ</Button>
                 </div>

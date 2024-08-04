@@ -171,7 +171,7 @@ export type ShopProfile = BaseFields & {
     avatarImageId: string | ImageInfo;
     coverImageId: string | ImageInfo;
     description: string;
-    addresses: Address[];
+    addresses: Address[] | string[];
     userInCharge: string;
     phone: string;
     email: string;
@@ -184,10 +184,10 @@ export type ShopProfile = BaseFields & {
 
 }
 
-export type Address = {
-    city?: Location | string;
-    district?: Location | string;
-    ward?: Location | string;
+export type Address = BaseFields & {
+    city?: Location;
+    district?: Location;
+    ward?: Location;
     address?: string;
 }
 
