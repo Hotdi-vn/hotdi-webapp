@@ -11,6 +11,7 @@ import AddressInput from "../common/AddressInput";
 import AvatarUploader from "../common/AvatarUploader";
 import Image from "next/image";
 import { submitMyShopProfile, createMyShopProfile, updateMyShopProfile } from "@/server-actions/shop-operation-actions";
+import { createAddress, updateAddress } from "@/server-actions/address-operation-actions";
 
 enum OperationAction {
     Save,
@@ -33,30 +34,40 @@ export default function ShopProfileOperation({
             <div className="text-xl text-left font-normal">Thiết lập shop</div>
         </NavBar>;
 
-    async function createProfile(profile: ShopProfile) {
-        console.log('Create profile');
-        console.log(profile);
-        return createMyShopProfile(profile);
-    }
-
-    async function saveProfile(profile: ShopProfile) {
+    async function saveProfile(shopProfile: ShopProfile) {
         console.log('Save profile');
-        console.log(profile);
-        return updateMyShopProfile(profile);
+        console.log(shopProfile);
+        const address = await saveShopAddress(shopProfile);
+        shopProfile.addresses = [address.data._id];
+        if (profile) {
+            return updateMyShopProfile(shopProfile);
+        } else {
+            return createMyShopProfile(shopProfile);
+        }
     }
 
-    async function submitProfile(profile: ShopProfile) {
+    async function submitProfile(shopProfile: ShopProfile) {
         console.log('submit profile');
-        console.log(profile);
-        return submitMyShopProfile(profile);
+        console.log(shopProfile);
+        const address = await saveShopAddress(shopProfile);
+        shopProfile.addresses = [address.data._id];
+        return submitMyShopProfile(shopProfile);
+    }
+
+    async function saveShopAddress(shopProfile: ShopProfile) {
+        if (profile) {
+            const currentAddress = profile.addresses[0] as Address;
+            const newAddress = shopProfile.addresses[0] as Address;
+            newAddress._id = currentAddress._id;
+            return updateAddress(newAddress);
+        } else {
+            return createAddress(shopProfile.addresses[0] as Address);
+        }
     }
 
     useEffect(() => {
-        if (profile) {
-            form.setFieldsValue(profile);
-            form.setFieldValue('addresses', profile.addresses[0]);
-        }
     }, []);
+
     return (
         <>
             <div className='body'>
@@ -68,17 +79,12 @@ export default function ShopProfileOperation({
                         try {
                             switch (actionRef.current) {
                                 case OperationAction.Save:
-                                    if (profile) {
-                                        saveProfile(sellerProfile);
-                                        showSuccess('Cập nhật hồ sơ thành công');
-                                    } else {
-                                        createProfile(sellerProfile);
-                                        showSuccess('Tạo hồ sơ thành công');
-                                    }
+                                    await saveProfile(sellerProfile);
+                                    showSuccess('Cập nhật hồ sơ thành công');
                                     break;
                                 case OperationAction.Submit:
                                 case OperationAction.ReSubmit:
-                                    submitProfile(sellerProfile);
+                                    await submitProfile(sellerProfile);
                                     showSuccess('Nộp hồ sơ thành công');
                                     break;
                                 default:
@@ -113,37 +119,52 @@ export default function ShopProfileOperation({
                                 </Form.Item>
                             </div>
                         </div>
-                        <Form.Item name='name' label='Tên shop' rules={[{ required: true, max: 64, message: 'Vui lòng nhập tên shop' }]}>
+                        <Form.Item name='name' label='Tên shop' rules={[{ required: true, max: 64, message: 'Vui lòng nhập tên shop' }]}
+                            initialValue={profile?.name}
+                        >
                             <TextArea placeholder='Nhập tên shop' maxLength={64} showCount rows={1} />
                         </Form.Item>
 
-                        <Form.Item name='description' label='Mô tả shop' rules={[{ required: true, max: 3000, message: 'Vui lòng nhập mô tả shop' }]}>
+                        <Form.Item name='description' label='Mô tả shop' rules={[{ required: true, max: 3000, message: 'Vui lòng nhập mô tả shop' }]}
+                            initialValue={profile?.description}
+                        >
                             <TextArea placeholder='Nhập mô tả shop' maxLength={3000} showCount rows={5} />
                         </Form.Item>
 
-                        <Form.Item name='businessLicense' label='Giấy phép đăng ký kinh doanh' rules={[{ required: false, max: 16, message: 'Giấy phép đăng ký kinh doanh tối đa 16 ký tự' }]}>
+                        <Form.Item name='businessLicense' label='Giấy phép đăng ký kinh doanh' rules={[{ required: false, max: 16, message: 'Giấy phép đăng ký kinh doanh tối đa 16 ký tự' }]}
+                            initialValue={profile?.businessLicense}
+                        >
                             <Input placeholder='Nhập giấy phép đăng ký kinh doanh' maxLength={16} />
                         </Form.Item>
 
                         <Form.Item label='Địa chỉ' name="addresses"
                             layout='vertical' childElementPosition='normal' arrow
+                            initialValue={profile?.addresses[0]}
                         >
                             <AddressInput />
                         </Form.Item>
 
-                        <Form.Item name='userInCharge' label='Tên người chịu trách nhiệm' rules={[{ required: true, max: 64, message: 'Vui lòng nhập tên người chịu trách nhiệm' }]}>
+                        <Form.Item name='userInCharge' label='Tên người chịu trách nhiệm' rules={[{ required: true, max: 64, message: 'Vui lòng nhập tên người chịu trách nhiệm' }]}
+                            initialValue={profile?.userInCharge}
+                        >
                             <TextArea placeholder='Nhập tên người chịu trách nhiệm' maxLength={64} showCount rows={1} />
                         </Form.Item>
 
-                        <Form.Item name='phone' label='Số điện thoại' rules={[{ required: true, max: 11, message: 'Vui lòng nhập số điện thoại' }]}>
+                        <Form.Item name='phone' label='Số điện thoại' rules={[{ required: true, max: 11, message: 'Vui lòng nhập số điện thoại' }]}
+                            initialValue={profile?.phone}
+                        >
                             <Input placeholder='Nhập số điện thoại' maxLength={11} />
                         </Form.Item>
 
-                        <Form.Item name='email' label='Email' rules={[{ required: true, max: 64, message: 'Vui lòng nhập email' }]}>
+                        <Form.Item name='email' label='Email' rules={[{ required: true, max: 64, message: 'Vui lòng nhập email' }]}
+                            initialValue={profile?.email}
+                        >
                             <Input placeholder='Nhập email' maxLength={64} />
                         </Form.Item>
 
-                        <Form.Item name='taxCode' label='Mã số thuế cá nhân' rules={[{ required: true, max: 16, message: 'Vui lòng nhập mã số thuế cá nhân' }]}>
+                        <Form.Item name='taxCode' label='Mã số thuế cá nhân' rules={[{ required: true, max: 16, message: 'Vui lòng nhập mã số thuế cá nhân' }]}
+                            initialValue={profile?.taxCode}
+                        >
                             <Input placeholder='Nhập mã số thuế cá nhân' maxLength={16} />
                         </Form.Item>
 
@@ -178,12 +199,7 @@ function ShopOperationActions({
             }
             const address = form.getFieldValue('addresses') as Address;
             if (address) {
-                form.setFieldValue('addresses', [{
-                    city: (address.city as Location)?.name,
-                    district: (address.district as Location)?.name,
-                    ward: (address.ward as Location)?.name,
-                    address: address.address,
-                }]);
+                form.setFieldValue('addresses', [address]);
             }
             form.submit();
         })

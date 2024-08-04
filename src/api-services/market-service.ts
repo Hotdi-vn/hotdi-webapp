@@ -233,7 +233,7 @@ export async function getProductById(id: string, query: ProductQuery = {}): Prom
  */
 
 export type ShopProfileQuery = {
-    populate?: 'avatarImageId' | 'coverImageId';
+    populate?: 'avatarImageId' | 'coverImageId' | 'addresses' | 'avatarImageId coverImageId' | 'avatarImageId coverImageId addresses';
 }
 
 export async function getMyShopProfile(query: ShopProfileQuery = {}): Promise<ResponseData<ShopProfile> | null> {

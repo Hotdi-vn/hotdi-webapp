@@ -11,7 +11,7 @@ export default async function SellerShopProfileUpdate({
     }
 }) {
 
-    const shopProfile = await getMyShopProfile({ populate: 'avatarImageId' });
+    const shopProfile = await getMyShopProfile({ populate: 'avatarImageId coverImageId addresses' });
 
     return (
         <>
