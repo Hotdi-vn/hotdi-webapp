@@ -6,6 +6,8 @@ import Icon from '@/components/common/icon_component';
 import Link from "next/link";
 import ShopInfoCard from "@/components/shop-management/ShopInfoCard";
 import { getMyShopProfile } from "@/server-actions/shop-operation-actions";
+import { ShopProfileStatus } from "@/model/market-data-model";
+import ShopMenu from "@/components/shop-management/ShopMenu";
 
 export default async function SellerShop() {
     const session = await getSession();
@@ -26,14 +28,6 @@ export default async function SellerShop() {
 
     const shopProfile = await getMyShopProfile({ populate: 'avatarImageId' });
 
-    const menuList =
-        <List>
-            <ListItem arrow={<Icon name='navigateRight' />}>
-                <Link href='/seller/shop/product'>
-                    <div className="text-base font-semibold text-black">Quản Lý Sản Phẩm</div>
-                </Link>
-            </ListItem>
-        </List>;
     return (
         <div className="flex flex-col gap-2">
             <div className='top'>{navBar}</div>
@@ -41,7 +35,7 @@ export default async function SellerShop() {
                 <ShopInfoCard profile={shopProfile?.data} />
             </div>
             <div>
-                {menuList}
+                <ShopMenu profile={shopProfile?.data} />
             </div>
         </div>
     )
