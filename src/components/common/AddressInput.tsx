@@ -75,13 +75,13 @@ export default function AddressInput({
                     </Form.Item>
 
                     <Form.Item name="district" style={{ padding: '0 12px' }} label='Huyện / Quận' initialValue={district}
-                        layout='vertical' childElementPosition='normal' arrow dependencies={['city']}
+                        layout='vertical' childElementPosition='normal' arrow dependencies={['city']} disabled={!city}
                     >
                         <LocationSelector key={'district'} parentCode={city?.code} onChange={(value) => onDistrictChange(value)} placeholder="Chọn huyện / quận" title="Huyện / Quận" />
                     </Form.Item>
 
                     <Form.Item name="ward" style={{ padding: '0 12px' }} label='Xã / Phường' initialValue={ward}
-                        layout='vertical' childElementPosition='normal' arrow dependencies={['city', 'district']}
+                        layout='vertical' childElementPosition='normal' arrow dependencies={['city', 'district']} disabled={!district}
                     >
                         <LocationSelector key={'ward'} parentCode={district?.code} onChange={(value) => onWardChange(value)} placeholder="Chọn xã / phường" title="Xã / Phường" />
                     </Form.Item>

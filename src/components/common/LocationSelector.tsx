@@ -1,8 +1,8 @@
 'use client'
 
 import { getLocationByParentCode } from "@/server-actions/shop-operation-actions";
-import { CheckList, NavBar, Popup } from "antd-mobile";
-import { useEffect, useRef, useState } from "react";
+import { CheckList, NavBar, Popup, SearchBar } from "antd-mobile";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BackButton } from "../button/BackButton";
 import { Location } from "@/model/market-data-model";
 
@@ -22,6 +22,7 @@ export default function LocationSelector({
     const [locationList, setLocationList] = useState<Location[]>([]);
     const [visible, setVisible] = useState<boolean>(false);
     const initialParentCode = useRef(parentCode);
+    const [searchText, setSearchText] = useState('');
 
     const triggerValue = (changedValue?: Location) => {
         onChange?.(changedValue);
@@ -40,6 +41,15 @@ export default function LocationSelector({
         loadLocation();
     }, [parentCode]);
 
+    const filteredLocation = useMemo(() => {
+        locationList.sort((a, b) => (a.name.toLowerCase().localeCompare(b.name.toLowerCase())));
+        if (searchText) {
+            return locationList.filter(item => item.name.toLowerCase().includes(searchText.toLowerCase()));
+        } else {
+            return locationList;
+        }
+    }, [locationList, searchText]);
+
     return (
         <div>
 
@@ -52,11 +62,19 @@ export default function LocationSelector({
                     <NavBar backArrow={<BackButton customOnClick={() => setVisible(false)} />} >
                         <div className="text-xl text-left font-normal">{title}</div>
                     </NavBar>
+                    <SearchBar
+                        className="px-2"
+                        placeholder='Tìm kiếm'
+                        value={searchText}
+                        onChange={v => {
+                            setSearchText(v);
+                        }}
+                    />
                 </div>
-                <div className="body h-screen w-screen">
+                <div className="body h-screen w-screen pb-6">
                     <CheckList defaultValue={value ? [value.code] : undefined} onChange={(value) => triggerValue(locationList.find((location) => location.code === value.at(0)))}>
                         {
-                            locationList.map(
+                            filteredLocation.map(
                                 (location, index) =>
                                     <CheckList.Item key={location.code} value={location.code}>{location.name}</CheckList.Item>
                             )
