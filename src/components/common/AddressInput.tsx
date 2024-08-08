@@ -69,25 +69,28 @@ export default function AddressInput({
                 </div>
                 <div className="body h-screen w-screen">
                     <Form.Item name="city" style={{ padding: '0 12px' }} label='Tỉnh / Thành phố' initialValue={city}
-                        layout='vertical' childElementPosition='normal' arrow
+                        layout='vertical' childElementPosition='normal' arrow rules={[{ required: true, message: 'Vui lòng chọn tỉnh / thành phố' }]}
                     >
                         <LocationSelector key={'city'} onChange={(value) => onCityChange(value)} placeholder="Chọn tỉnh / thành" title="Tỉnh / Thành phố" />
                     </Form.Item>
 
                     <Form.Item name="district" style={{ padding: '0 12px' }} label='Huyện / Quận' initialValue={district}
                         layout='vertical' childElementPosition='normal' arrow dependencies={['city']} disabled={!city}
+                        rules={[{ required: true, message: 'Vui lòng chọn huyện / quận' }]}
                     >
                         <LocationSelector key={'district'} parentCode={city?.code} onChange={(value) => onDistrictChange(value)} placeholder="Chọn huyện / quận" title="Huyện / Quận" />
                     </Form.Item>
 
                     <Form.Item name="ward" style={{ padding: '0 12px' }} label='Xã / Phường' initialValue={ward}
                         layout='vertical' childElementPosition='normal' arrow dependencies={['city', 'district']} disabled={!district}
+                        rules={[{ required: true, message: 'Vui lòng chọn xã / phường' }]}
                     >
                         <LocationSelector key={'ward'} parentCode={district?.code} onChange={(value) => onWardChange(value)} placeholder="Chọn xã / phường" title="Xã / Phường" />
                     </Form.Item>
 
                     <Form.Item name="street" style={{ padding: '0 12px' }} label='Số nhà, đường' initialValue={street}
                         layout='vertical' childElementPosition='normal'
+                        rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
                     >
                         <Input onChange={(value) => onAddressChange(value)} placeholder="Nhập địa chỉ nhà và tên đường" />
                     </Form.Item>

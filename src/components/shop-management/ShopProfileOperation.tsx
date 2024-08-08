@@ -120,7 +120,7 @@ export default function ShopProfileOperation({
                             </div>
                         </div>
                         <Form.Item name='name' label='Tên shop' rules={[{ required: true, max: 64, message: 'Vui lòng nhập tên shop' }]}
-                            initialValue={profile?.name}
+                            initialValue={profile?.name} disabled={profile?.status === ShopProfileStatus.Approved}
                         >
                             <TextArea placeholder='Nhập tên shop' maxLength={64} showCount rows={1} />
                         </Form.Item>
@@ -132,7 +132,7 @@ export default function ShopProfileOperation({
                         </Form.Item>
 
                         <Form.Item name='businessLicense' label='Giấy phép đăng ký kinh doanh' rules={[{ required: false, max: 16, message: 'Giấy phép đăng ký kinh doanh tối đa 16 ký tự' }]}
-                            initialValue={profile?.businessLicense}
+                            initialValue={profile?.businessLicense} disabled={profile?.status === ShopProfileStatus.Approved}
                         >
                             <Input placeholder='Nhập giấy phép đăng ký kinh doanh' maxLength={16} />
                         </Form.Item>
@@ -140,6 +140,7 @@ export default function ShopProfileOperation({
                         <Form.Item label='Địa chỉ' name="addresses"
                             layout='vertical' childElementPosition='normal' arrow
                             initialValue={profile?.addresses[0]}
+                            rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
                         >
                             <AddressInput />
                         </Form.Item>
@@ -150,19 +151,19 @@ export default function ShopProfileOperation({
                             <TextArea placeholder='Nhập tên người chịu trách nhiệm' maxLength={64} showCount rows={1} />
                         </Form.Item>
 
-                        <Form.Item name='phone' label='Số điện thoại' rules={[{ required: true, max: 11, message: 'Vui lòng nhập số điện thoại' }]}
+                        <Form.Item name='phone' label='Số điện thoại' rules={[{ required: true, message: 'Vui lòng nhập số điện thoại' }, { pattern: /^\d+$/g, max: 11, message: 'Số điện thoại không hợp lệ' }]}
                             initialValue={profile?.phone}
                         >
                             <Input placeholder='Nhập số điện thoại' maxLength={11} />
                         </Form.Item>
 
-                        <Form.Item name='email' label='Email' rules={[{ required: true, max: 64, message: 'Vui lòng nhập email' }]}
+                        <Form.Item name='email' label='Email' rules={[{ required: true, message: 'Vui lòng nhập email' }, { type: "email", max: 64, message: 'Email không hợp lệ' }]}
                             initialValue={profile?.email}
                         >
                             <Input placeholder='Nhập email' maxLength={64} />
                         </Form.Item>
 
-                        <Form.Item name='taxCode' label='Mã số thuế cá nhân' rules={[{ required: true, max: 16, message: 'Vui lòng nhập mã số thuế cá nhân' }]}
+                        <Form.Item name='taxCode' label='Mã số thuế cá nhân' rules={[{ required: true, message: 'Vui lòng nhập mã số thuế cá nhân' }, { pattern: /^\d+$/g, max: 16, message: 'Mã số thuế không hợp lệ' }]}
                             initialValue={profile?.taxCode}
                         >
                             <Input placeholder='Nhập mã số thuế cá nhân' maxLength={16} />
