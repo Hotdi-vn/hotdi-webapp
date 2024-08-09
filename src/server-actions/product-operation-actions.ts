@@ -56,6 +56,6 @@ export async function uploadProductImage(formData: FormData) {
     return result.data;
 }
 
-export async function getMyProducts(query: marketService.ProductQuery) {
+export async function getMyProducts(query: marketService.ProductQuery = { skip: 0, limit: 20 }) {
     return marketService.getMyProducts(query);
 }
