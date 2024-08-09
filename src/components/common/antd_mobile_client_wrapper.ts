@@ -1,8 +1,8 @@
 'use client'
 
-import { NavBar, TabBar, SearchBar, Space, List, Tabs, Divider, Button, NoticeBar, Avatar } from 'antd-mobile'
+import { NavBar, TabBar, SearchBar, Space, List, Tabs, Divider, Button, NoticeBar, Avatar, Badge } from 'antd-mobile'
 import { TabBarItem } from 'antd-mobile/es/components/tab-bar/tab-bar'
-import { EnvironmentOutline, RightOutline } from 'antd-mobile-icons'
+import { CheckCircleFill, EnvironmentOutline, RightOutline } from 'antd-mobile-icons'
 import { ListItem } from 'antd-mobile/es/components/list/list-item'
 import { Tab } from 'antd-mobile/es/components/tabs/tabs'
 
@@ -22,4 +22,5 @@ export {
     Button,
     NoticeBar,
     Avatar,
+    Badge,
 }

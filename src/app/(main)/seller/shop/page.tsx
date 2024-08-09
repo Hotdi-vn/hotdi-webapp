@@ -8,6 +8,8 @@ import ShopInfoCard from "@/components/shop-management/ShopInfoCard";
 import { getMyShopProfile } from "@/server-actions/shop-operation-actions";
 import { ShopProfileStatus } from "@/model/market-data-model";
 import ShopMenu from "@/components/shop-management/ShopMenu";
+import ShopOnboardGuidance from "@/components/shop-management/ShopOnboardGuidance";
+import { getMyProducts } from "@/server-actions/product-operation-actions";
 
 export default async function SellerShop() {
     const session = await getSession();
@@ -26,16 +28,24 @@ export default async function SellerShop() {
             <div className="text-xl text-left font-normal">Shop Của Tôi</div>
         </NavBar>;
 
-    const shopProfile = await getMyShopProfile({ populate: 'avatarImageId' });
+    const shopProfileRes = await getMyShopProfile({ populate: 'avatarImageId' });
+    const shopProfile = shopProfileRes?.data;
+    const sessionData = await getSession();
+    const productRes = await getMyProducts();
+    const hasProductCreated = productRes.total > 0;
+    const isShowOnboardGuidance = hasProductCreated && shopProfile?.status === ShopProfileStatus.Approved;
 
     return (
         <div className="flex flex-col gap-2">
             <div className='top'>{navBar}</div>
-            <div>
-                <ShopInfoCard profile={shopProfile?.data} />
+            <div hidden={!isShowOnboardGuidance}>
+                <ShopInfoCard profile={shopProfile} />
+            </div>
+            <div hidden={isShowOnboardGuidance}>
+                <ShopOnboardGuidance shopProfile={shopProfile} userProfile={sessionData.userProfile} hasProductCreated={hasProductCreated} />
             </div>
             <div>
-                <ShopMenu profile={shopProfile?.data} />
+                <ShopMenu profile={shopProfile} />
             </div>
         </div>
     )
